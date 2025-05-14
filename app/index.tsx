@@ -1,4 +1,3 @@
-import CategoryGrid from "@/components/home/CategoryGrid";
 import { Button, SafeAreaView, Text } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -10,7 +9,6 @@ export default function HomeScreen() {
         Welcome to Gala 🎉
       </Text>
       <Text className="mt-2 text-gray-500">Your app is running!</Text>
-      <CategoryGrid />
       <Button
         title="Go to Details"
         onPress={() => router.push("/(root)/home")}

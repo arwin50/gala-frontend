@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import bgAklan from "@/assets/images/places_pic/places_aklan.jpg";
 import bgCebu from "@/assets/images/places_pic/places_cebu.jpg";
 import bgBohol from "@/assets/images/places_pic/places_bohol.jpg";
+import bgLaUnion from "@/assets/images/places_pic/places_laUnion.jpg";
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
 
 import iconAklan from "@/assets/images/places_icons/places_aklan.png";
@@ -33,7 +34,7 @@ const places = [
   },
   {
     name: "La Union",
-    background: bgBohol,
+    background: bgLaUnion,
     icon: iconLaUnion,
   },
   {
@@ -71,12 +72,12 @@ export default function FeaturedPlacesGrid() {
         </Pressable>
       )}
 
-      <View className="flex-row flex-wrap justify-between gap-4">
+      <View className="flex-row flex-wrap justify-between">
         {places.slice(1).map((place, index) => (
           <Pressable
             key={index}
             onPress={() => console.log("This card pressed: ", place.name)}
-            className="w-[48%] h-36 rounded-xl overflow-hidden shadow"
+            className="w-[48%] h-36 rounded-xl overflow-hidden shadow mb-3"
           >
             <ImageBackground
               source={place.background}
