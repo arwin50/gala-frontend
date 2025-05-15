@@ -11,7 +11,7 @@ import {
 import Swiper from "react-native-swiper";
 
 // Import step components
-import BasicInformation from "@/components/addlistingswiper/BasicInformation.tsx";
+import BasicInformation from "@/components/addlistingswiper/BasicInformation";
 import DetailsIntro from "@/components/addlistingswiper/DetailsIntro";
 import PlaceLocationSlide from "@/components/addlistingswiper/PlaceLocationSlide";
 import PlaceTypeSlide from "@/components/addlistingswiper/PlaceTypeSlide";
