@@ -1,9 +1,9 @@
+import TellDetails from "@/assets/addlisting/TellDetails.svg";
+import TellPlace from "@/assets/addlisting/TellPlace.svg";
+import TellPrice from "@/assets/addlisting/TellPrice.svg";
 import { DetailsIntroInterface } from "@/interfaces";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity, View } from "react-native";
-import TellDetails from "../../public/addlisting/TellDetails.svg";
-import TellPlace from "../../public/addlisting/TellPlace.svg";
-import TellPrice from "../../public/addlisting/TellPrice.svg";
 
 export default function DetailsIntro({ onGetStarted }: DetailsIntroInterface) {
   return (

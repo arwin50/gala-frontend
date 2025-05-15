@@ -1,3 +1,7 @@
+import BasicInformation from "@/components/addlistingswiper/BasicInformation";
+import DetailsIntro from "@/components/addlistingswiper/DetailsIntro";
+import PlaceLocationSlide from "@/components/addlistingswiper/PlaceLocationSlide";
+import PlaceTypeSlide from "@/components/addlistingswiper/PlaceTypeSlide";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,12 +13,6 @@ import {
   View,
 } from "react-native";
 import Swiper from "react-native-swiper";
-
-// Import step components
-import BasicInformation from "@/components/addlistingswiper/BasicInformation";
-import DetailsIntro from "@/components/addlistingswiper/DetailsIntro";
-import PlaceLocationSlide from "@/components/addlistingswiper/PlaceLocationSlide";
-import PlaceTypeSlide from "@/components/addlistingswiper/PlaceTypeSlide";
 
 export default function HostHomePage() {
   const [isVisible, setIsVisible] = useState(false);

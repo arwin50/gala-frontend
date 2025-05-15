@@ -11,11 +11,11 @@ export default function PlaceLocationSlide() {
 
       <View className="mt-12 gap-y-8 ">
         <SearchBar />
-        <View className="w-full h-[300px] border rounded-xl border-line bg-[url(@/img/tempMap.png] drop-shadow-lg ">
+        <View className="w-full  border rounded-xl border-line drop-shadow-lg ">
           <ImageBackground
-            source={require("@/public/addlisting/tempMap.jpg")}
+            source={require("@/assets/addlisting/tempMap.jpg")}
             resizeMode="cover"
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: 300 }}
             imageStyle={{ borderRadius: 10 }}
           />
         </View>
