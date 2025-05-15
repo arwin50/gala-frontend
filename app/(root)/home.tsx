@@ -1,12 +1,12 @@
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import SearchBarWithModal from "@/components/common/SearchBar";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import FeaturedPlacesGrid from "@/components/home/FeaturedPlacesGrid";
-import SearchBarWithModal from "@/components/common/SearchBar";
+import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 export default function Home() {
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="p-4 bg-white z-10 shadow shadow-xl">
+      <View className="p-4 bg-white z-10 shadow-xl">
         <SearchBarWithModal />
       </View>
 
