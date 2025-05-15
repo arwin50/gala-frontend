@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Text, TouchableOpacity, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Image, Text, TouchableOpacity } from "react-native";
 
+import locPin from "@/assets/addlisting/locPin.svg";
 import galaLogo from "@/assets/images/gala_logo.png";
-import googleLogo from "@/assets/images/google_logo.svg";
 import AuthInput from "@/components/common/AuthInput";
 
 export default function LoginScreen() {
@@ -73,7 +73,7 @@ export default function LoginScreen() {
       </Text>
 
       <TouchableOpacity className="flex bg-white w-32 h-16 p-3 rounded-xl shadow justify-center items-center">
-        <Image source={googleLogo} className="w-8 h-8" resizeMode="contain" />
+        <Image source={locPin} className="w-8 h-8" resizeMode="contain" />
       </TouchableOpacity>
     </LinearGradient>
   );
