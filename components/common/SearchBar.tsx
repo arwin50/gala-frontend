@@ -1,14 +1,14 @@
+import { Feather, Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
+  Keyboard,
   Pressable,
+  Text,
   TextInput,
   TouchableWithoutFeedback,
-  Keyboard,
+  View,
 } from "react-native";
 import Modal from "react-native-modal";
-import { Feather, Ionicons } from "@expo/vector-icons";
 
 export default function SearchBarWithModal() {
   const [isModalVisible, setModalVisible] = useState(false);

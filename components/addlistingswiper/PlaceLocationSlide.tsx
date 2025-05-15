@@ -1,6 +1,6 @@
 // components/steps/PricingStep.tsx
 import { ImageBackground, Text, View } from "react-native";
-import SearchBar from "./reusable/SearchBar";
+import SearchBarWithModal from "../common/SearchBar";
 
 export default function PlaceLocationSlide() {
   return (
@@ -10,8 +10,8 @@ export default function PlaceLocationSlide() {
       </Text>
 
       <View className="mt-12 gap-y-8 ">
-        <SearchBar />
-        <View className="w-full  border rounded-xl border-line drop-shadow-lg ">
+        <SearchBarWithModal />
+        <View className="w-full  border rounded-xl drop-shadow-lg ">
           <ImageBackground
             source={require("@/assets/addlisting/tempMap.jpg")}
             resizeMode="cover"

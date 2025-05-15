@@ -4,7 +4,7 @@ import { TextInput, View } from "react-native";
 
 export default function SearchBar() {
   return (
-    <View className="border border-line  rounded-xl relative">
+    <View className="border   rounded-xl relative">
       <TextInput
         className="text-center p-6 font-medium text-black"
         placeholder="Enter your address"
