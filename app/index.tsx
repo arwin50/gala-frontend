@@ -10,8 +10,12 @@ export default function HomeScreen() {
       </Text>
       <Text className="mt-2 text-gray-500">Your app is running!</Text>
       <Button
-        title="Go to Details"
+        title="Go to Homescreen"
         onPress={() => router.push("/(root)/home")}
+      />
+      <Button
+        title="Go to Login"
+        onPress={() => router.push("/(auth)/login")}
       />
     </SafeAreaView>
   );

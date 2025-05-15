@@ -9,20 +9,7 @@ import {
   ImageSourcePropType,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-
-import hotelImg from "@/assets/images/category_hotels.png";
-import resortsImg from "@/assets/images/category_resorts.png";
-import recreationalImg from "@/assets/images/category_exp.png";
-import eventSpacesImg from "@/assets/images/category_eventSpaces.png";
-import homestaysImg from "@/assets/images/category_homestay.png";
-
-const categories = [
-  { title: "Hotels", color: "bg-[#D3E7FF]", image: hotelImg },
-  { title: "Resorts", color: "bg-[#D9FFC0]", image: resortsImg },
-  { title: "Recreational", color: "bg-[#F9C2D2]", image: recreationalImg },
-  { title: "Event Places", color: "bg-[#F1D1FA]", image: eventSpacesImg },
-  { title: "Transients", color: "bg-[#FFF2C0]", image: homestaysImg },
-];
+import { categories } from "@/constants/categoryData";
 
 export default function CategoryGrid() {
   return (
@@ -81,7 +68,8 @@ type CategoryCardProps = {
 function CategoryCard({ title, color, image }: CategoryCardProps) {
   return (
     <Pressable
-      className={`relative flex-1 h-32 rounded-xl p-3 ${color} overflow-hidden`}
+      style={{ backgroundColor: color }}
+      className={`relative flex-1 h-32 rounded-xl p-3 overflow-hidden`}
     >
       <Text className="font-bold text-base leading-none z-10">{title}</Text>
       <Image
