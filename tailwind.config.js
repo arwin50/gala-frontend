@@ -7,7 +7,14 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        description: "#4E4B4B",
+        line: "#959595",
+        buttonVarGrad1Start: "#166EF3",
+        buttonVarGrade1End: "#2665BE",
+      },
+    },
   },
   plugins: [],
 };
