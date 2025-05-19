@@ -18,6 +18,10 @@ export default function HomeScreen() {
         title="Go to Login"
         onPress={() => router.push("/(auth)/login")}
       />
+      <Button
+        title="Go to Accommodation View"
+        onPress={() => router.push("/(root)/accom/[id]/page")}
+      />
     </SafeAreaView>
   );
 }
