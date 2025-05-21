@@ -37,7 +37,7 @@ export default function BasicInformation() {
           right expectations.
         </Text>
 
-        <View className="flex-1 items-center justify-center gap-y-8 mb-10">
+        <View className="gap-y-8 mt-16">
           {/* Guests */}
           <View className="w-full flex-col items-center justify-between">
             <Text className="text-lg self-start">
