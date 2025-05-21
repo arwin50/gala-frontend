@@ -13,6 +13,10 @@ const sampleLandmark = {
   address: "Alaminos, Pangasinan, Tallano Gold, 4 Bedroom",
   description:
     "This dormitory offers a breathtaking view of the golden rice terraces, with modern amenities and a peaceful atmosphere for long stays or quick getaways.",
+  price_per_night: 3454.5,
+  max_guests: 4,
+  created_at: "2024-11-01T10:32:00Z",
+  updated_at: "2025-05-20T15:47:00Z",
   images: [
     bgMetroManila,
     bgMetroManila,
@@ -28,6 +32,21 @@ const sampleLandmark = {
   },
   rating: 4.5,
   totalReviews: 6969,
+  amenities: [
+    { icon: "wifi", label: "Internet" },
+    { icon: "bath", label: "Shower" },
+    { icon: "coffee", label: "Café" },
+  ],
+  nearbyLocations: [
+    { name: "Hundred Islands", distance: "1.5KM" },
+    { name: "St. Vicente Ferrer Shrine", distance: "1.5KM" },
+    { name: "Lucap Wharf", distance: "2.0KM" },
+  ],
+  otherNearbyLandmarks: [
+    { name: "Alaminos Cathedral", distance: "3.0KM" },
+    { name: "Enchanted Cave", distance: "3.5KM" },
+    { name: "Tondol Beach", distance: "5.0KM" },
+  ],
   reviews: [
     {
       user: {
@@ -48,26 +67,10 @@ const sampleLandmark = {
       timeAgo: "12 months ago",
     },
   ],
-  amenities: [
-    { icon: "wifi", label: "Internet" },
-    { icon: "utensils", label: "Kitchen" },
-    { icon: "bath", label: "Bath" },
-    { icon: "swimming-pool", label: "Pool" },
-    { icon: "snowflake", label: "Aircon and Brunch" },
-    { icon: "coffee", label: "Café" },
-  ],
+  cancellationPolicy:
+    "Free cancellation within 48 hours of booking. Cancel up to 5 days before check-in for a full refund. After that, the first night is non-refundable, and 50% is refunded for remaining nights.",
   houseRules:
     "No people allowed to just jump around everywhere because our neighbors will complain. Fines in place for noise complaints. No smoking inside the house. No pets allowed. No parties or events. No ugly people because, damn, you need to be hot to stay here.",
-  nearbyLocations: [
-    { name: "Hundred Islands", distance: "1.5KM" },
-    { name: "St. Vicente Ferrer Shrine", distance: "1.5KM" },
-    { name: "Lucap Wharf", distance: "2.0KM" },
-  ],
-  otherNearbyLandmarks: [
-    { name: "Alaminos Cathedral", distance: "3.0KM" },
-    { name: "Enchanted Cave", distance: "3.5KM" },
-    { name: "Tondol Beach", distance: "5.0KM" },
-  ],
 };
 
 export default function LandmarkView() {
@@ -83,6 +86,7 @@ export default function LandmarkView() {
           address={sampleLandmark.address}
           description={sampleLandmark.description}
           host={sampleLandmark.host}
+          created_at={sampleLandmark.created_at}
         />
 
         <ViewRatingsReviewsSummary
