@@ -15,6 +15,11 @@ const sampleProperty = {
   address: "Alaminos, Pangasinan, Tallano Gold, 4 Bedroom",
   description:
     "This dormitory offers a breathtaking view of the golden rice terraces, with modern amenities and a peaceful atmosphere for long stays or quick getaways.",
+  category_id: "hotels",
+  price_per_night: 3454.5,
+  max_guests: 4,
+  created_at: "2024-11-01T10:32:00Z",
+  updated_at: "2025-05-20T15:47:00Z",
   images: [
     bgMetroManila,
     bgMetroManila,
@@ -79,6 +84,8 @@ export default function PropertyView() {
           address={sampleProperty.address}
           description={sampleProperty.description}
           host={sampleProperty.host}
+          category_id={sampleProperty.category_id}
+          created_at={sampleProperty.created_at}
         />
 
         <ViewRatingsReviewsSummary

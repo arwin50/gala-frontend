@@ -18,7 +18,7 @@ export default function LocationCard({ property }: { property: any }) {
           {property.name}
         </Text>
 
-        <View className="flex-row items-center gap-1 mt-1">
+        <View className="flex-row items-center gap-1">
           <Feather name="map-pin" size={14} color="#555" />
           <Text
             className="text-sm text-gray-600 flex-shrink"
@@ -28,11 +28,15 @@ export default function LocationCard({ property }: { property: any }) {
             {property.location}
           </Text>
         </View>
-
-        <View className="flex-row items-center gap-1 mt-1">
-          <FontAwesome name="star" size={14} color="#facc15" />
-          <Text className="text-sm text-yellow-500 font-medium">
-            {property.rating}
+        <View className="flex-row justify-between w-full">
+          <View className="flex-row items-center gap-1">
+            <FontAwesome name="star" size={14} color="#facc15" />
+            <Text className="text-sm text-yellow-500 font-medium">
+              {property.rating}
+            </Text>
+          </View>
+          <Text className="text-md text-gray-500 font-medium">
+            {property.price}
           </Text>
         </View>
       </View>

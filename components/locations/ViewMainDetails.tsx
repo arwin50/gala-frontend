@@ -1,4 +1,6 @@
+import { categories } from "@/constants/categoryData";
 import { AntDesign, Feather } from "@expo/vector-icons";
+import { differenceInMonths, parseISO } from "date-fns";
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -17,6 +19,8 @@ type ViewMainDetailsProps = {
   title: string;
   address: string;
   description: string;
+  category_id?: string;
+  created_at: string;
   host: {
     name: string;
     image: any;
@@ -30,6 +34,8 @@ const ViewMainDetails = ({
   address,
   description,
   host,
+  category_id,
+  created_at,
 }: ViewMainDetailsProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -39,6 +45,15 @@ const ViewMainDetails = ({
       setActiveIndex(slide);
     }
   };
+
+  const selectedCategory = categories.find((cat) => cat.id === category_id);
+  const totalMonths = differenceInMonths(new Date(), parseISO(created_at));
+  const durationDisplay =
+    totalMonths >= 12
+      ? `Posted ${Math.floor(totalMonths / 12)} year${
+          Math.floor(totalMonths / 12) > 1 ? "s" : ""
+        } ago`
+      : `Posted ${totalMonths} month${totalMonths !== 1 ? "s" : ""} ago`;
 
   return (
     <View className="h-[600px] bg-transparent">
@@ -87,6 +102,19 @@ const ViewMainDetails = ({
           </View>
         </View>
 
+        {selectedCategory && (
+          <View className="mx-4 mt-2 mb-1 flex-row items-center">
+            <Image
+              source={selectedCategory.image}
+              className="w-8 h-8 mr-2 rounded-sm"
+              resizeMode="contain"
+            />
+            <Text className="font-bold text-lg text-gray-700">
+              {selectedCategory.title}
+            </Text>
+          </View>
+        )}
+
         <Text className="text-gray-600 mt-1 mx-4 w-[40%]">{address}</Text>
 
         <View className="bg-gray-200 my-3 py-5">
@@ -100,7 +128,7 @@ const ViewMainDetails = ({
           <Image source={host.image} className="w-16 h-16 rounded-full mr-3" />
           <View>
             <Text className="font-medium">Hosted by {host.name}</Text>
-            <Text className="text-xs text-gray-500">{host.duration}</Text>
+            <Text className="text-sm text-gray-500">{durationDisplay}</Text>
           </View>
         </View>
       </View>

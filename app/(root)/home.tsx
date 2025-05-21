@@ -10,36 +10,42 @@ const sampleProperties = [
     location: "Las Piñas, Metro Manila",
     rating: 4.5,
     image: require("@/assets/images/places_pic/places_metroManila.jpg"),
+    price: "₱2,500",
   },
   {
     name: "Midas Hotel and Casino",
     location: "Pasay, Metro Manila",
     rating: 5.0,
     image: require("@/assets/images/places_pic/places_metroManila.jpg"),
+    price: "₱3,000",
   },
   {
     name: "Park Hotels Group",
     location: "Pasay, Metro Manila",
     rating: 4.5,
     image: require("@/assets/images/places_pic/places_metroManila.jpg"),
+    price: "₱1,000,000",
   },
   {
     name: "Dumaguete Hotel and Suite",
     location: "Dumaguete, Negros Oriental",
     rating: 5.0,
     image: require("@/assets/images/places_pic/places_metroManila.jpg"),
+    price: "₱1,000,000",
   },
   {
     name: "The Manila Hotel",
     location: "Ermita, Manila",
     rating: 5.0,
     image: require("@/assets/images/places_pic/places_metroManila.jpg"),
+    price: "₱1,000,000",
   },
   {
     name: "The Cebu Hotel",
     location: "Cebu City, Cebu",
     rating: 5.0,
     image: require("@/assets/images/places_pic/places_metroManila.jpg"),
+    price: "₱1,000,000",
   },
 ];
 
