@@ -1,22 +1,35 @@
-import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-const landmarks = [
-  { name: "Hundred Islands", distance: "1.5KM" },
-  { name: "St. Vicente Ferrer Shrine", distance: "1.5KM" },
-  { name: "Lucap Wharf", distance: "2.0KM" },
-];
+type Location = {
+  name: string;
+  distance: string;
+  image?: any;
+};
 
-const AccommodationViewNearbyLandmarks = () => {
+type ViewNearbyLocationsProps = {
+  sectionTitle: string;
+  landmarks: Location[];
+  onShowAll?: () => void;
+  defaultImage?: any;
+};
+
+const ViewNearbyLocations = ({
+  sectionTitle,
+  landmarks,
+  onShowAll,
+  defaultImage,
+}: ViewNearbyLocationsProps) => {
   return (
     <View className="mt-6">
       <View className="flex-row justify-between items-center mb-2 px-4">
-        <Text className="text-lg font-semibold">Nearby Landmarks</Text>
-        <TouchableOpacity>
-          <Text className="text-blue-500 font-medium">SHOW ALL</Text>
-        </TouchableOpacity>
+        <Text className="text-lg font-semibold">{sectionTitle}</Text>
+        {onShowAll && (
+          <TouchableOpacity onPress={onShowAll}>
+            <Text className="text-blue-500 font-medium">SHOW ALL</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <ScrollView
@@ -31,7 +44,7 @@ const AccommodationViewNearbyLandmarks = () => {
             style={{ width: 140, height: 190 }}
           >
             <Image
-              source={bgMetroManila}
+              source={landmark.image || defaultImage}
               className="w-full h-full absolute"
               resizeMode="cover"
             />
@@ -63,4 +76,4 @@ const AccommodationViewNearbyLandmarks = () => {
   );
 };
 
-export default AccommodationViewNearbyLandmarks;
+export default ViewNearbyLocations;

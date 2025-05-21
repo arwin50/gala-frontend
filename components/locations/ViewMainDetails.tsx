@@ -1,4 +1,3 @@
-import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
@@ -9,17 +8,29 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import AccommodationViewDisplayText from "./ViewDisplayText";
 
 const { width } = Dimensions.get("window");
-const images = [
-  bgMetroManila,
-  bgMetroManila,
-  bgMetroManila,
-  bgMetroManila,
-  bgMetroManila,
-];
 
-const AccommodationViewMain = () => {
+type ViewMainDetailsProps = {
+  images: any[];
+  title: string;
+  address: string;
+  description: string;
+  host: {
+    name: string;
+    image: any;
+    duration: string;
+  };
+};
+
+const ViewMainDetails = ({
+  images,
+  title,
+  address,
+  description,
+  host,
+}: ViewMainDetailsProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onScroll = (event: any) => {
@@ -30,7 +41,7 @@ const AccommodationViewMain = () => {
   };
 
   return (
-    <View className="h-[450px] bg-transparent">
+    <View className="h-[600px] bg-transparent">
       <ScrollView
         horizontal
         pagingEnabled
@@ -60,11 +71,9 @@ const AccommodationViewMain = () => {
         ))}
       </View>
 
-      <View className="p-4 bg-white rounded-b-2xl shadow-md shadow-black mt-2">
-        <View className="flex-row justify-between items-center">
-          <Text className="text-2xl font-semibold flex-1">
-            Gynkui Killa Dormitory
-          </Text>
+      <View className="py-4 bg-white rounded-b-2xl shadow-md shadow-black mt-2">
+        <View className="mx-4 flex-row justify-between items-center">
+          <Text className="text-2xl font-semibold flex-1">{title}</Text>
           <View className="flex-row ml-2">
             <TouchableOpacity className="ml-3">
               <Feather name="flag" size={20} color="black" />
@@ -78,17 +87,20 @@ const AccommodationViewMain = () => {
           </View>
         </View>
 
-        <Text className="text-gray-600 mt-1">Alaminos, Pangasinan</Text>
-        <Text className="text-gray-500 mb-3">Tallano Gold, 4 Bedroom</Text>
+        <Text className="text-gray-600 mt-1 mx-4 w-[40%]">{address}</Text>
 
-        <View className="flex-row items-center mt-3">
-          <Image
-            source={bgMetroManila}
-            className="w-16 h-16 rounded-full mr-3"
+        <View className="bg-gray-200 my-3 py-5">
+          <AccommodationViewDisplayText
+            sectionTitle="Description"
+            sectionContent={description}
           />
+        </View>
+
+        <View className="flex-row items-center mx-4">
+          <Image source={host.image} className="w-16 h-16 rounded-full mr-3" />
           <View>
-            <Text className="font-medium">Hosted by BINI Aiah</Text>
-            <Text className="text-xs text-gray-500">2 years hosting</Text>
+            <Text className="font-medium">Hosted by {host.name}</Text>
+            <Text className="text-xs text-gray-500">{host.duration}</Text>
           </View>
         </View>
       </View>
@@ -96,4 +108,4 @@ const AccommodationViewMain = () => {
   );
 };
 
-export default AccommodationViewMain;
+export default ViewMainDetails;

@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-const AccommodationViewAvailability = () => {
+const ViewAvailability = () => {
   return (
     <View className="mt-6 px-4">
       <Text className="text-lg font-bold mb-1">Availability</Text>
@@ -28,4 +28,4 @@ const AccommodationViewAvailability = () => {
   );
 };
 
-export default AccommodationViewAvailability;
+export default ViewAvailability;

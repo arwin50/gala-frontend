@@ -1,7 +1,7 @@
-import React from "react";
-import { View, Text, Pressable, ImageBackground, Image } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { places } from "@/constants/placesData";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { Image, ImageBackground, Pressable, Text, View } from "react-native";
 
 export default function FeaturedPlacesGrid() {
   return (
@@ -9,7 +9,7 @@ export default function FeaturedPlacesGrid() {
       {places[0].isFeatured && (
         <Pressable
           onPress={() => console.log("Feature Card pressed")}
-          className="rounded-xl overflow-hidden shadow-xl"
+          className="rounded-xl overflow-hidden shadow shadow-black"
         >
           <ImageBackground
             source={places[0].background}

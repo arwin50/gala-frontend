@@ -20,7 +20,7 @@ export default function HomeScreen() {
       />
       <Button
         title="Go to Accommodation View"
-        onPress={() => router.push("/(root)/accom/[id]/page")}
+        onPress={() => router.push("/(root)/property/[propertyId]/page")}
       />
     </SafeAreaView>
   );
