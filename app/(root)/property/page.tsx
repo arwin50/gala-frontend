@@ -1,8 +1,8 @@
+import CategorySelector from "@/components/common/CategorySelector";
 import SearchBarWithModal from "@/components/common/SearchBar";
-import CategoryGrid from "@/components/home/CategoryGrid";
-import FeaturedPlacesGrid from "@/components/home/FeaturedPlacesGrid";
 import LocationList from "@/components/locations/LocationList";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { SafeAreaView, ScrollView, View } from "react-native";
 
 const sampleProperties = [
   {
@@ -43,11 +43,17 @@ const sampleProperties = [
   },
 ];
 
-export default function Home() {
+export default function Properties() {
+  const { categoryId } = useLocalSearchParams();
+
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="p-4 bg-white z-10 shadow-xl">
-        <SearchBarWithModal />
+      <View className="pt-4 bg-white z-10 shadow shadow-black">
+        <View className="mx-4">
+          <SearchBarWithModal />
+        </View>
+
+        <CategorySelector selectedCategoryId={categoryId as string | null} />
       </View>
 
       <ScrollView
@@ -59,12 +65,7 @@ export default function Home() {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <CategoryGrid />
-        <Text className="text-black font-bold text-xl">Places to See</Text>
-        <FeaturedPlacesGrid />
-        <Text className="text-black font-bold text-xl">
-          Explore Accommodations
-        </Text>
+        <View className="my-0" />
         <LocationList properties={sampleProperties} />
       </ScrollView>
     </SafeAreaView>

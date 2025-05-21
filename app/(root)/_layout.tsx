@@ -10,9 +10,11 @@ export default function RootLayout() {
         options={{ headerShown: false }}
       />
       <Tabs.Screen
-        name="property/[landmarkId]/page"
+        name="landmark/[landmarkId]/page"
         options={{ headerShown: false }}
       />
+      <Tabs.Screen name="property/page" options={{ headerShown: false }} />
+      <Tabs.Screen name="landmark/page" options={{ headerShown: false }} />
     </Tabs>
   );
 }
