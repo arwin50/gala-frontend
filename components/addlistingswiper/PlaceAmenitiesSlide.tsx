@@ -43,12 +43,12 @@ export default function PlaceAmenitiesSlide() {
         className="mt-8 mb-5 p-6 border border-line rounded-xl drop-shadow-lg"
         showsVerticalScrollIndicator={false}
       >
-        <View className="flex-row flex-wrap justify-between relative">
+        <View className="flex-row flex-wrap justify-between">
           {amenities.map((amenity, i) => (
             <Pressable
               key={i}
               onPress={() => toggleAmenity(amenity.name)}
-              className={`w-[48%] h-[140px] mb-8 shadow rounded-lg p-4 ${
+              className={`w-[30%] h-[100px] mb-4 shadow rounded-lg p-2 ${
                 selectedAmenities.includes(amenity.name)
                   ? "bg-blue-50 border-2 border-blue-500"
                   : "bg-white"
@@ -57,7 +57,7 @@ export default function PlaceAmenitiesSlide() {
               <View className="items-center justify-center h-full">
                 <MaterialCommunityIcons
                   name={amenity.icon}
-                  size={32}
+                  size={24}
                   color={
                     selectedAmenities.includes(amenity.name)
                       ? "#0066CC"
@@ -65,7 +65,7 @@ export default function PlaceAmenitiesSlide() {
                   }
                 />
                 <Text
-                  className={`mt-2 text-center font-medium ${
+                  className={`mt-1 text-center font-medium text-xs ${
                     selectedAmenities.includes(amenity.name)
                       ? "text-blue-600"
                       : "text-gray-700"

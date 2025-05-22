@@ -13,6 +13,7 @@ module.exports = {
         line: "#959595",
         buttonVarGrad1Start: "#166EF3",
         buttonVarGrade1End: "#2665BE",
+        buttonBlue: "#2C94F0",
       },
     },
   },
