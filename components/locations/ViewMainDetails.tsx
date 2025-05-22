@@ -24,7 +24,6 @@ type ViewMainDetailsProps = {
   host: {
     name: string;
     image: any;
-    duration: string;
   };
 };
 

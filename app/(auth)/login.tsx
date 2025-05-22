@@ -16,7 +16,12 @@ export default function LoginScreen() {
   return (
     <LinearGradient
       colors={["#007AFF", "#0E4ECF", "#0E4ECF"]}
-      className="flex-1 justify-center items-center px-12"
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 48,
+      }}
     >
       <Image
         source={galaLogo}

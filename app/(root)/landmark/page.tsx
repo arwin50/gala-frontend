@@ -1,45 +1,7 @@
 import SearchBarWithModal from "@/components/common/SearchBar";
 import LocationList from "@/components/locations/LocationList";
+import sampleProperties from "@/constants/propertyData";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
-
-const sampleProperties = [
-  {
-    name: "Harolds Evotel",
-    location: "Las Piñas, Metro Manila",
-    rating: 4.5,
-    image: require("@/assets/images/places_pic/places_metroManila.jpg"),
-  },
-  {
-    name: "Midas Hotel and Casino",
-    location: "Pasay, Metro Manila",
-    rating: 5.0,
-    image: require("@/assets/images/places_pic/places_metroManila.jpg"),
-  },
-  {
-    name: "Park Hotels Group",
-    location: "Pasay, Metro Manila",
-    rating: 4.5,
-    image: require("@/assets/images/places_pic/places_metroManila.jpg"),
-  },
-  {
-    name: "Dumaguete Hotel and Suite",
-    location: "Dumaguete, Negros Oriental",
-    rating: 5.0,
-    image: require("@/assets/images/places_pic/places_metroManila.jpg"),
-  },
-  {
-    name: "The Manila Hotel",
-    location: "Ermita, Manila",
-    rating: 5.0,
-    image: require("@/assets/images/places_pic/places_metroManila.jpg"),
-  },
-  {
-    name: "The Cebu Hotel",
-    location: "Cebu City, Cebu",
-    rating: 5.0,
-    image: require("@/assets/images/places_pic/places_metroManila.jpg"),
-  },
-];
 
 export default function Landmarks() {
   return (
