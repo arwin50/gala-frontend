@@ -16,7 +16,13 @@ const ViewAvailability = () => {
           colors={["#3B82F6", "#1D4ED8"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
-          className="py-4 flex-row items-center justify-center rounded-xl"
+          style={{
+            paddingVertical: 16,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 12,
+          }}
         >
           <FontAwesome name="calendar" size={16} color="#fff" />
           <Text className="text-white font-semibold ml-2">
