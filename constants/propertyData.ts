@@ -4,7 +4,7 @@ const sampleProperties = [
   {
     id: "prop-001",
     title: "Harolds Evotel",
-    address: "Las Piñas, Metro Manila",
+    location: "Las Piñas, Metro Manila",
     description:
       "Charming hotel in Las Piñas with cozy rooms and easy access to the city’s best malls and restaurants.",
     category_id: "hotels",
@@ -12,6 +12,8 @@ const sampleProperties = [
     max_guests: 3,
     created_at: "2024-09-18T08:45:00Z",
     updated_at: "2025-05-20T11:12:00Z",
+    latitude: 14.45,
+    longitude: 120.9817,
     images: Array(6).fill(bgMetroManila),
     host: {
       name: "BINI Sheena",
@@ -44,7 +46,7 @@ const sampleProperties = [
   {
     id: "prop-002",
     title: "Midas Hotel and Casino",
-    address: "Pasay, Metro Manila",
+    location: "Pasay, Metro Manila",
     description:
       "Luxury stay in the heart of Pasay, featuring a casino and rooftop dining.",
     category_id: "resorts",
@@ -52,6 +54,8 @@ const sampleProperties = [
     max_guests: 2,
     created_at: "2024-10-01T14:20:00Z",
     updated_at: "2025-05-18T18:10:00Z",
+    latitude: 14.5469,
+    longitude: 120.9942,
     images: Array(6).fill(bgMetroManila),
     host: {
       name: "BINI Stacey",
@@ -84,7 +88,7 @@ const sampleProperties = [
   {
     id: "prop-003",
     title: "Park Hotels Group",
-    address: "Pasay, Metro Manila",
+    location: "Pasay, Metro Manila",
     description:
       "Elegant rooms with fast WiFi and a peaceful ambiance perfect for business travelers.",
     category_id: "resorts",
@@ -92,6 +96,8 @@ const sampleProperties = [
     max_guests: 4,
     created_at: "2024-12-05T12:30:00Z",
     updated_at: "2025-05-19T09:42:00Z",
+    latitude: 14.5339,
+    longitude: 121.0004,
     images: Array(6).fill(bgMetroManila),
     host: {
       name: "BINI Jhoanna",
@@ -124,7 +130,7 @@ const sampleProperties = [
   {
     id: "prop-004",
     title: "Dumaguete Hotel and Suite",
-    address: "Dumaguete, Negros Oriental",
+    location: "Dumaguete, Negros Oriental",
     description:
       "Nestled by the sea, this relaxing hotel provides sunset views and a calm environment for digital nomads.",
     category_id: "hotels",
@@ -132,6 +138,8 @@ const sampleProperties = [
     max_guests: 5,
     created_at: "2025-01-10T11:15:00Z",
     updated_at: "2025-05-21T08:01:00Z",
+    latitude: 9.3078,
+    longitude: 123.3054,
     images: Array(6).fill(bgMetroManila),
     host: {
       name: "BINI Gwen",
@@ -164,7 +172,7 @@ const sampleProperties = [
   {
     id: "prop-005",
     title: "The Manila Hotel",
-    address: "Ermita, Manila",
+    location: "Ermita, Manila",
     description:
       "An iconic heritage hotel in Manila offering royal treatment and a deep dive into Filipino history.",
     category_id: "transients",
@@ -172,6 +180,8 @@ const sampleProperties = [
     max_guests: 3,
     created_at: "2024-07-23T09:05:00Z",
     updated_at: "2025-05-19T17:30:00Z",
+    latitude: 14.5825,
+    longitude: 120.973,
     images: Array(6).fill(bgMetroManila),
     host: {
       name: "BINI Aya",
@@ -204,7 +214,7 @@ const sampleProperties = [
   {
     id: "prop-006",
     title: "The Cebu Hotel",
-    address: "Cebu City, Cebu",
+    location: "Cebu City, Cebu",
     description:
       "Modern hotel with panoramic views of the Cebu skyline. Great for vacation and remote work.",
     category_id: "hotels",
@@ -212,6 +222,8 @@ const sampleProperties = [
     max_guests: 4,
     created_at: "2024-11-02T13:50:00Z",
     updated_at: "2025-05-22T06:00:00Z",
+    latitude: 10.3157,
+    longitude: 123.8854,
     images: Array(6).fill(bgMetroManila),
     host: {
       name: "BINI Jhoanna",

@@ -1,79 +1,45 @@
+import LocationMap from "@/components/common/LocationMap";
 import ViewAmenities from "@/components/locations/ViewAmenities";
 import ViewDisplayText from "@/components/locations/ViewDisplayText";
 import ViewMainDetails from "@/components/locations/ViewMainDetails";
 import ViewNearbyLocations from "@/components/locations/ViewNearbyLandmarks";
 import ViewRatingsReviewsSummary from "@/components/locations/ViewRatingsReviewsSummary";
 import ViewReviews from "@/components/locations/ViewReviews";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
-const sampleLandmark = {
-  id: "landmark-001",
-  name: "Gynkui Killa Dormitory",
-  address: "Alaminos, Pangasinan, Tallano Gold, 4 Bedroom",
-  description:
-    "This dormitory offers a breathtaking view of the golden rice terraces, with modern amenities and a peaceful atmosphere for long stays or quick getaways.",
-  price_per_night: 3454.5,
-  max_guests: 4,
-  created_at: "2024-11-01T10:32:00Z",
-  updated_at: "2025-05-20T15:47:00Z",
-  images: [
-    bgMetroManila,
-    bgMetroManila,
-    bgMetroManila,
-    bgMetroManila,
-    bgMetroManila,
-    bgMetroManila,
-  ],
-  host: {
-    name: "BINI Aiah",
-    image: bgMetroManila,
-    duration: "2 years hosting",
-  },
-  rating: 4.5,
-  totalReviews: 6969,
-  amenities: [
-    { icon: "wifi", label: "Internet" },
-    { icon: "bath", label: "Shower" },
-    { icon: "coffee", label: "Café" },
-  ],
-  nearbyLocations: [
-    { name: "Hundred Islands", distance: "1.5KM" },
-    { name: "St. Vicente Ferrer Shrine", distance: "1.5KM" },
-    { name: "Lucap Wharf", distance: "2.0KM" },
-  ],
-  otherNearbyLandmarks: [
-    { name: "Alaminos Cathedral", distance: "3.0KM" },
-    { name: "Enchanted Cave", distance: "3.5KM" },
-    { name: "Tondol Beach", distance: "5.0KM" },
-  ],
-  reviews: [
-    {
-      user: {
-        name: "BINI Mikha",
-        avatar: bgMetroManila,
-      },
-      rating: 4,
-      text: "I saw a racoon! LOL! I was scared but the stay was good",
-      timeAgo: "1 month ago",
-    },
-    {
-      user: {
-        name: "BINI Gwen-dolyn Garcia",
-        avatar: bgMetroManila,
-      },
-      rating: 4,
-      text: "My members saw a racoon! LOL! I wanna go back but my bebe is just too busy",
-      timeAgo: "12 months ago",
-    },
-  ],
-  cancellationPolicy:
-    "Free cancellation within 48 hours of booking. Cancel up to 5 days before check-in for a full refund. After that, the first night is non-refundable, and 50% is refunded for remaining nights.",
-  houseRules:
-    "No people allowed to just jump around everywhere because our neighbors will complain. Fines in place for noise complaints. No smoking inside the house. No pets allowed. No parties or events. No ugly people because, damn, you need to be hot to stay here.",
-};
+import { sampleLandmarks } from "@/constants/landmark";
+import { Landmark } from "@/interfaces/landmark";
+import { useLocalSearchParams } from "expo-router";
 
 export default function LandmarkView() {
+  const { landmarkId } = useLocalSearchParams();
+  const landmark: Landmark | undefined = sampleLandmarks.find(
+    (landmark) => landmark.id === landmarkId
+  );
+
+  if (!landmark) {
+    return <Text>{landmarkId} not found</Text>; // Handle the case when the landmark is not found
+  }
+
+  const marker = [
+    {
+      coordinate: {
+        latitude: landmark.latitude,
+        longitude: landmark.longitude,
+      },
+      title: landmark.name,
+      description: landmark.location,
+    },
+  ];
+
+  const region = {
+    latitude: landmark.latitude,
+    longitude: landmark.longitude,
+    latitudeDelta: 0.5,
+    longitudeDelta: 0.5,
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView
@@ -81,21 +47,21 @@ export default function LandmarkView() {
         contentContainerStyle={{ paddingBottom: 20 }}
       >
         <ViewMainDetails
-          images={sampleLandmark.images}
-          title={sampleLandmark.name}
-          address={sampleLandmark.address}
-          description={sampleLandmark.description}
-          host={sampleLandmark.host}
-          created_at={sampleLandmark.created_at}
+          images={landmark.images}
+          title={landmark.name}
+          location={landmark.location}
+          description={landmark.description}
+          host={landmark.poster}
+          created_at={landmark.created_at}
         />
 
         <ViewRatingsReviewsSummary
-          rating={sampleLandmark.rating}
-          totalReviews={sampleLandmark.totalReviews}
+          rating={landmark.rating}
+          totalReviews={landmark.totalReviews}
         />
 
         <ViewAmenities
-          amenities={sampleLandmark.amenities.map(({ icon, label }) => ({
+          amenities={landmark.amenities.map(({ icon, label }) => ({
             icon,
             label,
           }))}
@@ -104,27 +70,32 @@ export default function LandmarkView() {
 
         <ViewNearbyLocations
           sectionTitle="Nearby Accommodations"
-          landmarks={sampleLandmark.nearbyLocations}
+          landmarks={landmark.nearbyLocations}
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
         />
 
         <ViewReviews
-          overallRating={sampleLandmark.rating}
-          totalReviews={sampleLandmark.totalReviews}
-          reviews={sampleLandmark.reviews}
+          overallRating={landmark.rating}
+          totalReviews={landmark.totalReviews}
+          reviews={landmark.reviews}
         />
 
         <View className="mt-4">
           <ViewDisplayText
             sectionTitle="House Rules"
-            sectionContent={sampleLandmark.houseRules}
+            sectionContent={landmark.houseRules}
           />
+        </View>
+
+        <View className="mt-4 px-4">
+          <Text className="text-lg font-bold">Location</Text>
+          <LocationMap region={region} markers={marker} readOnly={false} />
         </View>
 
         <ViewNearbyLocations
           sectionTitle="Other Nearby Landmarks"
-          landmarks={sampleLandmark.otherNearbyLandmarks}
+          landmarks={landmark.otherNearbyLandmarks}
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
         />

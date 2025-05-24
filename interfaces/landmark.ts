@@ -1,17 +1,16 @@
-export interface Property {
+export interface Landmark {
   id: string;
-  title: string;
+  name: string;
   location: string;
   description: string;
-  category_id: string;
-  price_per_night: number;
+  entrance_fee: number;
   max_guests: number;
   created_at: string;
   updated_at: string;
   latitude: number;
   longitude: number;
   images: any[]; // To be updated for other media types
-  host: {
+  poster: {
     name: string;
     image: any; // Type is any for now, can be updated to a specific type later
   };
@@ -21,7 +20,12 @@ export interface Property {
     icon: string;
     label: string;
   }[];
-  nearbyLandmarks: {
+  nearbyLocations: {
+    // Only here for sample purposes
+    name: string;
+    distance: string;
+  }[];
+  otherNearbyLandmarks: {
     // Only here for sample purposes
     name: string;
     distance: string;
@@ -29,12 +33,11 @@ export interface Property {
   reviews: {
     user: {
       name: string;
-      avatar: any;
+      avatar: string;
     };
     rating: number;
     text: string;
     timeAgo: string;
   }[];
-  cancellationPolicy: string;
   houseRules: string;
 }

@@ -1,6 +1,7 @@
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
 import sampleProperties from "@/constants/propertyData";
 
+import LocationMap from "@/components/common/LocationMap";
 import AccommodationViewReserveOverlay from "@/components/locations/AccommodationViewReserveOverlay";
 import ViewAmenities from "@/components/locations/ViewAmenities";
 import ViewAvailability from "@/components/locations/ViewAvailability";
@@ -23,6 +24,24 @@ export default function PropertyView() {
     return <Text>{propertyId} not found</Text>; // Handle the case when the property is not found
   }
 
+  const marker = [
+    {
+      coordinate: {
+        latitude: property.latitude,
+        longitude: property.longitude,
+      },
+      title: property.title,
+      description: property.location,
+    },
+  ];
+
+  const region = {
+    latitude: property.latitude,
+    longitude: property.longitude,
+    latitudeDelta: 0.5,
+    longitudeDelta: 0.5,
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView
@@ -32,7 +51,7 @@ export default function PropertyView() {
         <ViewMainDetails
           images={property.images}
           title={property.title}
-          address={property.address}
+          location={property.location}
           description={property.description}
           host={property.host}
           category_id={property.category_id}
@@ -53,7 +72,7 @@ export default function PropertyView() {
         />
 
         <ViewNearbyLocations
-          sectionTitle="Nearby Locations"
+          sectionTitle="Nearby Landmarks"
           landmarks={property.nearbyLandmarks}
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
@@ -79,6 +98,11 @@ export default function PropertyView() {
             sectionTitle="House Rules"
             sectionContent={property.houseRules}
           />
+        </View>
+
+        <View className="mt-4 px-4">
+          <Text className="text-lg font-bold">Location</Text>
+          <LocationMap region={region} markers={marker} readOnly={true} />
         </View>
       </ScrollView>
       <AccommodationViewReserveOverlay />

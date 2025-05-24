@@ -41,7 +41,7 @@ export default function LocationCard({ property }: { property: Property }) {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {property.address}
+            {property.location}
           </Text>
         </View>
         <View className="flex-row justify-between w-full">

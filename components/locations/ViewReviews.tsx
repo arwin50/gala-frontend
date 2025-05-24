@@ -19,7 +19,6 @@ type ViewReviewsProps = {
   reviews: Review[];
   overallRating: number;
   totalReviews: number;
-  onShowAllPress?: () => void;
 };
 
 const ViewReviews = ({
@@ -27,17 +26,15 @@ const ViewReviews = ({
   reviews,
   overallRating,
   totalReviews,
-  onShowAllPress,
 }: ViewReviewsProps) => {
   return (
     <View className="mt-6">
       <View className="flex-row justify-between items-center px-4 mb-2">
         <Text className="text-lg font-bold">{title}</Text>
-        {onShowAllPress && (
-          <TouchableOpacity onPress={onShowAllPress}>
-            <Text className="text-blue-500 font-medium">SHOW ALL</Text>
-          </TouchableOpacity>
-        )}
+
+        <TouchableOpacity>
+          <Text className="text-blue-500 font-medium">SHOW ALL</Text>
+        </TouchableOpacity>
       </View>
 
       <View className="flex-row items-center px-4 mb-2">
