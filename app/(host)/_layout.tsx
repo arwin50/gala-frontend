@@ -6,6 +6,7 @@ export default function RootLayout() {
       <Tabs.Screen name="index" options={{ headerShown: false }} />
       <Tabs.Screen name="bookings" options={{ headerShown: false }} />
       <Tabs.Screen name="calendar" options={{ headerShown: false }} />
+      <Tabs.Screen name="menu" options={{ headerShown: false }} />
     </Tabs>
   );
 }
