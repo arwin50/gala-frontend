@@ -1,5 +1,5 @@
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
-import sampleProperties from "@/constants/propertyData";
+import sampleAccommodations from "@/constants/accommodationsData";
 
 import LocationMap from "@/components/common/LocationMap";
 import AccommodationViewReserveOverlay from "@/components/locations/AccommodationViewReserveOverlay";
@@ -10,34 +10,34 @@ import ViewMainDetails from "@/components/locations/ViewMainDetails";
 import ViewNearbyLocations from "@/components/locations/ViewNearbyLandmarks";
 import ViewRatingsReviewsSummary from "@/components/locations/ViewRatingsReviewsSummary";
 import ViewReviews from "@/components/locations/ViewReviews";
-import { Property } from "@/interfaces/property";
+import { Accommodation } from "@/interfaces/accommodation";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
-export default function PropertyView() {
-  const { propertyId } = useLocalSearchParams();
-  const property: Property | undefined = sampleProperties.find(
-    (property) => property.id === propertyId
+export default function AccommodationView() {
+  const { accommodationId } = useLocalSearchParams();
+  const accommodation: Accommodation | undefined = sampleAccommodations.find(
+    (accommodation) => accommodation.id === accommodationId
   );
 
-  if (!property) {
-    return <Text>{propertyId} not found</Text>; // Handle the case when the property is not found
+  if (!accommodation) {
+    return <Text>{accommodationId} not found</Text>; // Handle the case when the accommodation is not found
   }
 
   const marker = [
     {
       coordinate: {
-        latitude: property.latitude,
-        longitude: property.longitude,
+        latitude: accommodation.latitude,
+        longitude: accommodation.longitude,
       },
-      title: property.title,
-      description: property.location,
+      title: accommodation.title,
+      description: accommodation.location,
     },
   ];
 
   const region = {
-    latitude: property.latitude,
-    longitude: property.longitude,
+    latitude: accommodation.latitude,
+    longitude: accommodation.longitude,
     latitudeDelta: 0.5,
     longitudeDelta: 0.5,
   };
@@ -49,22 +49,22 @@ export default function PropertyView() {
         contentContainerStyle={{ paddingBottom: 104 }}
       >
         <ViewMainDetails
-          images={property.images}
-          title={property.title}
-          location={property.location}
-          description={property.description}
-          host={property.host}
-          category_id={property.category_id}
-          created_at={property.created_at}
+          images={accommodation.images}
+          title={accommodation.title}
+          location={accommodation.location}
+          description={accommodation.description}
+          host={accommodation.host}
+          category_id={accommodation.category_id}
+          created_at={accommodation.created_at}
         />
 
         <ViewRatingsReviewsSummary
-          rating={property.rating}
-          totalReviews={property.totalReviews}
+          rating={accommodation.rating}
+          totalReviews={accommodation.totalReviews}
         />
 
         <ViewAmenities
-          amenities={property.amenities.map(({ icon, label }) => ({
+          amenities={accommodation.amenities.map(({ icon, label }) => ({
             icon,
             label,
           }))}
@@ -73,7 +73,7 @@ export default function PropertyView() {
 
         <ViewNearbyLocations
           sectionTitle="Nearby Landmarks"
-          landmarks={property.nearbyLandmarks}
+          landmarks={accommodation.nearbyLandmarks}
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
         />
@@ -81,22 +81,22 @@ export default function PropertyView() {
         <ViewAvailability />
 
         <ViewReviews
-          overallRating={property.rating}
-          totalReviews={property.totalReviews}
-          reviews={property.reviews}
+          overallRating={accommodation.rating}
+          totalReviews={accommodation.totalReviews}
+          reviews={accommodation.reviews}
         />
 
         <View className="mt-4">
           <ViewDisplayText
             sectionTitle="Cancellation Policy"
-            sectionContent={property.cancellationPolicy}
+            sectionContent={accommodation.cancellationPolicy}
           />
         </View>
 
         <View className="mt-4">
           <ViewDisplayText
             sectionTitle="House Rules"
-            sectionContent={property.houseRules}
+            sectionContent={accommodation.houseRules}
           />
         </View>
 

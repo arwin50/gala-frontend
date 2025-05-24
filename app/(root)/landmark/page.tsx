@@ -1,6 +1,6 @@
 import SearchBarWithModal from "@/components/common/SearchBar";
 import LocationList from "@/components/locations/LocationList";
-import sampleProperties from "@/constants/propertyData";
+import sampleProperties from "@/constants/accommodationsData";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 export default function Landmarks() {

@@ -1,4 +1,4 @@
-export interface Property {
+export interface Accommodation {
   id: string;
   title: string;
   location: string;

@@ -1,14 +1,18 @@
-import { Property } from "@/interfaces/property";
+import { Accommodation } from "@/interfaces/accommodation";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
-export default function LocationCard({ property }: { property: Property }) {
+export default function LocationCard({
+  accommodation,
+}: {
+  accommodation: Accommodation;
+}) {
   const router = useRouter();
   const handlePress = () => {
     router.push({
-      pathname: "/(root)/property/[propertyId]/page",
-      params: { propertyId: property.id },
+      pathname: "/(root)/accommodation/[accommodationId]/page",
+      params: { accommodationId: accommodation.id },
     });
   };
 
@@ -17,9 +21,9 @@ export default function LocationCard({ property }: { property: Property }) {
       className="bg-white rounded-2xl shadow shadow-black overflow-hidden mb-4 w-[48%]"
       onPress={handlePress}
     >
-      {property?.images?.[0] && (
+      {accommodation?.images?.[0] && (
         <Image
-          source={property.images[0]}
+          source={accommodation.images[0]}
           className="w-full h-40"
           resizeMode="cover"
         />
@@ -31,7 +35,7 @@ export default function LocationCard({ property }: { property: Property }) {
           numberOfLines={1}
           ellipsizeMode="tail"
         >
-          {property.title}
+          {accommodation.title}
         </Text>
 
         <View className="flex-row items-center gap-1">
@@ -41,18 +45,19 @@ export default function LocationCard({ property }: { property: Property }) {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {property.location}
+            {accommodation.location}
           </Text>
         </View>
         <View className="flex-row justify-between w-full">
           <View className="flex-row items-center gap-1">
             <FontAwesome name="star" size={14} color="#facc15" />
             <Text className="text-sm text-yellow-500 font-medium">
-              {property.rating}
+              {accommodation.rating}
             </Text>
           </View>
           <Text className="text-md text-gray-500 font-medium">
-            ₱{property.price_per_night}/night
+            ₱{accommodation.price_per_night}
+            <Text className="text-xs text-gray-400">/night</Text>
           </Text>
         </View>
       </View>

@@ -77,7 +77,10 @@ function CategoryCard({ id, title, color, image }: CategoryCardProps) {
   return (
     <Pressable
       onPress={() =>
-        router.push({ pathname: "/property/page", params: { categoryId: id } })
+        router.push({
+          pathname: "/accommodation/page",
+          params: { categoryId: id },
+        })
       }
       style={{ backgroundColor: color }}
       className={`relative flex-1 h-32 rounded-xl p-3 overflow-hidden`}

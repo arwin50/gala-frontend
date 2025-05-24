@@ -1,7 +1,7 @@
 import CategorySelector from "@/components/common/CategorySelector";
 import SearchBarWithModal from "@/components/common/SearchBar";
 import LocationList from "@/components/locations/LocationList";
-import sampleProperties from "@/constants/propertyData";
+import sampleProperties from "@/constants/accommodationsData";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView, ScrollView, View } from "react-native";
 
