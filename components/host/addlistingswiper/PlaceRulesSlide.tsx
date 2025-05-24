@@ -9,42 +9,32 @@ import {
   TextInput,
   View,
 } from "react-native";
+import {
+  PlaceRulesSlideProps,
+  SetRulesState,
+  ToggleRulesState,
+} from "../../../interfaces";
 
-// Define a type for the toggle rules state
-type ToggleRulesState = {
-  [key: string]: boolean;
-};
+// Define mock rules data
+const rules = [
+  { name: "Check-in time", type: "set" },
+  { name: "Checkout time", type: "set" },
+  { name: "Pets allowed", type: "toggle" },
+  { name: "Events allowed", type: "toggle" },
+  { name: "Smoking allowed", type: "toggle" },
+  { name: "Quiet hours", type: "set" },
+  { name: "Number of guests", type: "set" },
+  { name: "Additional Rules", type: "add" },
+];
 
-// Define a type for the set rules state
-type SetRulesState = {
-  [key: string]: string;
-};
-
-export default function PlaceRulesSlide() {
-  // Define mock rules data
-  const rules = [
-    { name: "Check-in time", type: "set" },
-    { name: "Checkout time", type: "set" },
-    { name: "Pets allowed", type: "toggle" },
-    { name: "Events allowed", type: "toggle" },
-    { name: "Smoking allowed", type: "toggle" },
-    { name: "Quiet hours", type: "set" },
-    { name: "Number of guests", type: "set" },
-    { name: "Additional Rules", type: "add" },
-  ];
-
-  // State for toggle rules, initialized to true based on the image
-  const [toggleRules, setToggleRules] = useState<ToggleRulesState>({
-    "Pets allowed": true,
-    "Events allowed": true,
-    "Smoking allowed": true,
-  });
-
-  // State for set rules
-  const [setRuleValues, setSetRuleValues] = useState<SetRulesState>({});
-
-  // State for additional rules
-  const [additionalRules, setAdditionalRules] = useState<string[]>([]);
+export default function PlaceRulesSlide({
+  toggleRules,
+  setToggleRules,
+  setRuleValues,
+  setSetRuleValues,
+  additionalRules,
+  setAdditionalRules,
+}: PlaceRulesSlideProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newRule, setNewRule] = useState("");
 
@@ -60,10 +50,11 @@ export default function PlaceRulesSlide() {
             text: "OK",
             onPress: (time) => {
               if (time) {
-                setSetRuleValues((prevState) => ({
-                  ...prevState,
+                const newSetRules: SetRulesState = {
+                  ...setRuleValues,
                   [ruleName]: time,
-                }));
+                };
+                setSetRuleValues(newSetRules);
               }
             },
           },
@@ -81,10 +72,11 @@ export default function PlaceRulesSlide() {
             text: "OK",
             onPress: (hours) => {
               if (hours) {
-                setSetRuleValues((prevState) => ({
-                  ...prevState,
+                const newSetRules: SetRulesState = {
+                  ...setRuleValues,
                   [ruleName]: hours,
-                }));
+                };
+                setSetRuleValues(newSetRules);
               }
             },
           },
@@ -102,10 +94,11 @@ export default function PlaceRulesSlide() {
             text: "OK",
             onPress: (number) => {
               if (number) {
-                setSetRuleValues((prevState) => ({
-                  ...prevState,
+                const newSetRules: SetRulesState = {
+                  ...setRuleValues,
                   [ruleName]: number,
-                }));
+                };
+                setSetRuleValues(newSetRules);
               }
             },
           },
@@ -117,10 +110,11 @@ export default function PlaceRulesSlide() {
   };
 
   const handleToggle = (ruleName: string) => {
-    setToggleRules((prevState) => ({
-      ...prevState,
-      [ruleName]: !prevState[ruleName],
-    }));
+    const newToggleRules: ToggleRulesState = {
+      ...toggleRules,
+      [ruleName]: !toggleRules[ruleName],
+    };
+    setToggleRules(newToggleRules);
   };
 
   const handleAdd = () => {
@@ -129,13 +123,13 @@ export default function PlaceRulesSlide() {
 
   const handleAddRule = () => {
     if (newRule.trim()) {
-      setAdditionalRules((prevRules) => [...prevRules, newRule.trim()]);
+      setAdditionalRules([...additionalRules, newRule.trim()]);
       setNewRule("");
     }
   };
 
   const handleDeleteRule = (index: number) => {
-    setAdditionalRules((prevRules) => prevRules.filter((_, i) => i !== index));
+    setAdditionalRules(additionalRules.filter((_, i) => i !== index));
   };
 
   return (

@@ -1,5 +1,5 @@
+import HomeWithGirlPng from "@/assets/addlisting/homeWithGirl.png";
 import { Image, Text, View } from "react-native";
-import HomeWithGirlPng from "../../assets/addlisting/homeWithGirl.png";
 
 export default function SubmitPlace() {
   return (

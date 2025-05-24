@@ -1,11 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-
-type Amenity = {
-  name: string;
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;
-};
+import { Amenity, PlaceAmenitiesSlideProps } from "../../../interfaces";
 
 const amenities: Amenity[] = [
   { name: "WiFi", icon: "wifi" },
@@ -20,19 +16,22 @@ const amenities: Amenity[] = [
   { name: "Security", icon: "shield-check" },
 ];
 
-export default function PlaceAmenitiesSlide() {
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+export default function PlaceAmenitiesSlide({
+  setSelectedAmenities,
+}: PlaceAmenitiesSlideProps) {
+  const [selectedAmenities, setSelectedAmenitiesLocal] = useState<string[]>([]);
 
   const toggleAmenity = (amenityName: string) => {
-    setSelectedAmenities((prev) =>
-      prev.includes(amenityName)
-        ? prev.filter((name) => name !== amenityName)
-        : [...prev, amenityName]
-    );
+    const newSelectedAmenities = selectedAmenities.includes(amenityName)
+      ? selectedAmenities.filter((name) => name !== amenityName)
+      : [...selectedAmenities, amenityName];
+
+    setSelectedAmenitiesLocal(newSelectedAmenities);
+    setSelectedAmenities(newSelectedAmenities);
   };
 
   return (
-    <View className="flex-1  m-8 mt-0">
+    <View className="flex-1 m-8 mt-0">
       <Text className="text-3xl font-extrabold">
         What amenities does your place have?
       </Text>

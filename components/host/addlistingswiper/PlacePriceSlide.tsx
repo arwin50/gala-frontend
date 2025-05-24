@@ -1,9 +1,12 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
+import { PlacePriceSlideProps } from "../../../interfaces";
 
-export default function PlacePriceSlide() {
-  const [basePrice, setBasePrice] = useState(1358);
+export default function PlacePriceSlide({
+  basePrice,
+  setBasePrice,
+}: PlacePriceSlideProps) {
   const [showDetails, setShowDetails] = useState(false);
 
   // Mock calculations based on the image
@@ -45,7 +48,7 @@ export default function PlacePriceSlide() {
   };
 
   return (
-    <View className="flex-1  m-8 mt-0">
+    <View className="flex-1 m-8 mt-0">
       <Text className="text-3xl font-extrabold">Now set your price</Text>
       <Text className="mt-2 text-description">
         Do not worry, you can always change it anytime.

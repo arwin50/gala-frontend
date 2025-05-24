@@ -1,9 +1,16 @@
-import BookingCard from "@/components/bookings/BookingCard";
-import SearchBarWithModal from "@/components/common/SearchBar";
+import BookingCard from "@/components/host/bookings/BookingCard";
+import SearchBarWithoutModal from "@/components/host/SearchBarWithoutModal";
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, Text } from "react-native";
+import {
+  Keyboard,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 export default function HostBookingsPage() {
+  const [query, setQuery] = useState("");
   // Mock data for bookings
   const mockBookings = [
     {
@@ -52,26 +59,34 @@ export default function HostBookingsPage() {
   };
 
   return (
-    <SafeAreaView className="flex-1 relative mx-4 gap-4">
-      <Text className="text-3xl font-bold mt-4">Bookings</Text>
-      <SearchBarWithModal />
-      <ScrollView className="flex-1 ">
-        {mockBookings.map((booking) => (
-          <BookingCard
-            key={booking.id}
-            imageUri={booking.imageUri}
-            userName={booking.userName}
-            checkInDate={booking.checkInDate}
-            checkOutDate={booking.checkOutDate}
-            initialStatus={
-              booking.initialStatus as "Pending" | "Approved" | "Rejected"
-            }
-            onStatusChange={(status) => handleStatusChange(booking.id, status)}
-            isDropdownOpen={openDropdownId === booking.id}
-            onToggleDropdown={() => handleToggleDropdown(booking.id)}
-          />
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView className="flex-1 relative mx-4 gap-4">
+        <Text className="text-3xl font-bold mt-4">Bookings</Text>
+        <SearchBarWithoutModal
+          query={query}
+          setQuery={setQuery}
+          placeholder="Search bookings..."
+        />
+        <ScrollView className="flex-1 ">
+          {mockBookings.map((booking) => (
+            <BookingCard
+              key={booking.id}
+              imageUri={booking.imageUri}
+              userName={booking.userName}
+              checkInDate={booking.checkInDate}
+              checkOutDate={booking.checkOutDate}
+              initialStatus={
+                booking.initialStatus as "Pending" | "Approved" | "Rejected"
+              }
+              onStatusChange={(status) =>
+                handleStatusChange(booking.id, status)
+              }
+              isDropdownOpen={openDropdownId === booking.id}
+              onToggleDropdown={() => handleToggleDropdown(booking.id)}
+            />
+          ))}
+        </ScrollView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
