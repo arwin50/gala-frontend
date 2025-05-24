@@ -1,9 +1,9 @@
 import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { LatLng } from "react-native-maps";
+import MapView, { LatLng } from "react-native-maps";
 import { PlaceLocationSlideProps } from "../../interfaces";
-import LocationMap, { LocationMapRef } from "../common/LocationMap";
+import LocationMap from "../common/LocationMap";
 import CustomPlacesInput from "./CustomPlaceInput";
 
 export default function PlaceLocationSlide({
@@ -21,7 +21,7 @@ export default function PlaceLocationSlide({
     longitudeDelta: 0.01,
   });
   const [locationPermission, setLocationPermission] = useState(false);
-  const mapRef = useRef<LocationMapRef>(null);
+  const mapRef = useRef<MapView | null>(null);
 
   useEffect(() => {
     (async () => {

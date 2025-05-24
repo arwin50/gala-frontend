@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
+import Constants from "expo-constants";
 import { useState } from "react";
 import {
   FlatList,
@@ -8,8 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-const GOOGLE_API_KEY = "AIzaSyAHIMmOhSyjVfSuGKIBoPQC2jePnPVUmno";
 
 interface PlacePrediction {
   place_id: string;
@@ -43,16 +42,28 @@ export default function CustomPlacesInput({
     setInput(text);
     if (text.length < 3) return setResults([]);
 
+    const apiKey = Constants.expoConfig?.extra?.googleMapsApiKey;
+    if (!apiKey) {
+      console.error("Google Maps API key is not configured");
+      return;
+    }
+
     const res = await axios.get(
-      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&key=${GOOGLE_API_KEY}&components=country:ph`
+      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&key=${apiKey}&components=country:ph`
     );
 
     setResults(res.data?.predictions || []);
   };
 
   const handleSelect = async (placeId: string) => {
+    const apiKey = Constants.expoConfig?.extra?.googleMapsApiKey;
+    if (!apiKey) {
+      console.error("Google Maps API key is not configured");
+      return;
+    }
+
     const res = await axios.get(
-      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${GOOGLE_API_KEY}&components=country:ph`
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}&components=country:ph`
     );
     const details = res.data?.result;
     setInput(details.name);
