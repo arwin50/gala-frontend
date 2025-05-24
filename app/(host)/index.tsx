@@ -1,13 +1,21 @@
-import AddListingSwiper from "@/components/addlistingswiper/AddListingSwiper";
-import SearchBarWithModal from "@/components/common/SearchBar";
-import ListingCard from "@/components/listings/ListingCard";
+import SearchBarWithoutModal from "@/components/host/SearchBarWithoutModal";
+import AddListingSwiper from "@/components/host/addlistingswiper/AddListingSwiper";
+import ListingCard from "@/components/host/listings/ListingCard";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, Text, TouchableOpacity } from "react-native";
+import {
+  Keyboard,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 export default function HostHomePage() {
   const [isVisible, setIsVisible] = useState(false);
+  const [query, setQuery] = useState("");
 
   const handleCloseModal = () => {
     setIsVisible(false);
@@ -36,34 +44,42 @@ export default function HostHomePage() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 relative mx-4 gap-4">
-      <Text className="text-3xl font-bold mt-4">Listings</Text>
-      <SearchBarWithModal />
-      <ScrollView className="flex-1 ">
-        {mockListings.map((listing) => (
-          <ListingCard
-            key={listing.id}
-            imageUri={listing.imageUri}
-            title={listing.title}
-            location={listing.location}
-            category={listing.category}
-            bookings={listing.bookings}
-            onEdit={() => router.push("/(host)/edit/[id]")}
-            onDelete={() => console.log("Delete", listing.id)}
-            onShowBookings={() => console.log("Show Bookings", listing.id)}
-          />
-        ))}
-      </ScrollView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView className="flex-1 relative mx-4 gap-4">
+        <Text className="text-3xl font-bold mt-4">Listings</Text>
+        <SearchBarWithoutModal
+          query={query}
+          setQuery={setQuery}
+          placeholder="Search listings..."
+        />
+        <ScrollView className="flex-1 ">
+          {mockListings.map((listing) => (
+            <ListingCard
+              key={listing.id}
+              imageUri={listing.imageUri}
+              title={listing.title}
+              location={listing.location}
+              category={listing.category}
+              bookings={listing.bookings}
+              onEdit={() => router.push("/(host)/edit/[id]")}
+              onDelete={() => console.log("Delete", listing.id)}
+              onShowBookings={() => console.log("Show Bookings", listing.id)}
+            />
+          ))}
+        </ScrollView>
 
-      <TouchableOpacity
-        onPress={() => setIsVisible(true)}
-        className="absolute bottom-7 right-0 ps-4 pe-5 py-3 rounded-full bg-buttonBlue flex-row items-center gap-x-2"
-      >
-        <AntDesign name="plus" size={20} color="white" />
-        <Text className="text-base font-semibold text-white">Add Listing</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setIsVisible(true)}
+          className="absolute bottom-7 right-0 ps-4 pe-5 py-3 rounded-full bg-buttonBlue flex-row items-center gap-x-2"
+        >
+          <AntDesign name="plus" size={20} color="white" />
+          <Text className="text-base font-semibold text-white">
+            Add Listing
+          </Text>
+        </TouchableOpacity>
 
-      <AddListingSwiper isVisible={isVisible} onClose={handleCloseModal} />
-    </SafeAreaView>
+        <AddListingSwiper isVisible={isVisible} onClose={handleCloseModal} />
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }

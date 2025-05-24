@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { PlaceVerificationSlideProps } from "../../interfaces";
+import { PlaceVerificationSlideProps } from "../../../interfaces";
 
 export default function PlaceVerificationSlide({
   contactNumber,

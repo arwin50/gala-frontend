@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
-import { PlacePriceSlideProps } from "../../interfaces";
+import { PlacePriceSlideProps } from "../../../interfaces";
 
 export default function PlacePriceSlide({
   basePrice,

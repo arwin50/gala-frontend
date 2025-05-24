@@ -28,7 +28,7 @@ import {
   PlaceProperty,
   SetRulesState,
   ToggleRulesState,
-} from "../../interfaces";
+} from "../../../interfaces";
 
 interface AddListingSwiperProps {
   isVisible: boolean;

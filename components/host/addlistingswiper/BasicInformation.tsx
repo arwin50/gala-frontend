@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { BasicInformationProps } from "../../interfaces";
+import { BasicInformationProps } from "../../../interfaces";
 
 export default function BasicInformation({
   setGuests,

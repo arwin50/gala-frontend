@@ -13,7 +13,7 @@ import {
   PlaceRulesSlideProps,
   SetRulesState,
   ToggleRulesState,
-} from "../../interfaces";
+} from "../../../interfaces";
 
 // Define mock rules data
 const rules = [

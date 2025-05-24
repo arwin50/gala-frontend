@@ -4,7 +4,7 @@ import { Pressable, Text, View } from "react-native";
 import {
   CancellationPolicy,
   PlaceCancellationSlideProps,
-} from "../../interfaces";
+} from "../../../interfaces";
 
 const policies: CancellationPolicy[] = [
   {

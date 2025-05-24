@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { PlaceDescriptionSlideProps } from "../../interfaces";
+import { PlaceDescriptionSlideProps } from "../../../interfaces";
 
 export default function PlaceDescriptionSlide({
   placeDescription,

@@ -3,7 +3,7 @@ import * as ImagePicker from "expo-image-picker";
 import { ImagePickerAsset } from "expo-image-picker";
 import { useEffect } from "react";
 import { Alert, Image, Pressable, ScrollView, Text, View } from "react-native";
-import { MediaItem, PlaceMediaSlideProps } from "../../interfaces";
+import { MediaItem, PlaceMediaSlideProps } from "../../../interfaces";
 
 export default function PlaceMediaSlide({
   media,

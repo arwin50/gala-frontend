@@ -2,8 +2,8 @@ import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import MapView, { LatLng } from "react-native-maps";
-import { PlaceLocationSlideProps } from "../../interfaces";
-import LocationMap from "../common/LocationMap";
+import { PlaceLocationSlideProps } from "../../../interfaces";
+import LocationMap from "../../common/LocationMap";
 import CustomPlacesInput from "./CustomPlaceInput";
 
 export default function PlaceLocationSlide({

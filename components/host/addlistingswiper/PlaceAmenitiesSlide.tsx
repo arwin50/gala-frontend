@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { Amenity, PlaceAmenitiesSlideProps } from "../../interfaces";
+import { Amenity, PlaceAmenitiesSlideProps } from "../../../interfaces";
 
 const amenities: Amenity[] = [
   { name: "WiFi", icon: "wifi" },
