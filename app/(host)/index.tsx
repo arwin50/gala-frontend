@@ -2,6 +2,7 @@ import AddListingSwiper from "@/components/addlistingswiper/AddListingSwiper";
 import SearchBarWithModal from "@/components/common/SearchBar";
 import ListingCard from "@/components/listings/ListingCard";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { SafeAreaView, ScrollView, Text, TouchableOpacity } from "react-native";
 
@@ -47,7 +48,7 @@ export default function HostHomePage() {
             location={listing.location}
             category={listing.category}
             bookings={listing.bookings}
-            onEdit={() => console.log("Edit", listing.id)}
+            onEdit={() => router.push("/(host)/edit/[id]")}
             onDelete={() => console.log("Delete", listing.id)}
             onShowBookings={() => console.log("Show Bookings", listing.id)}
           />

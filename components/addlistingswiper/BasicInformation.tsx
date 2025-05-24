@@ -10,16 +10,36 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { BasicInformationProps } from "../../interfaces";
 
-export default function BasicInformation() {
-  const [guests, setGuests] = useState(0);
-  const [bedrooms, setBedrooms] = useState(0);
-  const [bathrooms, setBathrooms] = useState(0);
+export default function BasicInformation({
+  setGuests,
+  setBedrooms,
+  setBathrooms,
+}: BasicInformationProps) {
+  const [currentGuests, setCurrentGuests] = useState(0);
+  const [currentBedrooms, setCurrentBedrooms] = useState(0);
+  const [currentBathrooms, setCurrentBathrooms] = useState(0);
 
   // Helper to sanitize number inputs
   const sanitizeNumber = (value: string) => {
     const num = parseInt(value.replace(/[^0-9]/g, ""), 10);
     return isNaN(num) ? 0 : num;
+  };
+
+  const handleGuestsChange = (value: number) => {
+    setCurrentGuests(value);
+    setGuests(value);
+  };
+
+  const handleBedroomsChange = (value: number) => {
+    setCurrentBedrooms(value);
+    setBedrooms(value);
+  };
+
+  const handleBathroomsChange = (value: number) => {
+    setCurrentBathrooms(value);
+    setBathrooms(value);
   };
 
   return (
@@ -52,21 +72,27 @@ export default function BasicInformation() {
               />
               <TextInput
                 keyboardType="numeric"
-                value={guests.toString()}
-                onChangeText={(text) => setGuests(sanitizeNumber(text))}
+                value={currentGuests.toString()}
+                onChangeText={(text) =>
+                  handleGuestsChange(sanitizeNumber(text))
+                }
                 className="w-full text-center px-16  font-medium"
                 placeholder="0"
                 placeholderTextColor="#000000"
               />
               <TouchableOpacity
-                onPress={() => setGuests((prev) => Math.max(0, prev - 1))}
+                onPress={() =>
+                  handleGuestsChange(Math.max(0, currentGuests - 1))
+                }
                 className="absolute right-0"
                 style={{ bottom: "30%", transform: [{ translateX: -13 }] }}
               >
                 <AntDesign name="down" size={15} color="black" />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setGuests((prev) => Math.max(0, prev + 1))}
+                onPress={() =>
+                  handleGuestsChange(Math.max(0, currentGuests + 1))
+                }
                 className="absolute right-0"
                 style={{ top: "30%", transform: [{ translateX: -13 }] }}
               >
@@ -89,21 +115,27 @@ export default function BasicInformation() {
               />
               <TextInput
                 keyboardType="numeric"
-                value={bedrooms.toString()}
-                onChangeText={(text) => setBedrooms(sanitizeNumber(text))}
+                value={currentBedrooms.toString()}
+                onChangeText={(text) =>
+                  handleBedroomsChange(sanitizeNumber(text))
+                }
                 className="w-full text-center px-16 font-medium"
                 placeholder="0"
                 placeholderTextColor="#000000"
               />
               <TouchableOpacity
-                onPress={() => setBedrooms((prev) => Math.max(0, prev - 1))}
+                onPress={() =>
+                  handleBedroomsChange(Math.max(0, currentBedrooms - 1))
+                }
                 className="absolute right-0"
                 style={{ bottom: "30%", transform: [{ translateX: -13 }] }}
               >
                 <AntDesign name="down" size={15} color="black" />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setBedrooms((prev) => Math.max(0, prev + 1))}
+                onPress={() =>
+                  handleBedroomsChange(Math.max(0, currentBedrooms + 1))
+                }
                 className="absolute right-0"
                 style={{ top: "30%", transform: [{ translateX: -13 }] }}
               >
@@ -126,21 +158,27 @@ export default function BasicInformation() {
               />
               <TextInput
                 keyboardType="numeric"
-                value={bathrooms.toString()}
-                onChangeText={(text) => setBathrooms(sanitizeNumber(text))}
+                value={currentBathrooms.toString()}
+                onChangeText={(text) =>
+                  handleBathroomsChange(sanitizeNumber(text))
+                }
                 className="w-full text-center px-16 font-medium"
                 placeholder="0"
                 placeholderTextColor="#000000"
               />
               <TouchableOpacity
-                onPress={() => setBathrooms((prev) => Math.max(0, prev - 1))}
+                onPress={() =>
+                  handleBathroomsChange(Math.max(0, currentBathrooms - 1))
+                }
                 className="absolute right-0"
                 style={{ bottom: "30%", transform: [{ translateX: -13 }] }}
               >
                 <AntDesign name="down" size={15} color="black" />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setBathrooms((prev) => Math.max(0, prev + 1))}
+                onPress={() =>
+                  handleBathroomsChange(Math.max(0, currentBathrooms + 1))
+                }
                 className="absolute right-0"
                 style={{ top: "30%", transform: [{ translateX: -13 }] }}
               >

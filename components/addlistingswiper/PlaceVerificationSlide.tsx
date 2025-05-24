@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
 import {
   Alert,
   Keyboard,
@@ -10,11 +9,14 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { PlaceVerificationSlideProps } from "../../interfaces";
 
-export default function PlaceVerificationSlide() {
-  const [contactNumber, setContactNumber] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
-
+export default function PlaceVerificationSlide({
+  contactNumber,
+  setContactNumber,
+  emailAddress,
+  setEmailAddress,
+}: PlaceVerificationSlideProps) {
   const handleScanID = async () => {
     const { status: cameraStatus } =
       await ImagePicker.requestCameraPermissionsAsync();

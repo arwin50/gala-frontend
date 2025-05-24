@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Keyboard,
   Text,
@@ -6,9 +5,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { PlaceDescriptionSlideProps } from "../../interfaces";
 
-export default function PlaceDescriptionSlide() {
-  const [placeDescription, setPlaceDescription] = useState("");
+export default function PlaceDescriptionSlide({
+  placeDescription,
+  setPlaceDescription,
+}: PlaceDescriptionSlideProps) {
   const characterLimit = 400;
 
   const handleDescriptionChange = (text: string) => {
@@ -19,7 +21,7 @@ export default function PlaceDescriptionSlide() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1  m-8 mt-0">
+      <View className="flex-1 m-8 mt-0">
         <Text className="text-3xl font-extrabold">
           How would you describe your place?
         </Text>

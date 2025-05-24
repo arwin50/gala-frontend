@@ -1,26 +1,8 @@
+import { LocationMapProps } from "@/interfaces";
 import { useRef } from "react";
 import { View } from "react-native";
 import MapViewClustering from "react-native-map-clustering";
-import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from "react-native-maps";
-
-interface MarkerData {
-  coordinate: LatLng;
-  title?: string;
-  description?: string;
-}
-
-interface LocationMapProps {
-  region: {
-    latitude: number;
-    longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
-  };
-  markers?: MarkerData[];
-  onRegionChange?: (region: any) => void;
-  onMapPress?: (coords: LatLng) => void;
-  readOnly?: boolean;
-}
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function LocationMap({
   region,
@@ -28,6 +10,7 @@ export default function LocationMap({
   onRegionChange,
   onMapPress,
   readOnly = false,
+  ref,
 }: LocationMapProps) {
   const mapRef = useRef<MapView | null>(null);
 
