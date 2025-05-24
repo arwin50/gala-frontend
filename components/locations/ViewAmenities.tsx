@@ -2,15 +2,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-const amenities = [
-  { icon: "wifi", label: "Internet" },
-  { icon: "utensils", label: "Kitchen" },
-  { icon: "bath", label: "Bath" },
-  { icon: "swimming-pool", label: "Pool" },
-  { icon: "snowflake", label: "Aircon and Brunch" },
-  { icon: "coffee", label: "Café" },
-];
-
 const colors = [
   "bg-blue-100",
   "bg-yellow-100",
@@ -20,14 +11,26 @@ const colors = [
   "bg-orange-100",
 ];
 
-const AccommodationViewAmenities = () => {
+type Amenity = {
+  icon: string; // FontAwesome5 icon name
+  label: string;
+};
+
+type ViewAmenitiesProps = {
+  amenities: Amenity[];
+  onShowAllPress?: () => void;
+};
+
+const ViewAmenities = ({ amenities, onShowAllPress }: ViewAmenitiesProps) => {
   return (
     <View className="mt-6">
       <View className="flex-row justify-between items-center mb-2 px-4">
         <Text className="text-lg font-semibold">Amenities</Text>
-        <TouchableOpacity>
-          <Text className="text-blue-500 font-medium">SHOW ALL</Text>
-        </TouchableOpacity>
+        {onShowAllPress && (
+          <TouchableOpacity onPress={onShowAllPress}>
+            <Text className="text-blue-500 font-medium">SHOW ALL</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <ScrollView
@@ -58,4 +61,4 @@ const AccommodationViewAmenities = () => {
   );
 };
 
-export default AccommodationViewAmenities;
+export default ViewAmenities;

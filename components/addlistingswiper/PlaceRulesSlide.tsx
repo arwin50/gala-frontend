@@ -29,7 +29,7 @@ export default function PlaceRulesSlide() {
     { name: "Events allowed", type: "toggle" },
     { name: "Smoking allowed", type: "toggle" },
     { name: "Quiet hours", type: "set" },
-    { name: "Number of guests", type: "toggle" },
+    { name: "Number of guests", type: "set" },
     { name: "Additional Rules", type: "add" },
   ];
 
@@ -38,7 +38,6 @@ export default function PlaceRulesSlide() {
     "Pets allowed": true,
     "Events allowed": true,
     "Smoking allowed": true,
-    "Number of guests": true,
   });
 
   // State for set rules
@@ -85,6 +84,27 @@ export default function PlaceRulesSlide() {
                 setSetRuleValues((prevState) => ({
                   ...prevState,
                   [ruleName]: hours,
+                }));
+              }
+            },
+          },
+        ],
+        "plain-text",
+        setRuleValues[ruleName] || ""
+      );
+    } else if (ruleName === "Number of guests") {
+      Alert.prompt(
+        "Set Maximum Number of Guests",
+        "Enter the maximum number of guests allowed:",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "OK",
+            onPress: (number) => {
+              if (number) {
+                setSetRuleValues((prevState) => ({
+                  ...prevState,
+                  [ruleName]: number,
                 }));
               }
             },

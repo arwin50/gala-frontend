@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 import galaLogo from "@/assets/images/gala_logo.png";
 import AuthInput from "@/components/common/AuthInput";
@@ -17,7 +17,12 @@ export default function SignupScreen() {
   return (
     <LinearGradient
       colors={["#007AFF", "#0E4ECF", "#0E4ECF"]}
-      className="flex-1 justify-center items-center px-12"
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 48,
+      }}
     >
       <Image
         source={galaLogo}

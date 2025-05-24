@@ -1,26 +1,28 @@
-// CategoryGrid.js
+import { categories } from "@/constants/categoryData";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
-  Pressable,
   Image,
-  View,
+  ImageSourcePropType,
+  Pressable,
   Text,
   TouchableOpacity,
-  ImageSourcePropType,
+  View,
 } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { categories } from "@/constants/categoryData";
 
 export default function CategoryGrid() {
   return (
     <View className="w-full">
       <View className="flex-row gap-4 mb-3">
         <CategoryCard
+          id={categories[0].id}
           title={categories[0].title}
           color={categories[0].color}
           image={categories[0].image}
         />
         <CategoryCard
+          id={categories[1].id}
           title={categories[1].title}
           color={categories[1].color}
           image={categories[1].image}
@@ -29,16 +31,19 @@ export default function CategoryGrid() {
 
       <View className="flex-row gap-3 mb-3">
         <CategoryCard
+          id={categories[2].id}
           title={categories[2].title}
           color={categories[2].color}
           image={categories[2].image}
         />
         <CategoryCard
+          id={categories[3].id}
           title={categories[3].title}
           color={categories[3].color}
           image={categories[3].image}
         />
         <CategoryCard
+          id={categories[4].id}
           title={categories[4].title}
           color={categories[4].color}
           image={categories[4].image}
@@ -60,14 +65,20 @@ export default function CategoryGrid() {
 }
 
 type CategoryCardProps = {
+  id: string;
   title: string;
   color: string; // Tailwind class like "bg-[#C9E7FF]"
   image: ImageSourcePropType;
 };
 
-function CategoryCard({ title, color, image }: CategoryCardProps) {
+function CategoryCard({ id, title, color, image }: CategoryCardProps) {
+  const router = useRouter();
+
   return (
     <Pressable
+      onPress={() =>
+        router.push({ pathname: "/property/page", params: { categoryId: id } })
+      }
       style={{ backgroundColor: color }}
       className={`relative flex-1 h-32 rounded-xl p-3 overflow-hidden`}
     >

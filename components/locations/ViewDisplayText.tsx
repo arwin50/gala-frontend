@@ -6,11 +6,12 @@ interface AccommodationViewDisplayTextProps {
   sectionContent: string;
 }
 
-const AccommodationViewDisplayText: React.FC<
-  AccommodationViewDisplayTextProps
-> = ({ sectionTitle, sectionContent }) => {
+const ViewDisplayText: React.FC<AccommodationViewDisplayTextProps> = ({
+  sectionTitle,
+  sectionContent,
+}) => {
   return (
-    <View className="mt-6 px-4">
+    <View className="px-4">
       <View className="flex-row justify-between items-center mb-2">
         <Text className="text-lg font-bold">{sectionTitle}</Text>
         <TouchableOpacity>
@@ -29,4 +30,4 @@ const AccommodationViewDisplayText: React.FC<
   );
 };
 
-export default AccommodationViewDisplayText;
+export default ViewDisplayText;
