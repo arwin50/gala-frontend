@@ -121,6 +121,8 @@ export interface PlaceVerificationSlideProps {
   setContactNumber: (number: string) => void;
   emailAddress: string;
   setEmailAddress: (email: string) => void;
+  verificationImage?: string | null;
+  setVerificationImage: (uri: string | null) => void;
 }
 
 export interface PlaceProperty {
@@ -158,5 +160,8 @@ export interface PlaceProperty {
   contact: {
     phone: string;
     email: string;
+  };
+  verification: {
+    image: string | null;
   };
 }

@@ -20,6 +20,7 @@ import PlaceNameSlide from "../../../components/host/addlistingswiper/PlaceNameS
 import PlacePriceSlide from "../../../components/host/addlistingswiper/PlacePriceSlide";
 import PlaceRulesSlide from "../../../components/host/addlistingswiper/PlaceRulesSlide";
 import PlaceTypeSlide from "../../../components/host/addlistingswiper/PlaceTypeSlide";
+import PlaceVerificationSlide from "../../../components/host/addlistingswiper/PlaceVerificationSlide";
 import {
   CancellationPolicy,
   MediaItem,
@@ -43,6 +44,8 @@ export default function HostMenuPage() {
   const [isRulesModalVisible, setIsRulesModalVisible] = useState(false);
   const [isNameModalVisible, setIsNameModalVisible] = useState(false);
   const [isBasicInfoModalVisible, setIsBasicInfoModalVisible] = useState(false);
+  const [isVerificationModalVisible, setIsVerificationModalVisible] =
+    useState(false);
 
   // Property state
   const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -75,6 +78,9 @@ export default function HostMenuPage() {
   // Contact state
   const [contactNumber, setContactNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
+  const [verificationImage, setVerificationImage] = useState<string | null>(
+    null
+  );
 
   const handleSave = () => {
     const property: PlaceProperty = {
@@ -112,6 +118,10 @@ export default function HostMenuPage() {
       contact: {
         phone: contactNumber,
         email: emailAddress,
+      },
+      // Verification
+      verification: {
+        image: verificationImage,
       },
     };
 
@@ -210,6 +220,18 @@ export default function HostMenuPage() {
             <Text className="text-lg font-semibold mb-2">Rules</Text>
             <Text className="p-2">
               {Object.keys(toggleRules).length ? "Rules set" : "Set rules"}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsVerificationModalVisible(true)}>
+          <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
+            <Text className="text-lg font-semibold mb-2">
+              Verification & Contact
+            </Text>
+            <Text className="p-2">
+              {verificationImage
+                ? "ID verified"
+                : "Verify ID and contact details"}
             </Text>
           </View>
         </TouchableOpacity>
@@ -327,6 +349,20 @@ export default function HostMenuPage() {
           initialGuests={guests}
           initialBedrooms={bedrooms}
           initialBathrooms={bathrooms}
+        />
+      </GenericModal>
+
+      <GenericModal
+        isVisible={isVerificationModalVisible}
+        onClose={() => setIsVerificationModalVisible(false)}
+      >
+        <PlaceVerificationSlide
+          contactNumber={contactNumber}
+          setContactNumber={setContactNumber}
+          emailAddress={emailAddress}
+          setEmailAddress={setEmailAddress}
+          verificationImage={verificationImage}
+          setVerificationImage={setVerificationImage}
         />
       </GenericModal>
     </SafeAreaView>
