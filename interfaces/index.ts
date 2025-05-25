@@ -12,17 +12,23 @@ export type PropertyType = {
 
 export interface PlaceTypeSlideProps {
   setSelectedType: (type: string | null) => void;
+  initialType?: string | null;
 }
 
 export interface PlaceLocationSlideProps {
   setMarkerCoords: (coords: LatLng | null) => void;
   setLocationName: (name: string) => void;
+  initialMarkerCoords?: LatLng | null;
+  initialLocationName?: string;
 }
 
 export interface BasicInformationProps {
   setGuests: (guests: number) => void;
   setBedrooms: (bedrooms: number) => void;
   setBathrooms: (bathrooms: number) => void;
+  initialGuests?: number;
+  initialBedrooms?: number;
+  initialBathrooms?: number;
 }
 
 export type Amenity = {
@@ -32,6 +38,7 @@ export type Amenity = {
 
 export interface PlaceAmenitiesSlideProps {
   setSelectedAmenities: (amenities: string[]) => void;
+  initialAmenities?: string[];
 }
 
 export interface MarkerData {
@@ -116,27 +123,6 @@ export interface PlaceVerificationSlideProps {
   setEmailAddress: (email: string) => void;
 }
 
-export interface SubmitPlaceProps {
-  selectedType: string | null;
-  locationName: string;
-  markerCoords: LatLng | null;
-  guests: number;
-  bedrooms: number;
-  bathrooms: number;
-  selectedAmenities: string[];
-  media: MediaItem[];
-  coverPhotoId: string | null;
-  placeName: string;
-  placeDescription: string;
-  basePrice: number;
-  selectedPolicy: CancellationPolicy;
-  toggleRules: ToggleRulesState;
-  setRuleValues: SetRulesState;
-  additionalRules: string[];
-  contactNumber: string;
-  emailAddress: string;
-}
-
 export interface PlaceProperty {
   placeName: string;
   type: string | null;
@@ -149,26 +135,18 @@ export interface PlaceProperty {
     bedrooms: number;
     bathrooms: number;
   };
-
-  // Amenities and Media
   amenities: string[];
   media: {
     items: MediaItem[];
     coverPhotoId: string | null;
   };
-
-  // Description
   description: {
     name: string;
     text: string;
   };
-
-  // Pricing
   pricing: {
     basePrice: number;
   };
-
-  // Policies and Rules
   policies: {
     cancellation: CancellationPolicy;
   };
@@ -177,8 +155,6 @@ export interface PlaceProperty {
     set: SetRulesState;
     additional: string[];
   };
-
-  // Contact Information
   contact: {
     phone: string;
     email: string;

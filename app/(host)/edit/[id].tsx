@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { LatLng } from "react-native-maps";
 import GenericModal from "../../../components/common/GenericModal";
+import BasicInformation from "../../../components/host/addlistingswiper/BasicInformation";
 import PlaceAmenitiesSlide from "../../../components/host/addlistingswiper/PlaceAmenitiesSlide";
 import PlaceCancellationSlide from "../../../components/host/addlistingswiper/PlaceCancellationSlide";
 import PlaceDescriptionSlide from "../../../components/host/addlistingswiper/PlaceDescriptionSlide";
@@ -41,6 +42,7 @@ export default function HostMenuPage() {
     useState(false);
   const [isRulesModalVisible, setIsRulesModalVisible] = useState(false);
   const [isNameModalVisible, setIsNameModalVisible] = useState(false);
+  const [isBasicInfoModalVisible, setIsBasicInfoModalVisible] = useState(false);
 
   // Property state
   const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -76,7 +78,7 @@ export default function HostMenuPage() {
 
   const handleSave = () => {
     const property: PlaceProperty = {
-      placeName: placeName,
+      placeName,
       type: selectedType,
       location: {
         name: locationName,
@@ -147,6 +149,18 @@ export default function HostMenuPage() {
           <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
             <Text className="text-lg font-semibold mb-2">Location</Text>
             <Text className="p-2">{locationName || "Set location"}</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsBasicInfoModalVisible(true)}>
+          <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
+            <Text className="text-lg font-semibold mb-2">
+              Basic Information
+            </Text>
+            <Text className="p-2">
+              {guests > 0 || bedrooms > 0 || bathrooms > 0
+                ? `${guests} guests, ${bedrooms} bedrooms, ${bathrooms} bathrooms`
+                : "Set basic information"}
+            </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setIsMediaModalVisible(true)}>
@@ -221,7 +235,10 @@ export default function HostMenuPage() {
         isVisible={isPropertyTypeModalVisible}
         onClose={() => setIsPropertyTypeModalVisible(false)}
       >
-        <PlaceTypeSlide setSelectedType={setSelectedType} />
+        <PlaceTypeSlide
+          setSelectedType={setSelectedType}
+          initialType={selectedType}
+        />
       </GenericModal>
 
       <GenericModal
@@ -231,6 +248,8 @@ export default function HostMenuPage() {
         <PlaceLocationSlide
           setMarkerCoords={setMarkerCoords}
           setLocationName={setLocationName}
+          initialMarkerCoords={markerCoords}
+          initialLocationName={locationName}
         />
       </GenericModal>
 
@@ -267,7 +286,10 @@ export default function HostMenuPage() {
         isVisible={isAmenitiesModalVisible}
         onClose={() => setIsAmenitiesModalVisible(false)}
       >
-        <PlaceAmenitiesSlide setSelectedAmenities={setSelectedAmenities} />
+        <PlaceAmenitiesSlide
+          setSelectedAmenities={setSelectedAmenities}
+          initialAmenities={selectedAmenities}
+        />
       </GenericModal>
 
       <GenericModal
@@ -291,6 +313,20 @@ export default function HostMenuPage() {
           setSetRuleValues={setSetRuleValues}
           additionalRules={additionalRules}
           setAdditionalRules={setAdditionalRules}
+        />
+      </GenericModal>
+
+      <GenericModal
+        isVisible={isBasicInfoModalVisible}
+        onClose={() => setIsBasicInfoModalVisible(false)}
+      >
+        <BasicInformation
+          setGuests={setGuests}
+          setBedrooms={setBedrooms}
+          setBathrooms={setBathrooms}
+          initialGuests={guests}
+          initialBedrooms={bedrooms}
+          initialBathrooms={bathrooms}
         />
       </GenericModal>
     </SafeAreaView>
