@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AxiosResponse } from 'axios';
 import { create } from 'zustand';
 import { User } from '../interfaces/user';
 import { apiClient } from '../lib/api';
@@ -26,7 +25,7 @@ interface AuthState {
     isAuthChecked: boolean;
     // Auth actions
     login: (email: string, password: string) => Promise<void>;
-    register: (data: RegisterData) => Promise<void>;
+    register: (data: RegisterData) => Promise<{ access: string; refresh: string; user: User }>;
     logout: () => Promise<void>;
     verifyToken: (token?: string) => Promise<boolean>;
     refreshToken: () => Promise<boolean>;
@@ -107,18 +106,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
         try {
-            const response: AxiosResponse<{ access: string; refresh: string; user: User }> = await apiClient.post(
-                '/api/user/login/',
+            const response = await apiClient.post(
+                '/user/login/',
                 { email, password }
             );
 
             await saveTokens({
-                access: response.data.access,
-                refresh: response.data.refresh,
+                access: response.access,
+                refresh: response.refresh,
             });
 
             set({
-                user: response.data.user,
+                user: response.user,
                 isAuthenticated: true,
                 isLoading: false,
             });
@@ -135,21 +134,27 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     register: async (data: RegisterData) => {
         set({ isLoading: true, error: null });
         try {
-            const response: AxiosResponse<{ access: string; refresh: string; user: User }> = await apiClient.post(
-                '/api/user/registration/',
+            const response = await apiClient.post(
+                '/user/registration/',
                 data
             );
+            console.log("Raw registration response:", response);
+
+            if (!response || !response.access || !response.refresh) {
+                throw new Error("Registration response missing tokens. Response: " + JSON.stringify(response));
+            }
 
             await saveTokens({
-                access: response.data.access,
-                refresh: response.data.refresh,
+                access: response.access,
+                refresh: response.refresh,
             });
 
             set({
-                user: response.data.user,
+                user: response.user,
                 isAuthenticated: true,
                 isLoading: false,
             });
+            return response;
         } catch (error: any) {
             set({
                 error: error instanceof Error ? error : new Error(String(error)),
@@ -164,7 +169,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         const refreshToken = await getRefreshToken();
         try {
             if (refreshToken) {
-                await apiClient.post('/api/user/logout/', {
+                await apiClient.post('/user/logout/', {
                     refresh: refreshToken,
                 });
             }
@@ -186,7 +191,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         if (!tokenToVerify) return false;
 
         try {
-            await apiClient.post('/api/user/token/verify/', { token: tokenToVerify });
+            await apiClient.post('/user/token/verify/', { token: tokenToVerify });
             return true;
         } catch (error) {
             console.error("AuthStore: Failed to verify token", error);
@@ -199,16 +204,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         if (!refreshToken) return false;
 
         try {
-            const response: AxiosResponse<AuthTokens> = await apiClient.post(
-                '/api/user/token/refresh/',
+            const response = await apiClient.post(
+                '/user/token/refresh/',
                 { refresh: refreshToken }
             );
 
             await saveTokens({
-                access: response.data.access,
-                refresh: response.data.refresh,
-                access_expiration: response.data.access_expiration,
-                refresh_expiration: response.data.refresh_expiration,
+                access: response.access,
+                refresh: response.refresh,
             });
 
             return true;
@@ -220,8 +223,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     getProfile: async () => {
         try {
-            const response: AxiosResponse<User> = await apiClient.get('/api/user/profile/');
-            set({ user: response.data });
+            const response = await apiClient.get('/user/profile/');
+            set({ user: response });
         } catch (error) {
             console.error("AuthStore: Failed to get profile", error);
             throw error;
