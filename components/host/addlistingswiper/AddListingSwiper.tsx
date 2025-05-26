@@ -3,6 +3,7 @@ import DetailsIntro from "./DetailsIntro";
 import PlaceAmenitiesSlide from "./PlaceAmenitiesSlide";
 import PlaceCancellationSlide from "./PlaceCancellationSlide";
 import PlaceDescriptionSlide from "./PlaceDescriptionSlide";
+import PlaceDiscountsSlide from "./PlaceDiscountsSlide";
 import PlaceLocationSlide from "./PlaceLocationSlide";
 import PlaceMediaSlide from "./PlaceMediaSlide";
 import PlaceNameSlide from "./PlaceNameSlide";
@@ -39,7 +40,7 @@ export default function AddListingSwiper({
   isVisible,
   onClose,
 }: AddListingSwiperProps) {
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<Swiper>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showSwiper, setShowSwiper] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -72,8 +73,11 @@ export default function AddListingSwiper({
   // Verification state
   const [contactNumber, setContactNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
+  const [selectedDiscounts, setSelectedDiscounts] = useState<
+    { type: string; percentage: number }[]
+  >([]);
 
-  const swiperSlideCount = 12; // Total number of slides in the Swiper
+  const swiperSlideCount = 13; // Total number of slides in the Swiper
 
   const handleNext = () => {
     if (swiperRef.current && currentIndex < swiperSlideCount - 1) {
@@ -126,6 +130,10 @@ export default function AddListingSwiper({
           phone: contactNumber,
           email: emailAddress,
         },
+        discounts: selectedDiscounts.map((d) => ({
+          type: d.type,
+          percentage: d.percentage,
+        })),
       };
 
       // Log the complete property object
@@ -178,6 +186,7 @@ export default function AddListingSwiper({
       setAdditionalRules([]);
       setContactNumber("");
       setEmailAddress("");
+      setSelectedDiscounts([]);
     }
   }, [isVisible]);
 
@@ -213,11 +222,13 @@ export default function AddListingSwiper({
                   setMarkerCoords={setMarkerCoords}
                   setLocationName={setLocationName}
                 />
+
                 <BasicInformation
                   setGuests={setGuests}
                   setBedrooms={setBedrooms}
                   setBathrooms={setBathrooms}
                 />
+
                 <PlaceAmenitiesSlide
                   setSelectedAmenities={setSelectedAmenities}
                 />
@@ -238,6 +249,10 @@ export default function AddListingSwiper({
                 <PlacePriceSlide
                   basePrice={basePrice}
                   setBasePrice={setBasePrice}
+                />
+                <PlaceDiscountsSlide
+                  selectedDiscounts={selectedDiscounts}
+                  setSelectedDiscounts={setSelectedDiscounts}
                 />
                 <PlaceCancellationSlide
                   selectedPolicy={selectedPolicy}

@@ -116,27 +116,6 @@ export interface PlaceVerificationSlideProps {
   setEmailAddress: (email: string) => void;
 }
 
-export interface SubmitPlaceProps {
-  selectedType: string | null;
-  locationName: string;
-  markerCoords: LatLng | null;
-  guests: number;
-  bedrooms: number;
-  bathrooms: number;
-  selectedAmenities: string[];
-  media: MediaItem[];
-  coverPhotoId: string | null;
-  placeName: string;
-  placeDescription: string;
-  basePrice: number;
-  selectedPolicy: CancellationPolicy;
-  toggleRules: ToggleRulesState;
-  setRuleValues: SetRulesState;
-  additionalRules: string[];
-  contactNumber: string;
-  emailAddress: string;
-}
-
 export interface PlaceProperty {
   placeName: string;
   type: string | null;
@@ -183,4 +162,6 @@ export interface PlaceProperty {
     phone: string;
     email: string;
   };
+  // Updated discounts field type
+  discounts: { type: string; percentage: number }[];
 }

@@ -141,7 +141,7 @@ export default function PlaceRulesSlide({
         risk of misunderstandings.
       </Text>
       {/* Rules List */}
-      <View className="mt-8 border border-line rounded-xl overflow-hidden">
+      <View className="mt-6 border border-line rounded-xl overflow-hidden">
         {rules.map((rule, index) => (
           <Pressable
             key={rule.name}
