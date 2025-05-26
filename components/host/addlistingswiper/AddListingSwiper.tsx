@@ -72,6 +72,9 @@ export default function AddListingSwiper({
   // Verification state
   const [contactNumber, setContactNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
+  const [verificationImage, setVerificationImage] = useState<string | null>(
+    null
+  );
 
   const swiperSlideCount = 12; // Total number of slides in the Swiper
 
@@ -126,6 +129,11 @@ export default function AddListingSwiper({
           phone: contactNumber,
           email: emailAddress,
         },
+
+        // Verification
+        verification: {
+          image: verificationImage,
+        },
       };
 
       // Log the complete property object
@@ -178,6 +186,7 @@ export default function AddListingSwiper({
       setAdditionalRules([]);
       setContactNumber("");
       setEmailAddress("");
+      setVerificationImage(null);
     }
   }, [isVisible]);
 
@@ -256,6 +265,8 @@ export default function AddListingSwiper({
                   setContactNumber={setContactNumber}
                   emailAddress={emailAddress}
                   setEmailAddress={setEmailAddress}
+                  verificationImage={verificationImage}
+                  setVerificationImage={setVerificationImage}
                 />
                 <SubmitPlace />
               </Swiper>
