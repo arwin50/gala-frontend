@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Keyboard,
   Text,
@@ -6,9 +5,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { PlaceNameSlideProps } from "../../../interfaces";
 
-export default function PlaceNameSlide() {
-  const [placeName, setPlaceName] = useState("");
+export default function PlaceNameSlide({
+  placeName,
+  setPlaceName,
+}: PlaceNameSlideProps) {
   const characterLimit = 32;
 
   const handleNameChange = (text: string) => {
@@ -19,7 +21,7 @@ export default function PlaceNameSlide() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1  m-8 mt-0">
+      <View className="flex-1 m-8 mt-0">
         <Text className="text-3xl font-extrabold">
           What is the name of your place?
         </Text>

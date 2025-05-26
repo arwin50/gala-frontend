@@ -1,18 +1,52 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 
 import galaLogo from "@/assets/images/gala_logo.png";
 import AuthInput from "@/components/common/AuthInput";
+import { useAuthStore } from "../../store/auth";
 
 export default function SignupScreen() {
   const router = useRouter();
+  const register = useAuthStore((state) => state.register);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+
+  const handleSignup = async () => {
+    if (!firstName || !lastName || !email || !password || !password2) {
+      Alert.alert("Error", "Please fill in all required fields");
+      return;
+    }
+
+    if (password !== password2) {
+      Alert.alert("Error", "Passwords do not match");
+      return;
+    }
+
+    try {
+      const result = await register({
+        email,
+        password1: password,
+        password2,
+        first_name: firstName,
+        last_name: lastName,
+      });
+      console.log("Registration result:", result);
+      router.push("/(auth)/login");
+    } catch (error: any) {
+      console.log("Registration error:", error, error?.response?.data);
+      Alert.alert(
+        "Registration Failed",
+        error?.response?.data?.message || error?.message || "An error occurred during registration"
+      );
+    }
+  };
 
   return (
     <LinearGradient
@@ -31,11 +65,22 @@ export default function SignupScreen() {
       />
 
       <AuthInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="First Name"
+        value={firstName}
+        onChangeText={setFirstName}
       />
-      <AuthInput placeholder="E-mail" value={email} onChangeText={setEmail} />
+      <AuthInput
+        placeholder="Last Name"
+        value={lastName}
+        onChangeText={setLastName}
+      />
+      <AuthInput 
+        placeholder="E-mail" 
+        value={email} 
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
       <AuthInput
         placeholder="Password"
         secureTextEntry
@@ -51,15 +96,16 @@ export default function SignupScreen() {
 
       <TouchableOpacity
         className="bg-[#4DA4FF] w-full h-12 rounded-xl justify-center items-center mt-2 mb-4 shadow overflow-hidden"
-        onPress={() => {
-          console.log("Signup Details:", username, email, password, password2);
-        }}
+        onPress={handleSignup}
+        disabled={isLoading}
       >
         <LinearGradient
           colors={["#8FAAF0", "#5D7AD1"]}
           className="w-full h-full flex-1 justify-center items-center"
         >
-          <Text className="text-white font-bold text-sm">Sign Up</Text>
+          <Text className="text-white font-bold text-sm">
+            {isLoading ? "Signing up..." : "Sign Up"}
+          </Text>
         </LinearGradient>
       </TouchableOpacity>
 

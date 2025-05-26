@@ -56,7 +56,7 @@ export default function DetailsIntro({ onGetStarted }: DetailsIntroInterface) {
             </View>
           </View>
         </View>
-        <TouchableOpacity onPress={onGetStarted}>
+        <TouchableOpacity onPress={onGetStarted} className="mt-5">
           <LinearGradient
             colors={["#166EF3", "#2665BE"]}
             locations={[0.32, 1]}
@@ -70,9 +70,8 @@ export default function DetailsIntro({ onGetStarted }: DetailsIntroInterface) {
               shadowRadius: 8,
               elevation: 5,
             }}
-            className="w-full  mt-5"
           >
-            <Text className="text-xl p-6 text-white font-semibold text-center">
+            <Text className="text-xl p-6 text-white font-semibold text-center ">
               Get Started
             </Text>
           </LinearGradient>

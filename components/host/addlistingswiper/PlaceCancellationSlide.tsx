@@ -1,11 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-
-type CancellationPolicy = {
-  name: string;
-  description: string;
-};
+import {
+  CancellationPolicy,
+  PlaceCancellationSlideProps,
+} from "../../../interfaces";
 
 const policies: CancellationPolicy[] = [
   {
@@ -25,10 +24,10 @@ const policies: CancellationPolicy[] = [
   },
 ];
 
-export default function PlaceCancellationSlide() {
-  const [selectedPolicy, setSelectedPolicy] = useState<CancellationPolicy>(
-    policies[0]
-  );
+export default function PlaceCancellationSlide({
+  selectedPolicy,
+  setSelectedPolicy,
+}: PlaceCancellationSlideProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -41,7 +40,7 @@ export default function PlaceCancellationSlide() {
   };
 
   return (
-    <View className="flex-1  m-8 mt-0">
+    <View className="flex-1 m-8 mt-0">
       <Text className="text-3xl font-extrabold">Cancellation Policy</Text>
       <Text className="mt-2 text-description">
         Give your place a name, you can change it after posting later.

@@ -1,20 +1,17 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { ImagePickerAsset } from "expo-image-picker";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Alert, Image, Pressable, ScrollView, Text, View } from "react-native";
+import { MediaItem, PlaceMediaSlideProps } from "../../../interfaces";
 
-// Define a type for your media items (e.g., photo or video)
-type MediaItem = {
-  id: string;
-  type: "photo" | "video";
-  uri: string;
-};
-
-export default function PlaceMediaSlide() {
-  const [media, setMedia] = useState<MediaItem[]>([]);
+export default function PlaceMediaSlide({
+  media,
+  setMedia,
+  coverPhotoId,
+  setCoverPhotoId,
+}: PlaceMediaSlideProps) {
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-  const [coverPhotoId, setCoverPhotoId] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -43,14 +40,14 @@ export default function PlaceMediaSlide() {
     if (!result.canceled) {
       const newMediaItems: MediaItem[] = result.assets.map(
         (asset: ImagePickerAsset) => ({
-          id: asset.uri, // Using uri as a simple ID for now
+          id: asset.uri,
           type: (asset.type === "image" ? "photo" : "video") as
             | "photo"
-            | "video", // Explicitly cast type
+            | "video",
           uri: asset.uri,
         })
       );
-      setMedia((prevMedia) => [...prevMedia, ...newMediaItems]);
+      setMedia([...media, ...newMediaItems]);
 
       // Automatically set the first added image as cover if no cover exists and it's a photo
       if (coverPhotoId === null) {
@@ -63,13 +60,13 @@ export default function PlaceMediaSlide() {
   };
 
   const handleDeleteMedia = (id: string) => {
-    setMedia((prevMedia) => prevMedia.filter((item) => item.id !== id));
+    const newMedia = media.filter((item) => item.id !== id);
+    setMedia(newMedia);
+
     // If the deleted item was the cover photo, clear the cover photo state and set the next photo as cover if available
     if (coverPhotoId === id) {
       setCoverPhotoId(null);
-      const remainingPhotos = media.filter(
-        (item) => item.id !== id && item.type === "photo"
-      );
+      const remainingPhotos = newMedia.filter((item) => item.type === "photo");
       if (remainingPhotos.length > 0) {
         setCoverPhotoId(remainingPhotos[0].id);
       }
@@ -115,11 +112,11 @@ export default function PlaceMediaSlide() {
 
   // Determine how many placeholder slots to show (e.g., minimum 5 photos + add button)
   const minMediaSlots = 5;
-  const totalSlots = Math.max(media.length, minMediaSlots - 1) + 1; // Ensure at least minMediaSlots items + add button are shown
+  const totalSlots = Math.max(media.length, minMediaSlots - 1) + 1;
   const slotsToRender = Array.from({ length: totalSlots });
 
   return (
-    <View className="flex-1  m-8 mt-0">
+    <View className="flex-1 m-8 mt-0">
       <Text className="text-3xl font-extrabold">
         Add some photos of your place
       </Text>
@@ -137,7 +134,6 @@ export default function PlaceMediaSlide() {
             const isCover = coverPhotoId === item?.id;
 
             if (item) {
-              // Render existing media item
               return (
                 <View
                   key={item.id}
@@ -150,7 +146,6 @@ export default function PlaceMediaSlide() {
                     className="w-full h-full"
                     resizeMode="cover"
                   />
-                  {/* Cover photo indicator */}
                   {isCover && (
                     <View className="absolute top-2 left-2 bg-blue-500 px-2 py-1 rounded-full">
                       <Text className="text-white text-xs font-bold">
@@ -159,7 +154,6 @@ export default function PlaceMediaSlide() {
                     </View>
                   )}
 
-                  {/* Options menu button */}
                   <Pressable
                     onPress={() => showMediaOptions(item)}
                     className="absolute top-2 right-2 bg-black bg-opacity-50 rounded-full p-1"
@@ -173,7 +167,6 @@ export default function PlaceMediaSlide() {
                 </View>
               );
             } else if (i === media.length) {
-              // Render the "Add picture" button after existing media
               return (
                 <Pressable
                   key="add-media"
@@ -191,7 +184,6 @@ export default function PlaceMediaSlide() {
                 </Pressable>
               );
             } else {
-              // Render empty placeholder slots before the add button if needed
               return (
                 <View
                   key={`placeholder-${i}`}
