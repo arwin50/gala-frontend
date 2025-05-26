@@ -1,6 +1,6 @@
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
 
-const sampleProperties = [
+const sampleAccommodations = [
   {
     id: "prop-001",
     title: "Harolds Evotel",
@@ -254,4 +254,4 @@ const sampleProperties = [
   },
 ];
 
-export default sampleProperties;
+export default sampleAccommodations;
