@@ -18,8 +18,10 @@ const amenities: Amenity[] = [
 
 export default function PlaceAmenitiesSlide({
   setSelectedAmenities,
+  initialAmenities = [],
 }: PlaceAmenitiesSlideProps) {
-  const [selectedAmenities, setSelectedAmenitiesLocal] = useState<string[]>([]);
+  const [selectedAmenities, setSelectedAmenitiesLocal] =
+    useState<string[]>(initialAmenities);
 
   const toggleAmenity = (amenityName: string) => {
     const newSelectedAmenities = selectedAmenities.includes(amenityName)

@@ -9,14 +9,17 @@ import CustomPlacesInput from "./CustomPlaceInput";
 export default function PlaceLocationSlide({
   setMarkerCoords,
   setLocationName,
+  initialMarkerCoords = null,
+  initialLocationName = "",
 }: PlaceLocationSlideProps) {
   const [currentMarkerCoords, setCurrentMarkerCoords] = useState<LatLng | null>(
-    null
+    initialMarkerCoords
   );
-  const [currentLocationName, setCurrentLocationName] = useState<string>("");
+  const [currentLocationName, setCurrentLocationName] =
+    useState<string>(initialLocationName);
   const [region, setRegion] = useState({
-    latitude: 14.5995,
-    longitude: 120.9842,
+    latitude: initialMarkerCoords?.latitude || 14.5995,
+    longitude: initialMarkerCoords?.longitude || 120.9842,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
