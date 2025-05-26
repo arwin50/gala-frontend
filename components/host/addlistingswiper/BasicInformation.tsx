@@ -16,10 +16,13 @@ export default function BasicInformation({
   setGuests,
   setBedrooms,
   setBathrooms,
+  initialGuests = 0,
+  initialBedrooms = 0,
+  initialBathrooms = 0,
 }: BasicInformationProps) {
-  const [currentGuests, setCurrentGuests] = useState(0);
-  const [currentBedrooms, setCurrentBedrooms] = useState(0);
-  const [currentBathrooms, setCurrentBathrooms] = useState(0);
+  const [currentGuests, setCurrentGuests] = useState(initialGuests);
+  const [currentBedrooms, setCurrentBedrooms] = useState(initialBedrooms);
+  const [currentBathrooms, setCurrentBathrooms] = useState(initialBathrooms);
 
   // Helper to sanitize number inputs
   const sanitizeNumber = (value: string) => {
