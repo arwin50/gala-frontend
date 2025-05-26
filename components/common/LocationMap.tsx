@@ -1,5 +1,7 @@
+import { useRef, useState } from "react";
+
 import { LocationMapProps } from "@/interfaces";
-import { useRef } from "react";
+
 import { View } from "react-native";
 import MapViewClustering from "react-native-map-clustering";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -14,6 +16,21 @@ export default function LocationMap({
 }: LocationMapProps) {
   const mapRef = useRef<MapView | null>(null);
 
+  const [readOnlyRegion, setReadOnlyRegion] = useState({
+    latitude: region.latitude,
+    longitude: region.longitude,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  });
+
+  const handleRegionChange = (newRegion: any) => {
+    if (readOnly) {
+      setReadOnlyRegion(newRegion);
+    } else if (onRegionChange) {
+      onRegionChange(newRegion);
+    }
+  };
+
   return (
     <View className="w-full h-72 rounded-xl overflow-hidden mt-4 border border-gray-300">
       <MapViewClustering
@@ -22,8 +39,8 @@ export default function LocationMap({
           mapRef.current = ref;
         }}
         provider={PROVIDER_GOOGLE}
-        region={region}
-        onRegionChangeComplete={readOnly ? undefined : onRegionChange}
+        region={readOnly ? readOnlyRegion : region}
+        onRegionChangeComplete={handleRegionChange}
         onPress={
           readOnly
             ? undefined
