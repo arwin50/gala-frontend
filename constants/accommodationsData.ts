@@ -1,6 +1,7 @@
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
+import { Accommodation } from "@/interfaces/accommodation";
 
-const sampleAccommodations = [
+const sampleAccommodations: Accommodation[] = [
   {
     id: "prop-001",
     title: "Harolds Evotel",
@@ -26,10 +27,7 @@ const sampleAccommodations = [
       { icon: "tv", label: "Cable TV" },
       { icon: "snowflake", label: "Air Conditioning" },
     ],
-    nearbyLandmarks: [
-      { name: "SM Southmall", distance: "2.0KM" },
-      { name: "Las Piñas Church", distance: "1.2KM" },
-    ],
+    nearbyLandmarks: [],
     reviews: [
       {
         user: { name: "BINI Colet", avatar: bgMetroManila },
@@ -68,10 +66,7 @@ const sampleAccommodations = [
       { icon: "cocktail", label: "Mini Bar" },
       { icon: "car", label: "Free Parking" },
     ],
-    nearbyLandmarks: [
-      { name: "SM Mall of Asia", distance: "2.5KM" },
-      { name: "City of Dreams", distance: "3.0KM" },
-    ],
+    nearbyLandmarks: [],
     reviews: [
       {
         user: { name: "BINI Maloi", avatar: bgMetroManila },
@@ -110,10 +105,7 @@ const sampleAccommodations = [
       { icon: "coffee", label: "Café" },
       { icon: "briefcase", label: "Workspace" },
     ],
-    nearbyLandmarks: [
-      { name: "NAIA Terminal 3", distance: "2.8KM" },
-      { name: "Newport Mall", distance: "2.2KM" },
-    ],
+    nearbyLandmarks: [],
     reviews: [
       {
         user: { name: "BINI Aiah", avatar: bgMetroManila },
@@ -152,10 +144,7 @@ const sampleAccommodations = [
       { icon: "swimmer", label: "Pool" },
       { icon: "concierge-bell", label: "Room Service" },
     ],
-    nearbyLandmarks: [
-      { name: "Rizal Boulevard", distance: "0.5KM" },
-      { name: "Silliman University", distance: "1.0KM" },
-    ],
+    nearbyLandmarks: [],
     reviews: [
       {
         user: { name: "BINI Mikha", avatar: bgMetroManila },
@@ -194,10 +183,7 @@ const sampleAccommodations = [
       { icon: "spa", label: "Spa" },
       { icon: "utensils", label: "Fine Dining" },
     ],
-    nearbyLandmarks: [
-      { name: "Intramuros", distance: "0.9KM" },
-      { name: "Rizal Park", distance: "0.4KM" },
-    ],
+    nearbyLandmarks: [],
     reviews: [
       {
         user: { name: "BINI Gwen-dolyn", avatar: bgMetroManila },
@@ -236,10 +222,7 @@ const sampleAccommodations = [
       { icon: "dumbbell", label: "Gym" },
       { icon: "coffee", label: "Breakfast Included" },
     ],
-    nearbyLandmarks: [
-      { name: "Magellan's Cross", distance: "1.5KM" },
-      { name: "Ayala Center Cebu", distance: "1.8KM" },
-    ],
+    nearbyLandmarks: [],
     reviews: [
       {
         user: { name: "BINI Maloi", avatar: bgMetroManila },

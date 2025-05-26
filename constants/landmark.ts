@@ -12,16 +12,8 @@ export const sampleLandmarks: Landmark[] = [
     latitude: 16.1612,
     longitude: 119.9826,
     images: [bgMetroManila, bgMetroManila, bgMetroManila],
-    nearbyLocations: [
-      { name: "Hundred Islands", distance: "1.5KM" },
-      { name: "St. Vicente Ferrer Shrine", distance: "1.5KM" },
-      { name: "Lucap Wharf", distance: "2.0KM" },
-    ],
-    otherNearbyLandmarks: [
-      { name: "Alaminos Cathedral", distance: "3.0KM" },
-      { name: "Enchanted Cave", distance: "3.5KM" },
-      { name: "Tondol Beach", distance: "5.0KM" },
-    ],
+    nearbyAccommodations: [],
+    otherNearbyLandmarks: [],
   },
   {
     id: "landmark-002",
@@ -33,14 +25,8 @@ export const sampleLandmarks: Landmark[] = [
     latitude: 14.6422,
     longitude: 121.0573,
     images: [bgMetroManila],
-    nearbyLocations: [
-      { name: "Kamuning Market", distance: "0.3KM" },
-      { name: "GMA Network Center", distance: "1.2KM" },
-    ],
-    otherNearbyLandmarks: [
-      { name: "ABS-CBN", distance: "2.0KM" },
-      { name: "Maginhawa Street", distance: "3.5KM" },
-    ],
+    nearbyAccommodations: [],
+    otherNearbyLandmarks: [],
   },
   {
     id: "landmark-003",
@@ -53,14 +39,8 @@ export const sampleLandmarks: Landmark[] = [
     latitude: 10.3591,
     longitude: 123.8707,
     images: [bgMetroManila, bgMetroManila],
-    nearbyLocations: [
-      { name: "Temple of Leah", distance: "2.1KM" },
-      { name: "Sirao Garden", distance: "3.7KM" },
-    ],
-    otherNearbyLandmarks: [
-      { name: "Tops Lookout", distance: "1.2KM" },
-      { name: "Lahug IT Park", distance: "5.0KM" },
-    ],
+    nearbyAccommodations: [],
+    otherNearbyLandmarks: [],
   },
   {
     id: "landmark-004",
@@ -73,14 +53,8 @@ export const sampleLandmarks: Landmark[] = [
     latitude: 9.7905,
     longitude: 126.1652,
     images: [bgMetroManila],
-    nearbyLocations: [
-      { name: "Cloud 9 Pier", distance: "0.1KM" },
-      { name: "General Luna Market", distance: "1.2KM" },
-    ],
-    otherNearbyLandmarks: [
-      { name: "Sugba Lagoon", distance: "4.0KM" },
-      { name: "Magpupungko Pools", distance: "5.5KM" },
-    ],
+    nearbyAccommodations: [],
+    otherNearbyLandmarks: [],
   },
   {
     id: "landmark-005",
@@ -93,14 +67,8 @@ export const sampleLandmarks: Landmark[] = [
     latitude: 16.4023,
     longitude: 120.596,
     images: [bgMetroManila, bgMetroManila],
-    nearbyLocations: [
-      { name: "Burnham Park", distance: "1.0KM" },
-      { name: "Session Road", distance: "1.3KM" },
-    ],
-    otherNearbyLandmarks: [
-      { name: "Mines View Park", distance: "3.5KM" },
-      { name: "Camp John Hay", distance: "4.2KM" },
-    ],
+    nearbyAccommodations: [],
+    otherNearbyLandmarks: [],
   },
   {
     id: "landmark-006",
@@ -113,13 +81,7 @@ export const sampleLandmarks: Landmark[] = [
     latitude: 11.1795,
     longitude: 119.3919,
     images: [bgMetroManila],
-    nearbyLocations: [
-      { name: "Big Lagoon", distance: "2.0KM" },
-      { name: "Small Lagoon", distance: "2.5KM" },
-    ],
-    otherNearbyLandmarks: [
-      { name: "Secret Beach", distance: "4.0KM" },
-      { name: "Seven Commandos Beach", distance: "3.0KM" },
-    ],
+    nearbyAccommodations: [],
+    otherNearbyLandmarks: [],
   },
 ];

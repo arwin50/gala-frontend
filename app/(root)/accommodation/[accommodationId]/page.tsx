@@ -7,7 +7,7 @@ import ViewAmenities from "@/components/locations/ViewAmenities";
 import ViewAvailability from "@/components/locations/ViewAvailability";
 import ViewDisplayText from "@/components/locations/ViewDisplayText";
 import ViewMainDetails from "@/components/locations/ViewMainDetails";
-import ViewNearbyLocations from "@/components/locations/ViewNearbyLandmarks";
+import ViewNearbyLocations from "@/components/locations/ViewNearbyLocations";
 import ViewRatingsReviewsSummary from "@/components/locations/ViewRatingsReviewsSummary";
 import ViewReviews from "@/components/locations/ViewReviews";
 import { Accommodation } from "@/interfaces/accommodation";
@@ -73,7 +73,8 @@ export default function AccommodationView() {
 
         <ViewNearbyLocations
           sectionTitle="Nearby Landmarks"
-          landmarks={accommodation.nearbyLandmarks}
+          locationType="landmark"
+          locations={accommodation.nearbyLandmarks}
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
         />
