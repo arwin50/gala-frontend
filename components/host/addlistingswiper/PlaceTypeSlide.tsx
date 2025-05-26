@@ -14,8 +14,9 @@ const propertyTypes: PropertyType[] = [
 
 export default function PlaceTypeSlide({
   setSelectedType,
+  initialType = null,
 }: PlaceTypeSlideProps) {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(initialType);
 
   const handleSelectType = (type: string) => {
     setSelected(type);

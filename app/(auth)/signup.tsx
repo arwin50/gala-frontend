@@ -1,7 +1,16 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import galaLogo from "@/assets/images/gala_logo.png";
 import AuthInput from "@/components/common/AuthInput";
@@ -43,80 +52,98 @@ export default function SignupScreen() {
       console.log("Registration error:", error, error?.response?.data);
       Alert.alert(
         "Registration Failed",
-        error?.response?.data?.message || error?.message || "An error occurred during registration"
+        error?.response?.data?.message ||
+          error?.message ||
+          "An error occurred during registration"
       );
     }
   };
 
   return (
-    <LinearGradient
-      colors={["#007AFF", "#0E4ECF", "#0E4ECF"]}
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 48,
-      }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={0}
     >
-      <Image
-        source={galaLogo}
-        className="w-52 h-52 mb-4"
-        resizeMode="contain"
-      />
-
-      <AuthInput
-        placeholder="First Name"
-        value={firstName}
-        onChangeText={setFirstName}
-      />
-      <AuthInput
-        placeholder="Last Name"
-        value={lastName}
-        onChangeText={setLastName}
-      />
-      <AuthInput 
-        placeholder="E-mail" 
-        value={email} 
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <AuthInput
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <AuthInput
-        placeholder="Confirm Password"
-        secureTextEntry
-        value={password2}
-        onChangeText={setPassword2}
-      />
-
-      <TouchableOpacity
-        className="bg-[#4DA4FF] w-full h-12 rounded-xl justify-center items-center mt-2 mb-4 shadow overflow-hidden"
-        onPress={handleSignup}
-        disabled={isLoading}
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
         <LinearGradient
-          colors={["#8FAAF0", "#5D7AD1"]}
-          className="w-full h-full flex-1 justify-center items-center"
+          colors={["#007AFF", "#0E4ECF", "#0E4ECF"]}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: 48,
+          }}
         >
-          <Text className="text-white font-bold text-sm">
-            {isLoading ? "Signing up..." : "Sign Up"}
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
+          <Image
+            source={galaLogo}
+            className="w-52 h-52 mb-4"
+            resizeMode="contain"
+          />
 
-      <View className="flex-row justify-center mb-5">
-        <Text className="text-white text-sm font-bold">
-          Already have an account?{" "}
-        </Text>
-        <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
-          <Text className="text-white text-sm font-bold underline">Log in</Text>
-        </TouchableOpacity>
-      </View>
-    </LinearGradient>
+          <AuthInput
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={setFirstName}
+          />
+          <AuthInput
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={setLastName}
+          />
+          <AuthInput
+            placeholder="E-mail"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <AuthInput
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <AuthInput
+            placeholder="Confirm Password"
+            secureTextEntry
+            value={password2}
+            onChangeText={setPassword2}
+          />
+
+          <TouchableOpacity
+            className="bg-[#4DA4FF] w-full h-12 rounded-xl justify-center items-center mt-2 mb-4 shadow overflow-hidden"
+            onPress={handleSignup}
+            disabled={isLoading}
+          >
+            <LinearGradient
+              colors={["#8FAAF0", "#5D7AD1"]}
+              className="w-full h-full flex-1 justify-center items-center"
+            >
+              <Text className="text-white font-bold text-sm">
+                {isLoading ? "Signing up..." : "Sign Up"}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <View className="flex-row justify-center mb-5">
+            <Text className="text-white text-sm font-bold">
+              Already have an account?{" "}
+            </Text>
+            <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
+              <Text className="text-white text-sm font-bold underline">
+                Log in
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

@@ -76,6 +76,9 @@ export default function AddListingSwiper({
   const [selectedDiscounts, setSelectedDiscounts] = useState<
     { type: string; percentage: number }[]
   >([]);
+  const [verificationImage, setVerificationImage] = useState<string | null>(
+    null
+  );
 
   const swiperSlideCount = 13; // Total number of slides in the Swiper
 
@@ -129,6 +132,11 @@ export default function AddListingSwiper({
         contact: {
           phone: contactNumber,
           email: emailAddress,
+        },
+
+        // Verification
+        verification: {
+          image: verificationImage,
         },
         discounts: selectedDiscounts.map((d) => ({
           type: d.type,
@@ -186,6 +194,7 @@ export default function AddListingSwiper({
       setAdditionalRules([]);
       setContactNumber("");
       setEmailAddress("");
+      setVerificationImage(null);
       setSelectedDiscounts([]);
     }
   }, [isVisible]);
@@ -271,6 +280,8 @@ export default function AddListingSwiper({
                   setContactNumber={setContactNumber}
                   emailAddress={emailAddress}
                   setEmailAddress={setEmailAddress}
+                  verificationImage={verificationImage}
+                  setVerificationImage={setVerificationImage}
                 />
                 <SubmitPlace />
               </Swiper>

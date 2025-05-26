@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import {
   Alert,
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -19,6 +20,8 @@ export default function PlaceVerificationSlide({
   setContactNumber,
   emailAddress,
   setEmailAddress,
+  verificationImage,
+  setVerificationImage,
 }: PlaceVerificationSlideProps) {
   const handleScanID = async () => {
     const { status: cameraStatus } =
@@ -48,12 +51,7 @@ export default function PlaceVerificationSlide({
             });
 
             if (!result.canceled) {
-              console.log(result.assets[0].uri);
-              Alert.alert(
-                "ID Scanned",
-                "Photo taken successfully. URI: " + result.assets[0].uri
-              );
-              // TODO: Process the taken photo
+              setVerificationImage(result.assets[0].uri);
             }
           },
         },
@@ -68,12 +66,7 @@ export default function PlaceVerificationSlide({
             });
 
             if (!result.canceled) {
-              console.log(result.assets[0].uri);
-              Alert.alert(
-                "ID Scanned",
-                "Image selected successfully. URI: " + result.assets[0].uri
-              );
-              // TODO: Process the selected image
+              setVerificationImage(result.assets[0].uri);
             }
           },
         },
@@ -113,17 +106,34 @@ export default function PlaceVerificationSlide({
               verify their identity and contact details before they can host or
               book.
             </Text>
-            <View className="mt-20">
+
+            <View className="mt-16">
               <Text className="text-xl font-medium mb-4">
                 Verify your identity
               </Text>
-              <Pressable
-                onPress={handleScanID}
-                className="flex-row items-center justify-center border border-gray-300 rounded-lg p-4 mb-2"
-              >
-                <Ionicons name="camera-outline" size={24} color="black" />
-                <Text className="text-base ml-2">Scan your ID</Text>
-              </Pressable>
+              {verificationImage ? (
+                <View className="mb-4">
+                  <Image
+                    source={{ uri: verificationImage }}
+                    className="w-full h-48 rounded-lg mb-2"
+                    resizeMode="cover"
+                  />
+                  <Pressable
+                    onPress={() => setVerificationImage(null)}
+                    className="bg-red-500 p-2 rounded-lg self-end"
+                  >
+                    <Text className="text-white">Remove Image</Text>
+                  </Pressable>
+                </View>
+              ) : (
+                <Pressable
+                  onPress={handleScanID}
+                  className="flex-row items-center justify-center border border-gray-300 rounded-lg p-4 mb-2"
+                >
+                  <Ionicons name="camera-outline" size={24} color="black" />
+                  <Text className="text-base ml-2">Scan your ID</Text>
+                </Pressable>
+              )}
               <Pressable
                 onPress={handleCheckAllowedIDs}
                 className="self-end mb-8"

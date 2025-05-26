@@ -21,7 +21,7 @@ type ViewMainDetailsProps = {
   description: string;
   category_id?: string;
   created_at: string;
-  host: {
+  host?: {
     name: string;
     image: any;
   };
@@ -122,18 +122,22 @@ const ViewMainDetails = ({
             sectionContent={description}
           />
         </View>
-
-        <View className="flex-row items-center mx-4">
-          <Image source={host.image} className="w-16 h-16 rounded-full mr-3" />
-          <View>
-            <Text className="font-medium">
-              {category_id
-                ? `Hosted by ${host.name}`
-                : `Posted by ${host.name}`}
-            </Text>
-            <Text className="text-sm text-gray-500">{durationDisplay}</Text>
+        {host && (
+          <View className="flex-row items-center mx-4">
+            <Image
+              source={host.image}
+              className="w-16 h-16 rounded-full mr-3"
+            />
+            <View>
+              <Text className="font-medium">
+                {category_id
+                  ? `Hosted by ${host.name}`
+                  : `Posted by ${host.name}`}
+              </Text>
+              <Text className="text-sm text-gray-500">{durationDisplay}</Text>
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </View>
   );

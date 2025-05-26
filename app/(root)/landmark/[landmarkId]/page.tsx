@@ -1,10 +1,6 @@
 import LocationMap from "@/components/common/LocationMap";
-import ViewAmenities from "@/components/locations/ViewAmenities";
-import ViewDisplayText from "@/components/locations/ViewDisplayText";
 import ViewMainDetails from "@/components/locations/ViewMainDetails";
 import ViewNearbyLocations from "@/components/locations/ViewNearbyLandmarks";
-import ViewRatingsReviewsSummary from "@/components/locations/ViewRatingsReviewsSummary";
-import ViewReviews from "@/components/locations/ViewReviews";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
@@ -51,21 +47,7 @@ export default function LandmarkView() {
           title={landmark.name}
           location={landmark.location}
           description={landmark.description}
-          host={landmark.poster}
           created_at={landmark.created_at}
-        />
-
-        <ViewRatingsReviewsSummary
-          rating={landmark.rating}
-          totalReviews={landmark.totalReviews}
-        />
-
-        <ViewAmenities
-          amenities={landmark.amenities.map(({ icon, label }) => ({
-            icon,
-            label,
-          }))}
-          onShowAllPress={() => console.log("See all amenities")}
         />
 
         <ViewNearbyLocations
@@ -74,19 +56,6 @@ export default function LandmarkView() {
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
         />
-
-        <ViewReviews
-          overallRating={landmark.rating}
-          totalReviews={landmark.totalReviews}
-          reviews={landmark.reviews}
-        />
-
-        <View className="mt-4">
-          <ViewDisplayText
-            sectionTitle="House Rules"
-            sectionContent={landmark.houseRules}
-          />
-        </View>
 
         <View className="mt-4 px-4">
           <Text className="text-lg font-bold">Location</Text>

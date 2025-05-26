@@ -11,7 +11,7 @@ import {
 
 interface DiscountOption {
   type: string;
-  defaultPercentage: number; // Store the default percentage
+  defaultPercentage: number; 
   title: string;
   description: string;
 }
@@ -43,7 +43,6 @@ const discountOptions: DiscountOption[] = [
   },
 ];
 
-// Update the prop interface to reflect the new data structure
 interface PlaceDiscountsSlideProps {
   selectedDiscounts: { type: string; percentage: number }[];
   setSelectedDiscounts: (
@@ -55,32 +54,30 @@ const PlaceDiscountsSlide: React.FC<PlaceDiscountsSlideProps> = ({
   selectedDiscounts,
   setSelectedDiscounts,
 }) => {
-  // State to manage the editable percentages for each discount type
+ 
   const [percentages, setPercentages] = useState<{ [key: string]: number }>({});
 
-  // Initialize percentages state with default values on mount or when discountOptions changes
   useEffect(() => {
     const initialPercentages: { [key: string]: number } = {};
     discountOptions.forEach((option) => {
       initialPercentages[option.type] = option.defaultPercentage;
     });
     setPercentages(initialPercentages);
-  }, [discountOptions]); // Dependency array includes discountOptions if it could change
+  }, [discountOptions]); 
 
   const toggleDiscount = (discountType: string) => {
     const isSelected = selectedDiscounts.some((d) => d.type === discountType);
     let updatedDiscounts;
 
     if (isSelected) {
-      // Remove the discount if already selected
       updatedDiscounts = selectedDiscounts.filter(
         (d) => d.type !== discountType
       );
     } else {
-      // Add the discount with its current percentage
+      
       updatedDiscounts = [
         ...selectedDiscounts,
-        { type: discountType, percentage: percentages[discountType] || 0 }, // Use the percentage from state
+        { type: discountType, percentage: percentages[discountType] || 0 }, 
       ];
     }
     setSelectedDiscounts(updatedDiscounts);
@@ -89,13 +86,13 @@ const PlaceDiscountsSlide: React.FC<PlaceDiscountsSlideProps> = ({
   const handlePercentageChange = (discountType: string, value: string) => {
     const percentage = parseInt(value, 10);
     if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
-      // Update local percentages state
+   
       setPercentages({
         ...percentages,
         [discountType]: percentage,
       });
 
-      // If the discount is currently selected, update its percentage in the selectedDiscounts array
+  
       if (selectedDiscounts.some((d) => d.type === discountType)) {
         const updatedSelectedDiscounts = selectedDiscounts.map((d) =>
           d.type === discountType ? { ...d, percentage: percentage } : d
@@ -103,7 +100,7 @@ const PlaceDiscountsSlide: React.FC<PlaceDiscountsSlideProps> = ({
         setSelectedDiscounts(updatedSelectedDiscounts);
       }
     } else if (value === "") {
-      // Allow clearing the input
+   
       setPercentages({
         ...percentages,
         [discountType]: 0,
