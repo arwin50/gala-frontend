@@ -14,6 +14,7 @@ import BasicInformation from "../../../components/host/addlistingswiper/BasicInf
 import PlaceAmenitiesSlide from "../../../components/host/addlistingswiper/PlaceAmenitiesSlide";
 import PlaceCancellationSlide from "../../../components/host/addlistingswiper/PlaceCancellationSlide";
 import PlaceDescriptionSlide from "../../../components/host/addlistingswiper/PlaceDescriptionSlide";
+import PlaceDiscountsSlide from "../../../components/host/addlistingswiper/PlaceDiscountsSlide";
 import PlaceLocationSlide from "../../../components/host/addlistingswiper/PlaceLocationSlide";
 import PlaceMediaSlide from "../../../components/host/addlistingswiper/PlaceMediaSlide";
 import PlaceNameSlide from "../../../components/host/addlistingswiper/PlaceNameSlide";
@@ -46,6 +47,7 @@ export default function HostMenuPage() {
   const [isBasicInfoModalVisible, setIsBasicInfoModalVisible] = useState(false);
   const [isVerificationModalVisible, setIsVerificationModalVisible] =
     useState(false);
+  const [isDiscountsModalVisible, setIsDiscountsModalVisible] = useState(false);
 
   // Property state
   const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -81,6 +83,11 @@ export default function HostMenuPage() {
   const [verificationImage, setVerificationImage] = useState<string | null>(
     null
   );
+
+  // Discount state
+  const [selectedDiscounts, setSelectedDiscounts] = useState<
+    { type: string; percentage: number }[]
+  >([]);
 
   const handleSave = () => {
     const property: PlaceProperty = {
@@ -119,10 +126,10 @@ export default function HostMenuPage() {
         phone: contactNumber,
         email: emailAddress,
       },
-      // Verification
       verification: {
         image: verificationImage,
       },
+      discounts: selectedDiscounts,
     };
 
     console.log("=== UPDATED PROPERTY DETAILS ===");
@@ -232,6 +239,18 @@ export default function HostMenuPage() {
               {verificationImage
                 ? "ID verified"
                 : "Verify ID and contact details"}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsDiscountsModalVisible(true)}>
+          <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
+            <Text className="text-lg font-semibold mb-2">Discounts</Text>
+            <Text className="p-2">
+              {selectedDiscounts.length
+                ? `${selectedDiscounts.length} discount${
+                    selectedDiscounts.length > 1 ? "s" : ""
+                  } set`
+                : "Set discounts"}
             </Text>
           </View>
         </TouchableOpacity>
@@ -352,6 +371,15 @@ export default function HostMenuPage() {
         />
       </GenericModal>
 
+      <GenericModal
+        isVisible={isDiscountsModalVisible}
+        onClose={() => setIsDiscountsModalVisible(false)}
+      >
+        <PlaceDiscountsSlide
+          selectedDiscounts={selectedDiscounts}
+          setSelectedDiscounts={setSelectedDiscounts}
+        />
+      </GenericModal>
       <GenericModal
         isVisible={isVerificationModalVisible}
         onClose={() => setIsVerificationModalVisible(false)}

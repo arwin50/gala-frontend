@@ -164,4 +164,6 @@ export interface PlaceProperty {
   verification: {
     image: string | null;
   };
+  // Updated discounts field type
+  discounts: { type: string; percentage: number }[];
 }
