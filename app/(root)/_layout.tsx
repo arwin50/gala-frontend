@@ -64,6 +64,20 @@ export default function RootLayout() {
         }}
       />
       <Tabs.Screen
+        name="user"
+        options={{
+          headerShown: false,
+          title: "User",
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require("@/assets/tabs/favorites.png")}
+              className="w-8 h-8"
+              resizeMode="contain"
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="accommodation/[accommodationId]/page"
         options={{ headerShown: false, href: null }}
       />

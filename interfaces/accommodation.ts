@@ -1,3 +1,5 @@
+import { Landmark } from "@/interfaces/landmark";
+
 export interface Accommodation {
   id: string;
   title: string;
@@ -21,11 +23,7 @@ export interface Accommodation {
     icon: string;
     label: string;
   }[];
-  nearbyLandmarks: {
-    // Only here for sample purposes
-    name: string;
-    distance: string;
-  }[];
+  nearbyLandmarks: Landmark[];
   reviews: {
     user: {
       name: string;

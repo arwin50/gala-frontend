@@ -1,6 +1,6 @@
 import LocationMap from "@/components/common/LocationMap";
 import ViewMainDetails from "@/components/locations/ViewMainDetails";
-import ViewNearbyLocations from "@/components/locations/ViewNearbyLandmarks";
+import ViewNearbyLocations from "@/components/locations/ViewNearbyLocations";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
@@ -52,7 +52,8 @@ export default function LandmarkView() {
 
         <ViewNearbyLocations
           sectionTitle="Nearby Accommodations"
-          landmarks={landmark.nearbyLocations}
+          locationType="accommodation"
+          locations={landmark.nearbyAccommodations}
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
         />
@@ -64,7 +65,8 @@ export default function LandmarkView() {
 
         <ViewNearbyLocations
           sectionTitle="Other Nearby Landmarks"
-          landmarks={landmark.otherNearbyLandmarks}
+          locationType="landmark"
+          locations={landmark.otherNearbyLandmarks}
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
         />
