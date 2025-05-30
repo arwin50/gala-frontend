@@ -1,16 +1,19 @@
 import { memoizedRefreshAccessToken } from "@/utils/jwt";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import Constants from "expo-constants";
+
+const backendUrl = Constants.expoConfig?.extra?.backendUrl;
 
 export const axiosPublic = axios.create({
-  baseURL: process.env.BACKEND_URL,
+  baseURL: backendUrl,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 const axiosPrivate = axios.create({
-  baseURL: process.env.BACKEND_URL,
+  baseURL: backendUrl,
   headers: {
     "Content-Type": "application/json",
   },

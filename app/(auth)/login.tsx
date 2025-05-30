@@ -2,17 +2,20 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   Text,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 
 import galaLogo from "@/assets/images/gala_logo.png";
 import AuthInput from "@/components/common/AuthInput";
+import { login } from "@/services/auth";
+import { AxiosError } from "axios";
 
 // Import the SVG content
 const locPinSvg = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,11 +30,17 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     try {
       setIsLoading(true);
-      // await login(email, password);
+      await login(email, password);
+
       router.replace("/(root)/home");
     } catch (error) {
       console.error("Login failed:", error);
-      // You might want to show an error message to the user here
+
+      if (error instanceof AxiosError && error.response?.status === 400) {
+        Alert.alert("Invalid email or password, please check your credentials and try again.");
+      } else {
+        Alert.alert("An error occurred during login, please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

@@ -14,6 +14,8 @@ import {
 
 import galaLogo from "@/assets/images/gala_logo.png";
 import AuthInput from "@/components/common/AuthInput";
+import { register } from "@/services/auth";
+import { AxiosError } from "axios";
 
 export default function SignupScreen() {
   const router = useRouter();
@@ -36,22 +38,23 @@ export default function SignupScreen() {
     }
 
     try {
-      // const result = await register({
-      //   email,
-      //   password1: password,
-      //   password2,
-      //   first_name: firstName,
-      //   last_name: lastName,
-      // });
+      await register(
+        email,
+        password,
+        password2,
+        firstName,
+        lastName,
+      );
+
       router.push("/(auth)/login");
     } catch (error: any) {
       console.log("Registration error:", error, error?.response?.data);
-      Alert.alert(
-        "Registration Failed",
-        error?.response?.data?.message ||
-          error?.message ||
-          "An error occurred during registration"
-      );
+
+      if (error instanceof AxiosError && error.response?.status === 400 && error.response?.data?.email) {
+        Alert.alert(`${error.response?.data?.email}`);
+      } else {
+        Alert.alert("An error occurred during registration, please try again.");
+      }
     }
   };
 
