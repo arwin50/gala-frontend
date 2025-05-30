@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   Image,
@@ -13,7 +13,6 @@ import { SvgXml } from "react-native-svg";
 
 import galaLogo from "@/assets/images/gala_logo.png";
 import AuthInput from "@/components/common/AuthInput";
-import { useAuthStore } from "@/store/auth";
 
 // Import the SVG content
 const locPinSvg = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,9 +20,6 @@ const locPinSvg = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" x
 </svg>`;
 
 export default function LoginScreen() {
-  const router = useRouter();
-  const login = useAuthStore((state) => state.login);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +27,7 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     try {
       setIsLoading(true);
-      await login(email, password);
+      // await login(email, password);
       router.replace("/(root)/home");
     } catch (error) {
       console.error("Login failed:", error);
