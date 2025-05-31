@@ -1,4 +1,4 @@
-import { axiosPublic } from "@/lib/axios";
+import { axiosPublic } from "@/lib/axios/public";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import mem from "mem";
 
