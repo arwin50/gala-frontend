@@ -103,7 +103,7 @@ export default function AccommodationView() {
 
         <View className="mt-4 px-4">
           <Text className="text-lg font-bold">Location</Text>
-          <LocationMap region={region} markers={marker} readOnly={true} />
+          <LocationMap region={region} markers={marker} />
         </View>
       </ScrollView>
       <AccommodationViewReserveOverlay />

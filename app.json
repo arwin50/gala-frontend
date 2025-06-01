@@ -4,7 +4,7 @@
     "slug": "gala_frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "",
+    "icon": "./assets/images/gala_logo.ico",
     "scheme": "galafrontend",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,12 +13,14 @@
       "bundleIdentifier": "com.gala.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "icon": "./assets/images/gala_logo.ico",
+      "backgroundColor": "#0587DD"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/gala_logo.ico",
+        "backgroundColor": "#0587DD"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.gala.app"
@@ -33,10 +35,10 @@
       [
         "expo-splash-screen",
         {
-          "image": "@/assets/images/gala_logo.ico",
+          "image": "./assets/images/gala_logo.png",
           "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "resizeMode": "cover",
+          "backgroundColor": "#0587DD"
         }
       ],
       [

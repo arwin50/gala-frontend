@@ -10,8 +10,8 @@ export default function LocationCard({
 }) {
   const router = useRouter();
   const handlePress = () => {
-    router.push({
-      pathname: "/(root)/accommodation/[accommodationId]/page",
+    router.replace({
+      pathname: "/(guest)/accommodation/[accommodationId]/page",
       params: { accommodationId: accommodation.id },
     });
   };

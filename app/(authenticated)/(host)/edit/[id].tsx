@@ -9,26 +9,26 @@ import {
   View,
 } from "react-native";
 import { LatLng } from "react-native-maps";
-import GenericModal from "../../../components/common/GenericModal";
-import BasicInformation from "../../../components/host/addlistingswiper/BasicInformation";
-import PlaceAmenitiesSlide from "../../../components/host/addlistingswiper/PlaceAmenitiesSlide";
-import PlaceCancellationSlide from "../../../components/host/addlistingswiper/PlaceCancellationSlide";
-import PlaceDescriptionSlide from "../../../components/host/addlistingswiper/PlaceDescriptionSlide";
-import PlaceDiscountsSlide from "../../../components/host/addlistingswiper/PlaceDiscountsSlide";
-import PlaceLocationSlide from "../../../components/host/addlistingswiper/PlaceLocationSlide";
-import PlaceMediaSlide from "../../../components/host/addlistingswiper/PlaceMediaSlide";
-import PlaceNameSlide from "../../../components/host/addlistingswiper/PlaceNameSlide";
-import PlacePriceSlide from "../../../components/host/addlistingswiper/PlacePriceSlide";
-import PlaceRulesSlide from "../../../components/host/addlistingswiper/PlaceRulesSlide";
-import PlaceTypeSlide from "../../../components/host/addlistingswiper/PlaceTypeSlide";
-import PlaceVerificationSlide from "../../../components/host/addlistingswiper/PlaceVerificationSlide";
+import GenericModal from "../../../../components/common/GenericModal";
+import BasicInformation from "../../../../components/host/addlistingswiper/BasicInformation";
+import PlaceAmenitiesSlide from "../../../../components/host/addlistingswiper/PlaceAmenitiesSlide";
+import PlaceCancellationSlide from "../../../../components/host/addlistingswiper/PlaceCancellationSlide";
+import PlaceDescriptionSlide from "../../../../components/host/addlistingswiper/PlaceDescriptionSlide";
+import PlaceDiscountsSlide from "../../../../components/host/addlistingswiper/PlaceDiscountsSlide";
+import PlaceLocationSlide from "../../../../components/host/addlistingswiper/PlaceLocationSlide";
+import PlaceMediaSlide from "../../../../components/host/addlistingswiper/PlaceMediaSlide";
+import PlaceNameSlide from "../../../../components/host/addlistingswiper/PlaceNameSlide";
+import PlacePriceSlide from "../../../../components/host/addlistingswiper/PlacePriceSlide";
+import PlaceRulesSlide from "../../../../components/host/addlistingswiper/PlaceRulesSlide";
+import PlaceTypeSlide from "../../../../components/host/addlistingswiper/PlaceTypeSlide";
+import PlaceVerificationSlide from "../../../../components/host/addlistingswiper/PlaceVerificationSlide";
 import {
   CancellationPolicy,
   MediaItem,
   PlaceProperty,
   SetRulesState,
   ToggleRulesState,
-} from "../../../interfaces";
+} from "../../../../interfaces";
 
 export default function HostMenuPage() {
   // Modal visibility states

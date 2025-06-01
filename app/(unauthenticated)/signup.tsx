@@ -46,7 +46,7 @@ export default function SignupScreen() {
         lastName,
       );
 
-      router.push("/(auth)/login");
+      router.push("/login");
     } catch (error: any) {
       console.log("Registration error:", error, error?.response?.data);
 
@@ -136,7 +136,7 @@ export default function SignupScreen() {
             <Text className="text-white text-sm font-bold">
               Already have an account?{" "}
             </Text>
-            <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
+            <TouchableOpacity onPress={() => router.push("/login")}>
               <Text className="text-white text-sm font-bold underline">
                 Log in
               </Text>

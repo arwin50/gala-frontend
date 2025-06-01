@@ -77,7 +77,7 @@ function CategoryCard({ id, title, color, image }: CategoryCardProps) {
   return (
     <Pressable
       onPress={() =>
-        router.push({
+        router.replace({
           pathname: "/accommodation/page",
           params: { categoryId: id },
         })
