@@ -61,7 +61,7 @@ export default function HostHomePage() {
               location={listing.location}
               category={listing.category}
               bookings={listing.bookings}
-              onEdit={() => router.push("/(host)/edit/[id]")}
+              onEdit={() => router.replace("/(authenticated)/(host)/edit/[id]")}
               onDelete={() => console.log("Delete", listing.id)}
               onShowBookings={() => console.log("Show Bookings", listing.id)}
             />

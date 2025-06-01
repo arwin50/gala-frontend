@@ -1,4 +1,5 @@
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
+import { sampleLandmarks } from "@/constants/landmark";
 import { Accommodation } from "@/interfaces/accommodation";
 
 const sampleAccommodations: Accommodation[] = [
@@ -27,7 +28,7 @@ const sampleAccommodations: Accommodation[] = [
       { icon: "tv", label: "Cable TV" },
       { icon: "snowflake", label: "Air Conditioning" },
     ],
-    nearbyLandmarks: [],
+    nearbyLandmarks: [sampleLandmarks[0]],
     reviews: [
       {
         user: { name: "BINI Colet", avatar: bgMetroManila },

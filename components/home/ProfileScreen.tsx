@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   Animated,
@@ -111,7 +112,10 @@ export default function ProfileScreen() {
         </View>
 
         <Text className="text-xl font-semibold mt-4 px-8">Hosting</Text>
-        <RippleItem label="List Your Space" />
+        <RippleItem
+          label="List Your Space"
+          onPress={() => router.push("/(host)")}
+        />
         <RippleItem
           label="Personal Information"
           onPress={() => console.log("Go to personal info")}

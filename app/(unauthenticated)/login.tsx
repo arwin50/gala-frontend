@@ -32,7 +32,7 @@ export default function LoginScreen() {
     try {
       setIsLoading(true);
       await login(email, password);
-      router.replace("/(root)/home");
+      router.replace("/(authenticated)/(guest)/home");
     } catch (error) {
       console.error("Login failed:", error);
       // You might want to show an error message to the user here

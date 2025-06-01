@@ -10,7 +10,7 @@ export default function HostMenuPage() {
       <Text>Menu</Text>
 
       <TouchableOpacity
-        onPress={() => router.push("/(root)/home")}
+        onPress={() => router.replace("/(authenticated)/(guest)/home")}
         className="m-4"
       >
         <LinearGradient
