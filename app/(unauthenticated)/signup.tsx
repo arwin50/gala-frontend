@@ -14,12 +14,11 @@ import {
 
 import galaLogo from "@/assets/images/gala_logo.png";
 import AuthInput from "@/components/common/AuthInput";
-import { useAuthStore } from "../../store/auth";
+import { register } from "@/services/auth";
+import { AxiosError } from "axios";
 
 export default function SignupScreen() {
   const router = useRouter();
-  const register = useAuthStore((state) => state.register);
-  const isLoading = useAuthStore((state) => state.isLoading);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -39,23 +38,23 @@ export default function SignupScreen() {
     }
 
     try {
-      const result = await register({
+      await register(
         email,
-        password1: password,
+        password,
         password2,
-        first_name: firstName,
-        last_name: lastName,
-      });
-      console.log("Registration result:", result);
+        firstName,
+        lastName,
+      );
+
       router.push("/login");
     } catch (error: any) {
       console.log("Registration error:", error, error?.response?.data);
-      Alert.alert(
-        "Registration Failed",
-        error?.response?.data?.message ||
-          error?.message ||
-          "An error occurred during registration"
-      );
+
+      if (error instanceof AxiosError && error.response?.status === 400 && error.response?.data?.email) {
+        Alert.alert(`${error.response?.data?.email}`);
+      } else {
+        Alert.alert("An error occurred during registration, please try again.");
+      }
     }
   };
 
@@ -120,14 +119,15 @@ export default function SignupScreen() {
           <TouchableOpacity
             className="bg-[#4DA4FF] w-full h-12 rounded-xl justify-center items-center mt-2 mb-4 shadow overflow-hidden"
             onPress={handleSignup}
-            disabled={isLoading}
+            // disabled={isLoading}
           >
             <LinearGradient
               colors={["#8FAAF0", "#5D7AD1"]}
               className="w-full h-full flex-1 justify-center items-center"
             >
               <Text className="text-white font-bold text-sm">
-                {isLoading ? "Signing up..." : "Sign Up"}
+                {/* {isLoading ? "Signing up..." : "Sign Up"} */}
+                Sign Up
               </Text>
             </LinearGradient>
           </TouchableOpacity>
