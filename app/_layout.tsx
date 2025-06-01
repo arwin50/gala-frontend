@@ -1,10 +1,24 @@
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
+import { useEffect, useState } from "react";
 import "./global.css";
 
-// Your API base URL - replace with your actual API URL
-const API_BASE_URL = "http://172.16.5.11:8000/api";
+SplashScreen.preventAutoHideAsync(); // Only if this layout manages loading
 
 export default function RootLayout() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const load = async () => {
+      // Load fonts or do setup
+      await new Promise((res) => setTimeout(res, 500));
+      setReady(true);
+      await SplashScreen.hideAsync();
+    };
+    load();
+  }, []);
+
+  if (!ready) return null;
+
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
