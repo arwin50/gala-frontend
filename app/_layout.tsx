@@ -2,7 +2,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import "./global.css";
 
-SplashScreen.preventAutoHideAsync(); // Only if this layout manages loading
+SplashScreen.preventAutoHideAsync(); 
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
