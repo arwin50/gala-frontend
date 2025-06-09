@@ -21,7 +21,7 @@ export default function SearchBarWithoutModal({
         onChangeText={setQuery}
         placeholder={placeholder}
         placeholderTextColor="#666"
-        className="flex-1 text-center font-medium text-black mr-2"
+        className="flex-1 text-center font-medium text-black mr-8"
         style={{ textAlign: "center" }}
       />
     </View>
