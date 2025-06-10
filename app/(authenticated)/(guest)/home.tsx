@@ -14,7 +14,6 @@ export default function Home() {
 
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: 16,
           paddingTop: 8,
           paddingBottom: 10,
           gap: 16,
@@ -22,9 +21,10 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
       >
         <CategoryGrid />
-        <Text className="text-black font-bold text-xl">Places to See</Text>
+
+        <Text className="px-4 text-black font-bold text-xl">Places to See</Text>
         <FeaturedPlacesGrid />
-        <Text className="text-black font-bold text-xl">
+        <Text className="px-4 text-black font-bold text-xl">
           Explore Accommodations
         </Text>
         <LocationList properties={sampleProperties} />

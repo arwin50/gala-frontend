@@ -13,7 +13,7 @@ import {
 
 export default function CategoryGrid() {
   return (
-    <View className="w-full">
+    <View className="w-full px-4">
       <View className="flex-row gap-4 mb-3">
         <CategoryCard
           id={categories[0].id}
