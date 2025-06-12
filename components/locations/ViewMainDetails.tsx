@@ -19,7 +19,7 @@ type ViewMainDetailsProps = {
   title: string;
   location: string;
   description: string;
-  category_id?: string;
+  category_id?: number;
   created_at: string;
   host?: {
     name: string;

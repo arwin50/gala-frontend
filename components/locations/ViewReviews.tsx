@@ -17,7 +17,7 @@ type Review = {
 type ViewReviewsProps = {
   title?: string;
   reviews: Review[];
-  overallRating: number;
+  overallRating: number | null;
   totalReviews: number;
 };
 
@@ -39,7 +39,7 @@ const ViewReviews = ({
 
       <View className="flex-row items-center px-4 mb-2">
         <Text className="text-[30px] font-semibold mr-2">
-          {overallRating.toFixed(1)}
+          {overallRating ? overallRating.toFixed(1) : 0}
         </Text>
         <View>
           <Text className="text-blue-500 text-sm">stellar</Text>

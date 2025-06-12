@@ -21,9 +21,9 @@ export default function LocationCard({
       className="bg-white rounded-2xl shadow shadow-black overflow-hidden mb-4 w-[48%]"
       onPress={handlePress}
     >
-      {accommodation?.images?.[0] && (
+      {accommodation?.media?.[0] && (
         <Image
-          source={accommodation.images[0]}
+          source={{ uri: accommodation.media[0].url }}
           className="w-full h-40"
           resizeMode="cover"
         />
@@ -35,7 +35,7 @@ export default function LocationCard({
           numberOfLines={1}
           ellipsizeMode="tail"
         >
-          {accommodation.title}
+          {accommodation.name}
         </Text>
 
         <View className="flex-row items-center gap-1">
@@ -52,11 +52,11 @@ export default function LocationCard({
           <View className="flex-row items-center gap-1">
             <FontAwesome name="star" size={14} color="#facc15" />
             <Text className="text-sm text-yellow-500 font-medium">
-              {accommodation.rating}
+              {accommodation.overall_rating}
             </Text>
           </View>
           <Text className="text-md text-gray-500 font-medium">
-            ₱{accommodation.price_per_night}
+            ₱{accommodation.total_price}
             <Text className="text-xs text-gray-400">/night</Text>
           </Text>
         </View>

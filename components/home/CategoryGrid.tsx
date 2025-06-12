@@ -13,7 +13,7 @@ import {
 
 export default function CategoryGrid() {
   return (
-    <View className="w-full">
+    <View className="w-full px-4">
       <View className="flex-row gap-4 mb-3">
         <CategoryCard
           id={categories[0].id}
@@ -65,7 +65,7 @@ export default function CategoryGrid() {
 }
 
 type CategoryCardProps = {
-  id: string;
+  id: number;
   title: string;
   color: string; // Tailwind class like "bg-[#C9E7FF]"
   image: ImageSourcePropType;

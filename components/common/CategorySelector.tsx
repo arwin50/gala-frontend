@@ -5,12 +5,14 @@ import { Image, ScrollView, Text, TouchableOpacity } from "react-native";
 
 export default function CategorySelector({
   selectedCategoryId,
+  onCategoryChange,
 }: {
-  selectedCategoryId: string | null;
+  selectedCategoryId: number | undefined;
+  onCategoryChange: (categoryId: number) => void;
 }) {
   const scrollViewRef = useRef<ScrollView>(null);
   const itemRefs = useRef<Record<string, ViewType | null>>({});
-  const [selectedId, setSelectedId] = useState<string | null>(
+  const [selectedId, setSelectedId] = useState<number | undefined>(
     selectedCategoryId
   );
 
@@ -48,6 +50,7 @@ export default function CategorySelector({
             }}
             onPress={() => {
               setSelectedId(cat.id);
+              onCategoryChange(cat.id);
             }}
             className="p-3 items-center"
             style={{
@@ -61,7 +64,7 @@ export default function CategorySelector({
               resizeMode="cover"
             />
             <Text
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-center leading-none text-gray-700"
               style={{
                 fontWeight: isSelected ? "bold" : "normal",
               }}

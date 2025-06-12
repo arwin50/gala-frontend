@@ -1,5 +1,4 @@
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
-import sampleAccommodations from "@/constants/accommodationsData";
 
 import LocationMap from "@/components/common/LocationMap";
 import AccommodationViewReserveOverlay from "@/components/locations/AccommodationViewReserveOverlay";
@@ -11,17 +10,35 @@ import ViewNearbyLocations from "@/components/locations/ViewNearbyLocations";
 import ViewRatingsReviewsSummary from "@/components/locations/ViewRatingsReviewsSummary";
 import ViewReviews from "@/components/locations/ViewReviews";
 import { Accommodation } from "@/interfaces/accommodation";
+import Constants from "expo-constants";
 import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
+
+const API_URL = Constants.expoConfig?.extra?.backendUrl;
 
 export default function AccommodationView() {
   const { accommodationId } = useLocalSearchParams();
-  const accommodation: Accommodation | undefined = sampleAccommodations.find(
-    (accommodation) => accommodation.id === accommodationId
-  );
+  const [accommodation, setAccommodation] = useState<Accommodation>();
+
+  useEffect(() => {
+    const fetchAccommodations = async () => {
+      try {
+        const res = await fetch(
+          `${API_URL}/api/accomodation/${accommodationId}/`
+        );
+        const data = await res.json();
+        setAccommodation(data.objects);
+      } catch (error) {
+        console.error("Error fetching accommodation:", error);
+      }
+    };
+
+    fetchAccommodations();
+  }, [accommodationId]);
 
   if (!accommodation) {
-    return <Text>{accommodationId} not found</Text>; // Handle the case when the accommodation is not found
+    return <Text>{accommodationId} not found</Text>;
   }
 
   const marker = [
@@ -30,7 +47,7 @@ export default function AccommodationView() {
         latitude: accommodation.latitude,
         longitude: accommodation.longitude,
       },
-      title: accommodation.title,
+      title: accommodation.name,
       description: accommodation.location,
     },
   ];
@@ -49,32 +66,29 @@ export default function AccommodationView() {
         contentContainerStyle={{ paddingBottom: 104 }}
       >
         <ViewMainDetails
-          images={accommodation.images}
-          title={accommodation.title}
+          images={accommodation.media}
+          title={accommodation.name}
           location={accommodation.location}
           description={accommodation.description}
           host={accommodation.host}
-          category_id={accommodation.category_id}
+          category_id={accommodation.category.id}
           created_at={accommodation.created_at}
         />
 
         <ViewRatingsReviewsSummary
-          rating={accommodation.rating}
-          totalReviews={accommodation.totalReviews}
+          rating={accommodation.overall_rating}
+          totalReviews={accommodation.total_review_count}
         />
 
         <ViewAmenities
-          amenities={accommodation.amenities.map(({ icon, label }) => ({
-            icon,
-            label,
-          }))}
+          amenities={accommodation.amenities}
           onShowAllPress={() => console.log("See all amenities")}
         />
 
         <ViewNearbyLocations
           sectionTitle="Nearby Landmarks"
           locationType="landmark"
-          locations={accommodation.nearbyLandmarks}
+          locations={accommodation.nearby_landmarks}
           defaultImage={bgMetroManila}
           onShowAll={() => console.log("Show all locations pressed!")}
         />
@@ -82,22 +96,22 @@ export default function AccommodationView() {
         <ViewAvailability />
 
         <ViewReviews
-          overallRating={accommodation.rating}
-          totalReviews={accommodation.totalReviews}
+          overallRating={accommodation.overall_rating}
+          totalReviews={accommodation.total_review_count}
           reviews={accommodation.reviews}
         />
 
         <View className="mt-4">
           <ViewDisplayText
             sectionTitle="Cancellation Policy"
-            sectionContent={accommodation.cancellationPolicy}
+            sectionContent={accommodation.cancellation_policy[0].description}
           />
         </View>
 
         <View className="mt-4">
           <ViewDisplayText
             sectionTitle="House Rules"
-            sectionContent={accommodation.houseRules}
+            sectionContent={accommodation.house_rules}
           />
         </View>
 

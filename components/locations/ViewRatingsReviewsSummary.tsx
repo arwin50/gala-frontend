@@ -3,7 +3,7 @@ import React from "react";
 import { Text, View } from "react-native";
 
 type ViewRatingsReviewsSummaryProps = {
-  rating: number;
+  rating: number | null;
   totalReviews: number;
   maxStars?: number;
 };
@@ -26,7 +26,9 @@ const ViewRatingsReviewsSummary = ({
               <FontAwesome
                 key={starIndex}
                 name={
-                  rating >= starIndex
+                  rating === null
+                    ? "star-o"
+                    : rating >= starIndex
                     ? "star"
                     : rating >= starIndex - 0.5
                     ? "star-half-empty"
