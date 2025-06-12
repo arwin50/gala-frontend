@@ -1,8 +1,9 @@
+import { Accommodation } from "@/interfaces/accommodation";
 import { View } from "react-native";
 import LocationCard from "./LocationCard";
 
 type LocationListProps = {
-  properties: any[];
+  properties: Accommodation[];
 };
 
 export default function LocationList({ properties }: LocationListProps) {

@@ -15,15 +15,16 @@ export default function LocationCard({
       params: { accommodationId: accommodation.id },
     });
   };
+  const firstImageMedia = accommodation.media.find((m) => m.type === "image");
 
   return (
     <TouchableOpacity
       className="bg-white rounded-2xl shadow shadow-black overflow-hidden mb-4 w-[48%]"
       onPress={handlePress}
     >
-      {accommodation?.media?.[0] && (
+      {firstImageMedia && (
         <Image
-          source={{ uri: accommodation.media[0].url }}
+          source={{ uri: firstImageMedia.url }}
           className="w-full h-40"
           resizeMode="cover"
         />

@@ -10,35 +10,59 @@ import ViewNearbyLocations from "@/components/locations/ViewNearbyLocations";
 import ViewRatingsReviewsSummary from "@/components/locations/ViewRatingsReviewsSummary";
 import ViewReviews from "@/components/locations/ViewReviews";
 import { Accommodation } from "@/interfaces/accommodation";
-import Constants from "expo-constants";
+import { axiosPublic } from "@/lib/axios/public";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
-
-const API_URL = Constants.expoConfig?.extra?.backendUrl;
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 
 export default function AccommodationView() {
   const { accommodationId } = useLocalSearchParams();
-  const [accommodation, setAccommodation] = useState<Accommodation>();
+  const [accommodation, setAccommodation] = useState<Accommodation | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAccommodations = async () => {
       try {
-        const res = await fetch(
-          `${API_URL}/api/accomodation/${accommodationId}/`
+        const response = await axiosPublic.get(
+          `/api/accommodation/${accommodationId}/`
         );
-        const data = await res.json();
-        setAccommodation(data.objects);
+        setAccommodation(response.data.objects);
       } catch (error) {
         console.error("Error fetching accommodation:", error);
+        setAccommodation(null);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchAccommodations();
   }, [accommodationId]);
 
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="#000" />
+        <Text className="mt-4">Loading accommodation details...</Text>
+      </SafeAreaView>
+    );
+  }
+
   if (!accommodation) {
-    return <Text>{accommodationId} not found</Text>;
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-white">
+        <Text className="text-lg text-gray-500">
+          Accommodation with ID {accommodationId} not found.
+        </Text>
+      </SafeAreaView>
+    );
   }
 
   const marker = [
@@ -71,7 +95,7 @@ export default function AccommodationView() {
           location={accommodation.location}
           description={accommodation.description}
           host={accommodation.host}
-          category_id={accommodation.category.id}
+          category_id={accommodation.category?.id}
           created_at={accommodation.created_at}
         />
 
@@ -104,14 +128,19 @@ export default function AccommodationView() {
         <View className="mt-4">
           <ViewDisplayText
             sectionTitle="Cancellation Policy"
-            sectionContent={accommodation.cancellation_policy[0].description}
+            sectionContent={
+              accommodation.cancellation_policy?.[0]?.description ??
+              "No cancellation policy provided."
+            }
           />
         </View>
 
         <View className="mt-4">
           <ViewDisplayText
             sectionTitle="House Rules"
-            sectionContent={accommodation.house_rules}
+            sectionContent={
+              accommodation.house_rules ?? "No house rules specified."
+            }
           />
         </View>
 
@@ -120,6 +149,7 @@ export default function AccommodationView() {
           <LocationMap region={region} markers={marker} />
         </View>
       </ScrollView>
+
       <AccommodationViewReserveOverlay />
     </SafeAreaView>
   );

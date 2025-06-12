@@ -1,12 +1,10 @@
 import CategorySelector from "@/components/common/CategorySelector";
 import SearchBarWithModal from "@/components/common/SearchBar";
 import LocationList from "@/components/locations/LocationList";
-import Constants from "expo-constants";
+import { axiosPublic } from "@/lib/axios/public";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, View } from "react-native";
-
-const API_URL = Constants.expoConfig?.extra?.backendUrl;
 
 export default function Properties() {
   const searchParams = useLocalSearchParams();
@@ -25,10 +23,10 @@ export default function Properties() {
 
     const fetchProperties = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/api/accomodation/simple/?category=${selectedCategoryId}`
+        const response = await axiosPublic.get(
+          `/api/accomodation/simple/?category=${selectedCategoryId}`
         );
-        const data = await response.json();
+        const data = await response.data;
         console.log("DATABASE:", data.objects);
         const results = Array.isArray(data.objects) ? data.objects : [];
         setProperties(results);

@@ -2,11 +2,9 @@ import SearchBarWithModal from "@/components/common/SearchBar";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import FeaturedPlacesGrid from "@/components/home/FeaturedPlacesGrid";
 import LocationList from "@/components/locations/LocationList";
-import Constants from "expo-constants";
+import { axiosPublic } from "@/lib/axios/public";
 import { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
-
-const API_URL = Constants.expoConfig?.extra?.backendUrl;
 
 export default function Home() {
   const [properties, setProperties] = useState([]);
@@ -14,8 +12,8 @@ export default function Home() {
   useEffect(() => {
     const fetchAccommodations = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/accomodation/simple/`);
-        const data = await res.json();
+        const response = await axiosPublic.get("/api/accomodation/simple/");
+        const data = await response.data;
         setProperties(data.objects);
       } catch (error) {
         console.error("Error fetching accommodations:", error);
