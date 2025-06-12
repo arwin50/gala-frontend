@@ -28,12 +28,24 @@ const sanitizeFileName = (fileName: string): string => {
 };
 
 /**
+ * Sanitizes a directory path by removing special characters and ensuring proper format
+ */
+const sanitizeDirectoryPath = (path: string): string => {
+    return path
+        .replace(/^\/+|\/+$/g, '') // Remove leading and trailing slashes
+        .replace(/\/+/g, '/') // Replace multiple slashes with single slash
+        .replace(/[^a-zA-Z0-9\/.-]/g, '_') // Replace special chars with underscore
+        .toLowerCase();
+};
+
+/**
  * Uploads a file to S3 and returns the public URL
  * @param file The file to upload
+ * @param directoryPath Optional directory path within the bucket (e.g., 'users/avatars', 'events/covers')
  * @returns Promise<string> The public URL of the uploaded file
  * @throws Error if the upload fails
  */
-export const uploadFileToS3 = async (file: File): Promise<string> => {
+export const uploadFileToS3 = async (file: File, directoryPath?: string): Promise<string> => {
     try {
         const sanitizedFileName = sanitizeFileName(file.name);
         const contentType = file.type || 'application/octet-stream';
@@ -42,16 +54,21 @@ export const uploadFileToS3 = async (file: File): Promise<string> => {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
+        // Construct the full key with directory path if provided
+        const key = directoryPath 
+            ? `${sanitizeDirectoryPath(directoryPath)}/${sanitizedFileName}`
+            : sanitizedFileName;
+
         const command = new PutObjectCommand({
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: sanitizedFileName,
+            Key: key,
             Body: buffer,
             ContentType: contentType,
         });
 
         await s3Client.send(command);
         
-        return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${sanitizedFileName}`;
+        return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
     } catch (error) {
         if (error instanceof S3ServiceException) {
             console.error('S3 Service Error:', {
