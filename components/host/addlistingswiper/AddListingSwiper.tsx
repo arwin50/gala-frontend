@@ -23,13 +23,8 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import Swiper from "react-native-swiper";
-import {
-  CancellationPolicy,
-  MediaItem,
-  PlaceProperty,
-  SetRulesState,
-  ToggleRulesState,
-} from "../../../interfaces";
+import { MediaItem } from "../../../interfaces";
+import { axiosPrivate } from "@/lib/axios/private";
 
 interface AddListingSwiperProps {
   isVisible: boolean;
@@ -43,33 +38,26 @@ export default function AddListingSwiper({
   const swiperRef = useRef<Swiper>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showSwiper, setShowSwiper] = useState(false);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<any>(null);
   const [markerCoords, setMarkerCoords] = useState<LatLng | null>(null);
   const [locationName, setLocationName] = useState<string>("");
   const [guests, setGuests] = useState<number>(0);
   const [bedrooms, setBedrooms] = useState<number>(0);
   const [bathrooms, setBathrooms] = useState<number>(0);
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [selectedAmenities, setSelectedAmenities] = useState<{ id: number }[]>(
+    []
+  );
+  const [selectedCancellationPolicy, setSelectedCancellationPolicy] =
+    useState<any>();
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [coverPhotoId, setCoverPhotoId] = useState<string | null>(null);
   const [placeName, setPlaceName] = useState<string>("");
   const [placeDescription, setPlaceDescription] = useState<string>("");
   const [basePrice, setBasePrice] = useState<number>(0);
-  const [selectedPolicy, setSelectedPolicy] = useState<CancellationPolicy>({
-    name: "Flexible",
-    description:
-      "Full refund for cancellations made up to 24 hours before check-in. Cancellations made less than 24 hours in advance: no refund for the first night or first service, remainder refunded.",
-  });
-
-  // Rules state
-  const [toggleRules, setToggleRules] = useState<ToggleRulesState>({
-    "Pets allowed": false,
-    "Events allowed": false,
-    "Smoking allowed": false,
-  });
-  const [setRuleValues, setSetRuleValues] = useState<SetRulesState>({});
-  const [additionalRules, setAdditionalRules] = useState<string[]>([]);
-
+  const [cleaningFee, setCleaningFee] = useState<number>(75.0);
+  const [serviceFee, setServiceFee] = useState<number>(32.5);
+  const [taxes, setTaxes] = useState<number>(42.25);
+  const [selectedPolicy, setSelectedPolicy] = useState<any>();
   // Verification state
   const [contactNumber, setContactNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -79,6 +67,15 @@ export default function AddListingSwiper({
   const [verificationImage, setVerificationImage] = useState<string | null>(
     null
   );
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await axiosPrivate.get("/user/user");
+      setUser(response.data);
+    };
+    getUser();
+  }, []);
 
   const swiperSlideCount = 13; // Total number of slides in the Swiper
 
@@ -86,68 +83,7 @@ export default function AddListingSwiper({
     if (swiperRef.current && currentIndex < swiperSlideCount - 1) {
       swiperRef.current.scrollBy(1);
     } else if (swiperRef.current && currentIndex === swiperSlideCount - 1) {
-      // Create complete property object
-      const property: PlaceProperty = {
-        placeName: placeName,
-        type: selectedType,
-        location: {
-          name: locationName,
-          coordinates: markerCoords,
-        },
-        capacity: {
-          guests: guests,
-          bedrooms: bedrooms,
-          bathrooms: bathrooms,
-        },
-
-        // Amenities and Media
-        amenities: selectedAmenities,
-        media: {
-          items: media,
-          coverPhotoId: coverPhotoId,
-        },
-
-        // Description
-        description: {
-          name: placeName,
-          text: placeDescription,
-        },
-
-        // Pricing
-        pricing: {
-          basePrice: basePrice,
-        },
-
-        // Policies and Rules
-        policies: {
-          cancellation: selectedPolicy,
-        },
-        rules: {
-          toggle: toggleRules,
-          set: setRuleValues,
-          additional: additionalRules,
-        },
-
-        // Contact Information
-        contact: {
-          phone: contactNumber,
-          email: emailAddress,
-        },
-
-        // Verification
-        verification: {
-          image: verificationImage,
-        },
-        discounts: selectedDiscounts.map((d) => ({
-          type: d.type,
-          percentage: d.percentage,
-        })),
-      };
-
-      // Log the complete property object
-      console.log("=== COMPLETE PROPERTY DETAILS ===");
-      console.log(JSON.stringify(property, null, 2));
-
+      createAccomodation();
       onClose(); // Close modal when done
     }
   };
@@ -179,19 +115,10 @@ export default function AddListingSwiper({
       setPlaceName("");
       setPlaceDescription("");
       setBasePrice(0);
-      setSelectedPolicy({
-        name: "Flexible",
-        description:
-          "Full refund for cancellations made up to 24 hours before check-in. Cancellations made less than 24 hours in advance: no refund for the first night or first service, remainder refunded.",
-      });
-      // Reset rules state
-      setToggleRules({
-        "Pets allowed": false,
-        "Events allowed": false,
-        "Smoking allowed": false,
-      });
-      setSetRuleValues({});
-      setAdditionalRules([]);
+      setCleaningFee(75.0);
+      setServiceFee(32.5);
+      setTaxes(42.25);
+      setSelectedPolicy(null);
       setContactNumber("");
       setEmailAddress("");
       setVerificationImage(null);
@@ -206,6 +133,58 @@ export default function AddListingSwiper({
       width: withTiming(`${progressWidth}%`, { duration: 300 }),
     };
   });
+
+  const createAccomodation = async () => {
+    const submissionData = {
+      host: user.email,
+      category: selectedType?.id,
+      name: placeName,
+      description: placeDescription,
+      location: locationName,
+      latitude: markerCoords?.latitude.toFixed(6),
+      longitude: markerCoords?.longitude.toFixed(6),
+      max_guests: guests,
+      media: [],
+      blocked_event: [],
+      maintenance_event: [],
+      amenity: selectedAmenities,
+      price: [
+        {
+          name: "Base Rate",
+          price: basePrice.toFixed(2),
+        },
+        {
+          name: "Cleaning Fee",
+          price: cleaningFee.toFixed(2),
+        },
+        {
+          name: "Service Fee",
+          price: serviceFee.toFixed(2),
+        },
+        {
+          name: "Taxes",
+          price: taxes.toFixed(2),
+        },
+      ],
+      cancellation_policy: {
+        id: selectedCancellationPolicy.id,
+      },
+      policy: {
+        id: selectedPolicy.id,
+      },
+    };
+
+    console.log(
+      "Submitting accommodation data:",
+      JSON.stringify(submissionData, null, 2)
+    );
+
+    try {
+      await axiosPrivate.post("/accomodation/", submissionData);
+    } catch (err) {
+      console.error("failed to create accomodation", err);
+    }
+  };
 
   return (
     <Modal visible={isVisible} transparent animationType="slide">
@@ -258,22 +237,24 @@ export default function AddListingSwiper({
                 <PlacePriceSlide
                   basePrice={basePrice}
                   setBasePrice={setBasePrice}
+                  cleaningFee={cleaningFee}
+                  setCleaningFee={setCleaningFee}
+                  serviceFee={serviceFee}
+                  setServiceFee={setServiceFee}
+                  taxes={taxes}
+                  setTaxes={setTaxes}
                 />
                 <PlaceDiscountsSlide
                   selectedDiscounts={selectedDiscounts}
                   setSelectedDiscounts={setSelectedDiscounts}
                 />
                 <PlaceCancellationSlide
-                  selectedPolicy={selectedPolicy}
-                  setSelectedPolicy={setSelectedPolicy}
+                  selectedCancellationPolicy={selectedCancellationPolicy}
+                  setSelectedCancellationPolicy={setSelectedCancellationPolicy}
                 />
                 <PlaceRulesSlide
-                  toggleRules={toggleRules}
-                  setToggleRules={setToggleRules}
-                  setRuleValues={setRuleValues}
-                  setSetRuleValues={setSetRuleValues}
-                  additionalRules={additionalRules}
-                  setAdditionalRules={setAdditionalRules}
+                  selectedPolicy={selectedPolicy}
+                  setSelectedPolicy={setSelectedPolicy}
                 />
                 <PlaceVerificationSlide
                   contactNumber={contactNumber}

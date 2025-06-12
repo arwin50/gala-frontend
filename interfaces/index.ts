@@ -10,9 +10,15 @@ export type PropertyType = {
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
 };
 
+export type Category = {
+  id: string;
+  name: string;
+  description: string;
+};
+
 export interface PlaceTypeSlideProps {
-  setSelectedType: (type: string | null) => void;
-  initialType?: string | null;
+  setSelectedType: (type: Category) => void;
+  initialType?: Category | null;
 }
 
 export interface PlaceLocationSlideProps {
