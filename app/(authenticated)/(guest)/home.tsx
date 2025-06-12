@@ -2,10 +2,29 @@ import SearchBarWithModal from "@/components/common/SearchBar";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import FeaturedPlacesGrid from "@/components/home/FeaturedPlacesGrid";
 import LocationList from "@/components/locations/LocationList";
-import sampleProperties from "@/constants/accommodationsData";
+import Constants from "expo-constants";
+import { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
+const API_URL = Constants.expoConfig?.extra?.backendUrl;
+
 export default function Home() {
+  const [properties, setProperties] = useState([]);
+
+  useEffect(() => {
+    const fetchAccommodations = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/accomodation/simple/`);
+        const data = await res.json();
+        setProperties(data.objects);
+      } catch (error) {
+        console.error("Error fetching accommodations:", error);
+      }
+    };
+
+    fetchAccommodations();
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="p-4 bg-white z-10 shadow-xl">
@@ -27,7 +46,7 @@ export default function Home() {
         <Text className="px-4 text-black font-bold text-xl">
           Explore Accommodations
         </Text>
-        <LocationList properties={sampleProperties} />
+        <LocationList properties={properties} />
       </ScrollView>
     </SafeAreaView>
   );

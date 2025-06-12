@@ -12,20 +12,10 @@ import {
 
 export default function FeaturedPlacesGrid() {
   const router = useRouter();
-  const vividColors = [
-    "#E85A4F", // Muted coral red
-    "#C9A96E", // Soft golden yellow
-    "#4A9B8E", // Muted teal
-    "#6B9AC4", // Soft blue
-    "#B48EAD", // Dusty rose
-  ];
+  const vividColors = ["#005ac5", "#7bcb52", "#ee4d7c", "#ce6491", "#f4c200"];
 
   const getRandomColor = () => {
     return vividColors[Math.floor(Math.random() * vividColors.length)];
-  };
-
-  const getTransparentColor = (color: string) => {
-    return color + "30";
   };
 
   const getRandomPicsumUrl = () => {
@@ -33,7 +23,7 @@ export default function FeaturedPlacesGrid() {
     return { uri: `https://picsum.photos/seed/${randomId}/200` };
   };
 
-  const handlePress = (landmarkId: string) => {
+  const handlePress = (landmarkId: number) => {
     router.replace({
       pathname: "/(guest)/landmark/[landmarkId]/page",
       params: { landmarkId: landmarkId },
@@ -58,15 +48,25 @@ export default function FeaturedPlacesGrid() {
             <ImageBackground
               source={place.background}
               resizeMode="cover"
-              className="flex flex-row justify-start items-center py-2 px-3 gap-9 overflow-hidden w-full ml-10 -mt-8"
+              className="flex flex-row justify-start items-center px-3 gap-8 overflow-hidden w-full h-14 ml-10 -mt-8 overflow-hidden"
             >
               <View
-                className="absolute inset-0 opacity-[0.85]"
+                className="absolute inset-0 opacity-[0.60]"
                 style={{ backgroundColor: randomColor }}
               />
-              <View className="absolute bg-[#1b33be] rounded-full h-32 w-32 opacity-75 left-[-50]" />
+              <View
+                className="absolute bg-[#2b43be] rounded-full h-32 w-32 left-[-50] border-[0.1px] border-gray-900"
+                style={{
+                  backgroundColor: randomColor,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 1, height: 6 },
+                  shadowOpacity: 1,
+                  shadowRadius: 10,
+                  elevation: 8,
+                }}
+              ></View>
               <Image source={place.icon} style={{ width: 36, height: 36 }} />
-              <Text className="text-lg font-semibold text-white">
+              <Text className="text-[47px] font-bold text-white">
                 {place.name}
               </Text>
             </ImageBackground>
@@ -92,7 +92,7 @@ export default function FeaturedPlacesGrid() {
                       <View className="bg-black/[0.68] rounded p-2">
                         <Text
                           className="text-sm font-semibold text-white"
-                          numberOfLines={2}
+                          numberOfLines={1}
                           ellipsizeMode="tail"
                         >
                           {landmark.name}

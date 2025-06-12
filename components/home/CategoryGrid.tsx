@@ -65,7 +65,7 @@ export default function CategoryGrid() {
 }
 
 type CategoryCardProps = {
-  id: string;
+  id: number;
   title: string;
   color: string; // Tailwind class like "bg-[#C9E7FF]"
   image: ImageSourcePropType;

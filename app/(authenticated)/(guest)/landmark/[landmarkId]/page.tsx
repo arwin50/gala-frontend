@@ -1,18 +1,39 @@
 import LocationMap from "@/components/common/LocationMap";
 import ViewMainDetails from "@/components/locations/ViewMainDetails";
 import ViewNearbyLocations from "@/components/locations/ViewNearbyLocations";
+import Constants from "expo-constants";
+import { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
-import { sampleLandmarks } from "@/constants/landmark";
 import { Landmark } from "@/interfaces/landmark";
 import { useLocalSearchParams } from "expo-router";
 
+const API_URL = Constants.expoConfig?.extra?.backendUrl;
+
 export default function LandmarkView() {
   const { landmarkId } = useLocalSearchParams();
-  const landmark: Landmark | undefined = sampleLandmarks.find(
-    (landmark) => landmark.id === landmarkId
-  );
+  const [landmark, setLandmark] = useState<Landmark>();
+
+  useEffect(() => {
+    const fetchAccommodations = async () => {
+      try {
+        const res = await fetch(
+          `${API_URL}/api/accomodation/landmark/${landmarkId}/`
+        );
+        const text = await res.text(); // read as raw text first
+        console.log("Raw response:", text);
+
+        const data = JSON.parse(text); // now parse it manually
+        console.log("Parsed JSON:", data);
+        setLandmark(data.objects);
+      } catch (error) {
+        console.error("Error fetching landmark:", error);
+      }
+    };
+
+    fetchAccommodations();
+  }, [landmarkId]);
 
   if (!landmark) {
     return <Text>{landmarkId} not found</Text>; // Handle the case when the landmark is not found

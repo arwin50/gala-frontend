@@ -4,7 +4,7 @@ import { Accommodation } from "@/interfaces/accommodation";
 
 const sampleAccommodations: Accommodation[] = [
   {
-    id: "prop-001",
+    id: 1,
     title: "Harolds Evotel",
     location: "Las Piñas, Metro Manila",
     description:
@@ -43,7 +43,7 @@ const sampleAccommodations: Accommodation[] = [
       "No smoking. Quiet hours after 10 PM. Respect neighbors and common areas.",
   },
   {
-    id: "prop-002",
+    id: 2,
     title: "Midas Hotel and Casino",
     location: "Pasay, Metro Manila",
     description:
@@ -82,7 +82,7 @@ const sampleAccommodations: Accommodation[] = [
       "No pets. No parties. ID required upon check-in. Casino access for 21+ only.",
   },
   {
-    id: "prop-003",
+    id: 3,
     title: "Park Hotels Group",
     location: "Pasay, Metro Manila",
     description:
@@ -121,7 +121,7 @@ const sampleAccommodations: Accommodation[] = [
       "No loud music. Pets allowed upon request. Maintain cleanliness.",
   },
   {
-    id: "prop-004",
+    id: 4,
     title: "Dumaguete Hotel and Suite",
     location: "Dumaguete, Negros Oriental",
     description:
@@ -160,7 +160,7 @@ const sampleAccommodations: Accommodation[] = [
       "Be mindful of other guests. No parties. Smoking allowed in designated areas.",
   },
   {
-    id: "prop-005",
+    id: 5,
     title: "The Manila Hotel",
     location: "Ermita, Manila",
     description:
@@ -199,7 +199,7 @@ const sampleAccommodations: Accommodation[] = [
       "Respect heritage pieces. No rowdy behavior. Dress appropriately in formal areas.",
   },
   {
-    id: "prop-006",
+    id: 6,
     title: "The Cebu Hotel",
     location: "Cebu City, Cebu",
     description:

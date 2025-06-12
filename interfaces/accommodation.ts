@@ -1,38 +1,73 @@
 import { Landmark } from "@/interfaces/landmark";
 
-export interface Accommodation {
-  id: string;
-  title: string;
-  location: string;
+export interface AccommodationMedia {
+  url: string;
+  type: "image" | "video";
+  caption: string;
+}
+
+export interface Amenity {
+  icon: string;
+  name: string;
   description: string;
-  category_id: string;
-  price_per_night: number;
+}
+
+export interface Policy {
+  title: string;
+  description: string;
+  rules: string;
+}
+
+export interface CancellationPolicy {
+  title: string;
+  description: string;
+  refund_rules: string;
+}
+
+export interface Review {
+  user: {
+    name: string;
+    avatar: string;
+  };
+  rating: number;
+  text: string;
+  timeAgo: string;
+}
+
+export interface Accommodation {
+  id: number;
+  name: string;
+  description: string;
+  location: string;
+  latitude: number;
+  longitude: number;
+  category: {
+    id: number;
+    name: string;
+    description: string;
+  };
+  type?: {
+    id: number;
+    name: string;
+    description: string;
+  };
+  host: {
+    id: number;
+    name: string;
+    image: string;
+  };
   max_guests: number;
   created_at: string;
   updated_at: string;
-  latitude: number;
-  longitude: number;
-  images: any[]; // To be updated for other media types
-  host: {
-    name: string;
-    image: any; // Type is any for now, can be updated to a specific type later
-  };
-  rating: number;
-  totalReviews: number;
-  amenities: {
-    icon: string;
-    label: string;
-  }[];
-  nearbyLandmarks: Landmark[];
-  reviews: {
-    user: {
-      name: string;
-      avatar: any;
-    };
-    rating: number;
-    text: string;
-    timeAgo: string;
-  }[];
-  cancellationPolicy: string;
-  houseRules: string;
+  media: AccommodationMedia[];
+  overall_rating: number | null;
+  total_review_count: number;
+  amenities: Amenity[];
+  nearby_landmarks: Landmark[];
+  reviews: Review[];
+  cancellation_policy: CancellationPolicy[];
+  house_rules: string | null;
+  total_price?: number;
+  is_favorite?: boolean;
+  favorite_count?: number;
 }
