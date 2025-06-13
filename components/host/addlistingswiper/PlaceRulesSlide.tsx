@@ -3,23 +3,12 @@ import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { axiosPublic } from "@/lib/axios/public";
 
-interface Policy {
-  id: number;
-  title: string;
-  description: string;
-}
-
-interface PlaceRulesSlideProps {
-  selectedPolicy: Policy | null;
-  setSelectedPolicy: (policy: Policy) => void;
-}
-
 export default function PlaceRulesSlide({
   selectedPolicy,
   setSelectedPolicy,
-}: PlaceRulesSlideProps) {
+}: any) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [policies, setPolicies] = useState<Policy[]>([]);
+  const [policies, setPolicies] = useState<any>(null);
 
   useEffect(() => {
     const fetchAccomodationPolicies = async () => {
@@ -27,7 +16,7 @@ export default function PlaceRulesSlide({
         const response = await axiosPublic.get("/accomodation/policy");
         setPolicies(response.data.objects);
         // Set initial policy if none selected
-        if (!selectedPolicy && response.data.objects?.length > 0) {
+        if (!selectedPolicy && response.data.objects.length > 0) {
           setSelectedPolicy(response.data.objects[0]);
         }
       } catch (error) {
@@ -35,13 +24,13 @@ export default function PlaceRulesSlide({
       }
     };
     fetchAccomodationPolicies();
-  }, [setSelectedPolicy, selectedPolicy]);
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const selectPolicy = (policy: Policy) => {
+  const selectPolicy = (policy: any) => {
     setSelectedPolicy(policy);
     setIsDropdownOpen(false);
   };
@@ -78,9 +67,9 @@ export default function PlaceRulesSlide({
           {/* Dropdown Options */}
           {isDropdownOpen && (
             <View className="border border-line rounded-xl mt-2 bg-white absolute top-full left-0 right-0 z-10 max-h-[150px] overflow-hidden">
-              {policies?.map((policy) => (
+              {policies?.map((policy: any) => (
                 <Pressable
-                  key={policy.id}
+                  key={policy.title + policy.id + policy.description}
                   onPress={() => selectPolicy(policy)}
                   className="p-4 border-b border-line last:border-b-0"
                 >
@@ -100,11 +89,11 @@ export default function PlaceRulesSlide({
 
         {/* Policy Details Card */}
         {selectedPolicy && (
-          <View className="mt-6 p-4 bg-gray-100 rounded-xl">
+          <View className="mt-6 p-4 bg-gray-100 rounded-xl ">
             <Text className="text-base font-semibold mb-2">
               {selectedPolicy.title}
             </Text>
-            <Text className="text-description text-sm">
+            <Text className="text-description text-sm ">
               {selectedPolicy.description}
             </Text>
           </View>

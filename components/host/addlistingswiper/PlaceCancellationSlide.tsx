@@ -3,23 +3,12 @@ import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { axiosPublic } from "@/lib/axios/public";
 
-interface Policy {
-  id: number;
-  title: string;
-  description: string;
-}
-
-interface PlaceCancellationSlideProps {
-  selectedCancellationPolicy: Policy | null;
-  setSelectedCancellationPolicy: (policy: Policy) => void;
-}
-
 export default function PlaceCancellationSlide({
   selectedCancellationPolicy,
   setSelectedCancellationPolicy,
-}: PlaceCancellationSlideProps) {
+}: any) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [policies, setPolicies] = useState<Policy[]>([]);
+  const [policies, setPolicies] = useState<any>(null);
 
   useEffect(() => {
     const fetchAccomodationPolicies = async () => {
@@ -43,7 +32,7 @@ export default function PlaceCancellationSlide({
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const selectPolicy = (policy: Policy) => {
+  const selectPolicy = (policy: any) => {
     setSelectedCancellationPolicy(policy);
     setIsDropdownOpen(false);
   };
@@ -81,9 +70,9 @@ export default function PlaceCancellationSlide({
           {/* Dropdown Options */}
           {isDropdownOpen && (
             <View className="border border-line rounded-xl mt-2 bg-white absolute top-full left-0 right-0 z-10 max-h-[150px] overflow-hidden">
-              {policies?.map((policy) => (
+              {policies?.map((policy: any) => (
                 <Pressable
-                  key={policy.id}
+                  key={policy.title + policy.id + policy.description}
                   onPress={() => selectPolicy(policy)}
                   className="p-4 border-b border-line last:border-b-0"
                 >

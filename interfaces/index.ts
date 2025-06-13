@@ -10,15 +10,9 @@ export type PropertyType = {
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
 };
 
-export type Category = {
-  id: string;
-  name: string;
-  description: string;
-};
-
 export interface PlaceTypeSlideProps {
-  setSelectedType: (type: Category) => void;
-  initialType?: Category | null;
+  setSelectedType: (type: string | null) => void;
+  initialType?: string | null;
 }
 
 export interface PlaceLocationSlideProps {
@@ -68,7 +62,7 @@ export interface LocationMapProps {
 }
 
 export type MediaItem = {
-  id: string;
+  id: File;
   type: "photo" | "video";
   uri: string;
 };
