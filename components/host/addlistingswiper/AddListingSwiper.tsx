@@ -16,7 +16,7 @@ import SubmitPlace from "./SubmitPlace";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useRef, useState } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Modal, Text, TouchableOpacity, View } from "react-native";
 import { LatLng } from "react-native-maps";
 import Animated, {
   useAnimatedStyle,
@@ -30,6 +30,7 @@ import {
   SetRulesState,
   ToggleRulesState,
 } from "../../../interfaces";
+import { uploadFileToS3 } from "../../../services/s3";
 
 interface AddListingSwiperProps {
   isVisible: boolean;
@@ -80,75 +81,117 @@ export default function AddListingSwiper({
     null
   );
 
+  const [isUploading, setIsUploading] = useState(false);
+
   const swiperSlideCount = 13; // Total number of slides in the Swiper
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (swiperRef.current && currentIndex < swiperSlideCount - 1) {
       swiperRef.current.scrollBy(1);
     } else if (swiperRef.current && currentIndex === swiperSlideCount - 1) {
-      // Create complete property object
-      const property: PlaceProperty = {
-        placeName: placeName,
-        type: selectedType,
-        location: {
-          name: locationName,
-          coordinates: markerCoords,
-        },
-        capacity: {
-          guests: guests,
-          bedrooms: bedrooms,
-          bathrooms: bathrooms,
-        },
+      try {
+        setIsUploading(true);
+        // Upload all media files to S3
+        const uploadedMedia = await Promise.all(
+          media.map(async (item) => {
+            try {
+              // Get the file extension from the URI
+              const fileExtension = item.uri.split('.').pop();
+              const fileName = `media_${Date.now()}.${fileExtension}`;
+              
+              // Create a form data object
+              const formData = new FormData();
+              formData.append('file', {
+                uri: item.uri,
+                type: item.type === 'photo' ? 'image/jpeg' : 'video/mp4',
+                name: fileName
+              } as any);
 
-        // Amenities and Media
-        amenities: selectedAmenities,
-        media: {
-          items: media,
-          coverPhotoId: coverPhotoId,
-        },
+              // Upload to S3
+              const s3Url = await uploadFileToS3(formData, 'accomodation/media');
+              return {
+                ...item,
+                uri: s3Url // Replace local URI with S3 URL
+              };
+            } catch (error) {
+              console.error('Error uploading individual media item:', error);
+              throw error;
+            }
+          })
+        );
 
-        // Description
-        description: {
-          name: placeName,
-          text: placeDescription,
-        },
+        // Create complete property object with uploaded media URLs
+        const property: PlaceProperty = {
+          placeName: placeName,
+          type: selectedType,
+          location: {
+            name: locationName,
+            coordinates: markerCoords,
+          },
+          capacity: {
+            guests: guests,
+            bedrooms: bedrooms,
+            bathrooms: bathrooms,
+          },
 
-        // Pricing
-        pricing: {
-          basePrice: basePrice,
-        },
+          // Amenities and Media with updated S3 URLs
+          amenities: selectedAmenities,
+          media: {
+            items: uploadedMedia,
+            coverPhotoId: coverPhotoId,
+          },
 
-        // Policies and Rules
-        policies: {
-          cancellation: selectedPolicy,
-        },
-        rules: {
-          toggle: toggleRules,
-          set: setRuleValues,
-          additional: additionalRules,
-        },
+          // Description
+          description: {
+            name: placeName,
+            text: placeDescription,
+          },
 
-        // Contact Information
-        contact: {
-          phone: contactNumber,
-          email: emailAddress,
-        },
+          // Pricing
+          pricing: {
+            basePrice: basePrice,
+          },
 
-        // Verification
-        verification: {
-          image: verificationImage,
-        },
-        discounts: selectedDiscounts.map((d) => ({
-          type: d.type,
-          percentage: d.percentage,
-        })),
-      };
+          // Policies and Rules
+          policies: {
+            cancellation: selectedPolicy,
+          },
+          rules: {
+            toggle: toggleRules,
+            set: setRuleValues,
+            additional: additionalRules,
+          },
 
-      // Log the complete property object
-      console.log("=== COMPLETE PROPERTY DETAILS ===");
-      console.log(JSON.stringify(property, null, 2));
+          // Contact Information
+          contact: {
+            phone: contactNumber,
+            email: emailAddress,
+          },
 
-      onClose(); // Close modal when done
+          // Verification
+          verification: {
+            image: verificationImage,
+          },
+          discounts: selectedDiscounts.map((d) => ({
+            type: d.type,
+            percentage: d.percentage,
+          })),
+        };
+
+        // Log the complete property object
+        console.log("=== COMPLETE PROPERTY DETAILS ===");
+        console.log(JSON.stringify(property, null, 2));
+
+        onClose(); // Close modal when done
+      } catch (error) {
+        console.error('Error uploading media to S3:', error);
+        Alert.alert(
+          'Upload Error',
+          'There was an error uploading your media files. Please try again.'
+        );
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -210,6 +253,14 @@ export default function AddListingSwiper({
   return (
     <Modal visible={isVisible} transparent animationType="slide">
       <View className="flex-1 bg-black/30 justify-end ">
+        {isUploading && (
+          <View className="absolute inset-0 bg-black/50 z-50 items-center justify-center">
+            <View className="bg-white p-6 rounded-xl items-center">
+              <ActivityIndicator size="large" color="#166EF3" />
+              <Text className="mt-4 text-gray-700 font-medium">Uploading your listing...</Text>
+            </View>
+          </View>
+        )}
         <View className="bg-white rounded-t-2xl h-[90%] ">
           <TouchableOpacity onPress={onClose} className="m-8 self-end">
             <AntDesign name="close" size={24} color="black" />

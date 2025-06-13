@@ -1,19 +1,13 @@
 import { PutObjectCommand, S3Client, S3ServiceException } from "@aws-sdk/client-s3";
-
-// Validate required environment variables
-const requiredEnvVars = ['AWS_REGION', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_BUCKET_NAME'] as const;
-for (const envVar of requiredEnvVars) {
-    if (!process.env[envVar]) {
-        throw new Error(`Missing required environment variable: ${envVar}`);
-    }
-}
+import Constants from "expo-constants";
+import 'react-native-get-random-values';
 
 // Create a singleton S3 client
 const s3Client = new S3Client({
-    region: process.env.AWS_REGION,
+    region: Constants.expoConfig?.extra?.awsRegion,
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: Constants.expoConfig?.extra?.awsAccessKeyId,
+        secretAccessKey: Constants.expoConfig?.extra?.awsSecretAccessKey,
     },
 });
 
@@ -40,19 +34,34 @@ const sanitizeDirectoryPath = (path: string): string => {
 
 /**
  * Uploads a file to S3 and returns the public URL
- * @param file The file to upload
+ * @param file The file to upload (FormData or File object)
  * @param directoryPath Optional directory path within the bucket (e.g., 'users/avatars', 'events/covers')
  * @returns Promise<string> The public URL of the uploaded file
  * @throws Error if the upload fails
  */
-export const uploadFileToS3 = async (file: File, directoryPath?: string): Promise<string> => {
+export const uploadFileToS3 = async (file: FormData | File, directoryPath?: string): Promise<string> => {
     try {
-        const sanitizedFileName = sanitizeFileName(file.name);
-        const contentType = file.type || 'application/octet-stream';
+        let fileName: string;
+        let contentType: string;
+        let fileData: Uint8Array;
 
-        // Convert File to ArrayBuffer
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+        if (file instanceof FormData) {
+            const fileInfo = file.get('file') as any;
+            fileName = fileInfo.name;
+            contentType = fileInfo.type || 'application/octet-stream';
+            
+            // Read the file from the URI
+            const response = await fetch(fileInfo.uri);
+            const arrayBuffer = await response.arrayBuffer();
+            fileData = new Uint8Array(arrayBuffer);
+        } else {
+            fileName = file.name;
+            contentType = file.type || 'application/octet-stream';
+            const arrayBuffer = await file.arrayBuffer();
+            fileData = new Uint8Array(arrayBuffer);
+        }
+
+        const sanitizedFileName = sanitizeFileName(fileName);
 
         // Construct the full key with directory path if provided
         const key = directoryPath 
@@ -60,15 +69,15 @@ export const uploadFileToS3 = async (file: File, directoryPath?: string): Promis
             : sanitizedFileName;
 
         const command = new PutObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: Constants.expoConfig?.extra?.awsBucketName,
             Key: key,
-            Body: buffer,
+            Body: fileData,
             ContentType: contentType,
         });
 
         await s3Client.send(command);
         
-        return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+        return `https://${Constants.expoConfig?.extra?.awsBucketName}.s3.${Constants.expoConfig?.extra?.awsRegion}.amazonaws.com/${key}`;
     } catch (error) {
         if (error instanceof S3ServiceException) {
             console.error('S3 Service Error:', {
