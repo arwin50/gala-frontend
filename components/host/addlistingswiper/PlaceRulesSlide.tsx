@@ -1,30 +1,26 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { axiosPublic } from "@/lib/axios/public";
+import { useQuery } from "@tanstack/react-query";
 
 export default function PlaceRulesSlide({
   selectedPolicy,
   setSelectedPolicy,
 }: any) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [policies, setPolicies] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchAccomodationPolicies = async () => {
-      try {
-        const response = await axiosPublic.get("/accomodation/policy");
-        setPolicies(response.data.objects);
-        // Set initial policy if none selected
-        if (!selectedPolicy && response.data.objects.length > 0) {
-          setSelectedPolicy(response.data.objects[0]);
-        }
-      } catch (error) {
-        console.error("Error fetching policies:", error);
+  const { data: policies } = useQuery({
+    queryKey: ["placeRules"],
+    queryFn: async () => {
+      const response = await axiosPublic.get("/accomodation/policy");
+      // Set initial policy if none selected
+      if (!selectedPolicy && response.data.objects.length > 0) {
+        setSelectedPolicy(response.data.objects[0]);
       }
-    };
-    fetchAccomodationPolicies();
-  }, []);
+      return response.data.objects;
+    },
+  });
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);

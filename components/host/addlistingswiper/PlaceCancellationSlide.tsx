@@ -1,32 +1,28 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { axiosPublic } from "@/lib/axios/public";
+import { useQuery } from "@tanstack/react-query";
 
 export default function PlaceCancellationSlide({
   selectedCancellationPolicy,
   setSelectedCancellationPolicy,
 }: any) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [policies, setPolicies] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchAccomodationPolicies = async () => {
-      try {
-        const response = await axiosPublic.get(
-          "/accomodation/cancellation-policy"
-        );
-        setPolicies(response.data.objects);
-        // Only set initial policy if none is selected
-        if (!selectedCancellationPolicy && response.data.objects?.length > 0) {
-          setSelectedCancellationPolicy(response.data.objects[0]);
-        }
-      } catch (error) {
-        console.error("Error fetching cancellation policies:", error);
+  const { data: policies } = useQuery({
+    queryKey: ["cancellationPolicies"],
+    queryFn: async () => {
+      const response = await axiosPublic.get(
+        "/accomodation/cancellation-policy"
+      );
+      // Set initial policy if none is selected
+      if (!selectedCancellationPolicy && response.data.objects?.length > 0) {
+        setSelectedCancellationPolicy(response.data.objects[0]);
       }
-    };
-    fetchAccomodationPolicies();
-  }, [setSelectedCancellationPolicy, selectedCancellationPolicy]);
+      return response.data.objects;
+    },
+  });
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);

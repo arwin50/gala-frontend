@@ -16,7 +16,14 @@ import SubmitPlace from "./SubmitPlace";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useRef, useState } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Modal,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { LatLng } from "react-native-maps";
 import Animated, {
   useAnimatedStyle,
@@ -25,15 +32,18 @@ import Animated, {
 import Swiper from "react-native-swiper";
 import { MediaItem } from "../../../interfaces";
 import { axiosPrivate } from "@/lib/axios/private";
+import { uploadFileToS3 } from "../../../services/s3";
 
 interface AddListingSwiperProps {
   isVisible: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 export default function AddListingSwiper({
   isVisible,
   onClose,
+  onSuccess,
 }: AddListingSwiperProps) {
   const swiperRef = useRef<Swiper>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -68,6 +78,7 @@ export default function AddListingSwiper({
     null
   );
   const [user, setUser] = useState<any>(null);
+  const [uploadedMedia, setUploadedMedia] = useState<MediaItem[]>([]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -77,13 +88,58 @@ export default function AddListingSwiper({
     getUser();
   }, []);
 
+  const [isUploading, setIsUploading] = useState(false);
+
   const swiperSlideCount = 13; // Total number of slides in the Swiper
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (swiperRef.current && currentIndex < swiperSlideCount - 1) {
       swiperRef.current.scrollBy(1);
     } else if (swiperRef.current && currentIndex === swiperSlideCount - 1) {
-      createAccomodation();
+      try {
+        setIsUploading(true);
+        // Upload all media files to S3
+        const uploadedMediaItems = await Promise.all(
+          media.map(async (item) => {
+            try {
+              // Get the file extension from the URI
+              const fileExtension = item.uri.split(".").pop();
+              const fileName = `media_${Date.now()}.${fileExtension}`;
+
+              // Create a form data object
+              const formData = new FormData();
+              formData.append("file", {
+                uri: item.uri,
+                type: item.type === "photo" ? "image/jpeg" : "video/mp4",
+                name: fileName,
+              } as any);
+
+              // Upload to S3
+              const s3Url = await uploadFileToS3(
+                formData,
+                "accomodation/media"
+              );
+              return {
+                ...item,
+                uri: s3Url, // Replace local URI with S3 URL
+              };
+            } catch (error) {
+              console.error("Error uploading individual media item:", error);
+              throw error;
+            }
+          })
+        );
+        setUploadedMedia(uploadedMediaItems);
+        createAccomodation(uploadedMediaItems);
+      } catch (error) {
+        console.error("Error uploading media to S3:", error);
+        Alert.alert(
+          "Upload Error",
+          "There was an error uploading your media files. Please try again."
+        );
+      } finally {
+        setIsUploading(false);
+      }
       onClose(); // Close modal when done
     }
   };
@@ -134,7 +190,7 @@ export default function AddListingSwiper({
     };
   });
 
-  const createAccomodation = async () => {
+  const createAccomodation = async (mediaWithS3Urls: MediaItem[]) => {
     const submissionData = {
       host: user.email,
       category: selectedType?.id,
@@ -144,7 +200,17 @@ export default function AddListingSwiper({
       latitude: markerCoords?.latitude.toFixed(6),
       longitude: markerCoords?.longitude.toFixed(6),
       max_guests: guests,
-      media: [],
+      media: mediaWithS3Urls
+        .sort((a, b) => {
+          // Put cover photo first
+          if (a.uri === coverPhotoId) return -1;
+          if (b.uri === coverPhotoId) return 1;
+          return 0;
+        })
+        .map((item: MediaItem) => ({
+          url: item.uri,
+          type: item.type,
+        })),
       blocked_event: [],
       maintenance_event: [],
       amenity: selectedAmenities,
@@ -181,6 +247,7 @@ export default function AddListingSwiper({
 
     try {
       await axiosPrivate.post("/accomodation/", submissionData);
+      onSuccess?.(); // Call onSuccess callback after successful creation
     } catch (err) {
       console.error("failed to create accomodation", err);
     }
@@ -189,6 +256,16 @@ export default function AddListingSwiper({
   return (
     <Modal visible={isVisible} transparent animationType="slide">
       <View className="flex-1 bg-black/30 justify-end ">
+        {isUploading && (
+          <View className="absolute inset-0 bg-black/50 z-50 items-center justify-center">
+            <View className="bg-white p-6 rounded-xl items-center">
+              <ActivityIndicator size="large" color="#166EF3" />
+              <Text className="mt-4 text-gray-700 font-medium">
+                Uploading your listing...
+              </Text>
+            </View>
+          </View>
+        )}
         <View className="bg-white rounded-t-2xl h-[90%] ">
           <TouchableOpacity onPress={onClose} className="m-8 self-end">
             <AntDesign name="close" size={24} color="black" />

@@ -1,7 +1,8 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { axiosPublic } from "@/lib/axios/public";
+import { useQuery } from "@tanstack/react-query";
 
 interface Amenity {
   id: number;
@@ -20,19 +21,14 @@ export default function PlaceAmenitiesSlide({
 }: PlaceAmenitiesSlideProps) {
   const [selectedAmenities, setSelectedAmenitiesLocal] =
     useState<{ id: number }[]>(initialAmenities);
-  const [amenities, setAmenities] = useState<Amenity[]>([]);
 
-  useEffect(() => {
-    const fetchAccomodationAmenities = async () => {
-      try {
-        const response = await axiosPublic.get("/accomodation/amenity");
-        setAmenities(response.data.objects);
-      } catch (error) {
-        console.error("Error fetching amenities:", error);
-      }
-    };
-    fetchAccomodationAmenities();
-  }, []);
+  const { data: amenities = [] } = useQuery({
+    queryKey: ["amenities"],
+    queryFn: async () => {
+      const response = await axiosPublic.get("/accomodation/amenity");
+      return response.data.objects;
+    },
+  });
 
   const toggleAmenity = (amenity: Amenity) => {
     const newSelectedAmenities = selectedAmenities.some(
@@ -58,7 +54,7 @@ export default function PlaceAmenitiesSlide({
         showsVerticalScrollIndicator={false}
       >
         <View className="flex-row flex-wrap gap-4">
-          {amenities?.map((amenity) => (
+          {amenities?.map((amenity: Amenity) => (
             <Pressable
               key={amenity.id}
               onPress={() => toggleAmenity(amenity)}

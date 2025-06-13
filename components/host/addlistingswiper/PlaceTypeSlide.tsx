@@ -1,32 +1,36 @@
-import { PlaceTypeSlideProps, PropertyType, Category } from "@/interfaces";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { axiosPublic } from "@/lib/axios/public";
+import { useQuery } from "@tanstack/react-query";
+
+interface Category {
+  id: number;
+  name: string;
+  icon?: string;
+}
+
+interface PlaceTypeSlideProps {
+  setSelectedType: (type: Category | null) => void;
+  initialType?: string | null;
+}
 
 export default function PlaceTypeSlide({
   setSelectedType,
   initialType = null,
 }: PlaceTypeSlideProps) {
-  const [category, setCategory] = useState<Category[] | null>(null);
-  const [selected, setSelected] = useState<Category | null>(initialType);
+  const [selected, setSelected] = useState<Category | null>(null);
 
-  useEffect(() => {
-    const fetchAccomodationCategories = async () => {
-      try {
-        const response = await axiosPublic.get("/accomodation/category");
-        console.log("API Response:", response.data); // Debug log
-        setCategory(response.data.objects);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-    fetchAccomodationCategories();
-  }, []);
+  const { data: category } = useQuery({
+    queryKey: ["propertyCategories"],
+    queryFn: async () => {
+      const response = await axiosPublic.get("/accomodation/category");
+      return response.data.objects;
+    },
+  });
 
   const handleSelectType = (type: Category) => {
-    setSelected(type);
     console.log(type);
+    setSelected(type);
     setSelectedType(type);
   };
 
@@ -40,7 +44,7 @@ export default function PlaceTypeSlide({
         showsVerticalScrollIndicator={false}
       >
         <View className="flex-row flex-wrap justify-between relative">
-          {category?.map((type, i) => (
+          {category?.map((type: Category, i: number) => (
             <Pressable
               key={i}
               onPress={() => handleSelectType(type)}
