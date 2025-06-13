@@ -47,20 +47,28 @@ export default function PlaceMediaSlide({
           uri: asset.uri,
         })
       );
-      setMedia([...media, ...newMediaItems]);
 
-      // Automatically set the first added image as cover if no cover exists and it's a photo
+      // If no cover photo exists and we're adding photos, set the first photo as cover
       if (coverPhotoId === null) {
         const firstPhoto = newMediaItems.find((item) => item.type === "photo");
         if (firstPhoto) {
-          setCoverPhotoId(firstPhoto.id);
+          setCoverPhotoId(firstPhoto.uri);
+          // Put the cover photo first
+          setMedia([
+            firstPhoto,
+            ...media,
+            ...newMediaItems.filter((item) => item.uri !== firstPhoto.uri),
+          ]);
+          return;
         }
       }
+
+      setMedia([...media, ...newMediaItems]);
     }
   };
 
   const handleDeleteMedia = (id: string) => {
-    const newMedia = media.filter((item) => item.id !== id);
+    const newMedia = media.filter((item) => item.uri !== id);
     setMedia(newMedia);
 
     // If the deleted item was the cover photo, clear the cover photo state and set the next photo as cover if available
@@ -68,16 +76,24 @@ export default function PlaceMediaSlide({
       setCoverPhotoId(null);
       const remainingPhotos = newMedia.filter((item) => item.type === "photo");
       if (remainingPhotos.length > 0) {
-        setCoverPhotoId(remainingPhotos[0].id);
+        const newCoverPhoto = remainingPhotos[0];
+        setCoverPhotoId(newCoverPhoto.uri);
+        // Reorder media to put new cover photo first
+        setMedia([
+          newCoverPhoto,
+          ...newMedia.filter((item) => item.uri !== newCoverPhoto.uri),
+        ]);
       }
     }
   };
 
   const handleSetCoverPhoto = (id: string) => {
     // Only set as cover if it's a photo (not a video)
-    const item = media.find((item) => item.id === id);
+    const item = media.find((item) => item.uri === id);
     if (item && item.type === "photo") {
       setCoverPhotoId(id);
+      // Reorder media to put new cover photo first
+      setMedia([item, ...media.filter((mediaItem) => mediaItem.uri !== id)]);
     } else {
       Alert.alert(
         "Cannot Set as Cover",
@@ -93,7 +109,7 @@ export default function PlaceMediaSlide({
         text: "Set as Cover Photo",
         onPress: () => {
           if (item.type === "photo") {
-            handleSetCoverPhoto(item.id);
+            handleSetCoverPhoto(item.uri);
           } else {
             Alert.alert(
               "Cannot Set as Cover",
@@ -104,7 +120,7 @@ export default function PlaceMediaSlide({
       },
       {
         text: "Delete Photo",
-        onPress: () => handleDeleteMedia(item.id),
+        onPress: () => handleDeleteMedia(item.uri),
         style: "destructive",
       },
     ]);
@@ -131,7 +147,7 @@ export default function PlaceMediaSlide({
         <View className="flex-row flex-wrap justify-between relative">
           {slotsToRender.map((_, i) => {
             const item = media[i];
-            const isCover = coverPhotoId === item?.id;
+            const isCover = coverPhotoId === item?.uri;
 
             if (item) {
               return (

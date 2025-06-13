@@ -1,8 +1,19 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import "./global.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-SplashScreen.preventAutoHideAsync(); 
+SplashScreen.preventAutoHideAsync();
+
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 60, // 1 hour
+      cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+    },
+  },
+});
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
@@ -20,10 +31,15 @@ export default function RootLayout() {
   if (!ready) return null;
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(unauthenticated)" options={{ headerShown: false }} />
-      <Stack.Screen name="(authenticated)" options={{ headerShown: false }} />
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="(unauthenticated)"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="(authenticated)" options={{ headerShown: false }} />
+      </Stack>
+    </QueryClientProvider>
   );
 }

@@ -1,32 +1,41 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { Amenity, PlaceAmenitiesSlideProps } from "../../../interfaces";
+import { axiosPublic } from "@/lib/axios/public";
+import { useQuery } from "@tanstack/react-query";
 
-const amenities: Amenity[] = [
-  { name: "WiFi", icon: "wifi" },
-  { name: "Pool", icon: "pool" },
-  { name: "Kitchen", icon: "stove" },
-  { name: "Parking", icon: "car" },
-  { name: "Air Conditioning", icon: "snowflake" },
-  { name: "TV", icon: "television" },
-  { name: "Washer", icon: "washing-machine" },
-  { name: "Gym", icon: "dumbbell" },
-  { name: "Elevator", icon: "elevator" },
-  { name: "Security", icon: "shield-check" },
-];
+interface Amenity {
+  id: number;
+  name: string;
+  icon?: string;
+}
+
+interface PlaceAmenitiesSlideProps {
+  setSelectedAmenities: (amenities: { id: number }[]) => void;
+  initialAmenities?: { id: number }[];
+}
 
 export default function PlaceAmenitiesSlide({
   setSelectedAmenities,
   initialAmenities = [],
 }: PlaceAmenitiesSlideProps) {
   const [selectedAmenities, setSelectedAmenitiesLocal] =
-    useState<string[]>(initialAmenities);
+    useState<{ id: number }[]>(initialAmenities);
 
-  const toggleAmenity = (amenityName: string) => {
-    const newSelectedAmenities = selectedAmenities.includes(amenityName)
-      ? selectedAmenities.filter((name) => name !== amenityName)
-      : [...selectedAmenities, amenityName];
+  const { data: amenities = [] } = useQuery({
+    queryKey: ["amenities"],
+    queryFn: async () => {
+      const response = await axiosPublic.get("/accomodation/amenity");
+      return response.data.objects;
+    },
+  });
+
+  const toggleAmenity = (amenity: Amenity) => {
+    const newSelectedAmenities = selectedAmenities.some(
+      (a) => a.id === amenity.id
+    )
+      ? selectedAmenities.filter((a) => a.id !== amenity.id)
+      : [...selectedAmenities, { id: amenity.id }];
 
     setSelectedAmenitiesLocal(newSelectedAmenities);
     setSelectedAmenities(newSelectedAmenities);
@@ -41,22 +50,22 @@ export default function PlaceAmenitiesSlide({
         Amenities can be changed after publishing your listing later.
       </Text>
       <ScrollView
-        className="mt-8 mb-5 p-6 border border-line rounded-xl drop-shadow-lg"
+        className="mt-8 mb-5 p-4 border border-line rounded-xl drop-shadow-lg"
         showsVerticalScrollIndicator={false}
       >
-        <View className="flex-row flex-wrap justify-between">
-          {amenities.map((amenity, i) => (
+        <View className="flex-row flex-wrap gap-4">
+          {amenities?.map((amenity: Amenity) => (
             <Pressable
-              key={i}
-              onPress={() => toggleAmenity(amenity.name)}
+              key={amenity.id}
+              onPress={() => toggleAmenity(amenity)}
               className={`w-[30%] h-[100px] mb-4 shadow rounded-lg p-2 ${
-                selectedAmenities.includes(amenity.name)
+                selectedAmenities.some((a) => a.id === amenity.id)
                   ? "bg-blue-50 border-2 border-blue-500"
                   : "bg-white"
               }`}
             >
               <View className="items-center justify-center h-full">
-                <MaterialCommunityIcons
+                {/*  <MaterialCommunityIcons
                   name={amenity.icon}
                   size={24}
                   color={
@@ -64,10 +73,10 @@ export default function PlaceAmenitiesSlide({
                       ? "#0066CC"
                       : "#666666"
                   }
-                />
+                /> */}
                 <Text
                   className={`mt-1 text-center font-medium text-xs ${
-                    selectedAmenities.includes(amenity.name)
+                    selectedAmenities.some((a) => a.id === amenity.id)
                       ? "text-blue-600"
                       : "text-gray-700"
                   }`}

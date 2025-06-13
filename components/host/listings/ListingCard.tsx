@@ -46,7 +46,7 @@ export default function ListingCard({
         </View>
 
         {/* Bottom Section */}
-        <View className="flex-row justify-between items-center mt-4">
+        <View className="flex-row justify-between items-center ">
           <Pressable onPress={onShowBookings}>
             <Text className="text-blue-600 underline text-sm font-semibold">
               {bookings} bookings

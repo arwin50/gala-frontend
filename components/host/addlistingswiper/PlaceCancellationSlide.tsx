@@ -1,41 +1,35 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import {
-  CancellationPolicy,
-  PlaceCancellationSlideProps,
-} from "../../../interfaces";
-
-const policies: CancellationPolicy[] = [
-  {
-    name: "Flexible",
-    description:
-      "Full refund for cancellations made up to 24 hours before check-in. Cancellations made less than 24 hours in advance: no refund for the first night or first service, remainder refunded.",
-  },
-  {
-    name: "Moderate",
-    description:
-      "Full refund for cancellations made up to 5 days before check-in. Cancellations made less than 5 days in advance: 50% refund of the nightly rate for all nights.",
-  },
-  {
-    name: "Strict",
-    description:
-      "Full refund for cancellations made within 48 hours of booking if the cancellation is at least 14 days before check-in. No refund if the cancellation is less than 14 days before check-in.",
-  },
-];
+import { axiosPublic } from "@/lib/axios/public";
+import { useQuery } from "@tanstack/react-query";
 
 export default function PlaceCancellationSlide({
-  selectedPolicy,
-  setSelectedPolicy,
-}: PlaceCancellationSlideProps) {
+  selectedCancellationPolicy,
+  setSelectedCancellationPolicy,
+}: any) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { data: policies } = useQuery({
+    queryKey: ["cancellationPolicies"],
+    queryFn: async () => {
+      const response = await axiosPublic.get(
+        "/accomodation/cancellation-policy"
+      );
+      // Set initial policy if none is selected
+      if (!selectedCancellationPolicy && response.data.objects?.length > 0) {
+        setSelectedCancellationPolicy(response.data.objects[0]);
+      }
+      return response.data.objects;
+    },
+  });
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const selectPolicy = (policy: CancellationPolicy) => {
-    setSelectedPolicy(policy);
+  const selectPolicy = (policy: any) => {
+    setSelectedCancellationPolicy(policy);
     setIsDropdownOpen(false);
   };
 
@@ -43,10 +37,14 @@ export default function PlaceCancellationSlide({
     <View className="flex-1 m-8 mt-0">
       <Text className="text-3xl font-extrabold">Cancellation Policy</Text>
       <Text className="mt-2 text-description">
-        Give your place a name, you can change it after posting later.
+        Cancellation policies help set clear expectations with guests and
+        protect your income. By choosing the right policy whether flexible or
+        strict, you can balance attracting more bookings with reducing the risk
+        of last-minute cancellations. It also builds trust, as guests appreciate
+        knowing what to expect if plans change.
       </Text>
       {/* Policy Section */}
-      <View className="mt-20 relative">
+      <View className="mt-16 relative">
         <Text className="text-lg font-semibold mb-2">Your Policy</Text>
 
         {/* Dropdown-like element */}
@@ -55,7 +53,9 @@ export default function PlaceCancellationSlide({
             onPress={toggleDropdown}
             className="border border-line rounded-xl p-4 flex-row justify-between items-center"
           >
-            <Text className="text-base">{selectedPolicy.name}</Text>
+            <Text className="text-base">
+              {selectedCancellationPolicy?.title || "Select a policy"}
+            </Text>
             <MaterialCommunityIcons
               name={isDropdownOpen ? "chevron-up" : "chevron-down"}
               size={24}
@@ -66,13 +66,13 @@ export default function PlaceCancellationSlide({
           {/* Dropdown Options */}
           {isDropdownOpen && (
             <View className="border border-line rounded-xl mt-2 bg-white absolute top-full left-0 right-0 z-10 max-h-[150px] overflow-hidden">
-              {policies.map((policy) => (
+              {policies?.map((policy: any) => (
                 <Pressable
-                  key={policy.name}
+                  key={policy.title + policy.id + policy.description}
                   onPress={() => selectPolicy(policy)}
                   className="p-4 border-b border-line last:border-b-0"
                 >
-                  <Text className="text-base">{policy.name}</Text>
+                  <Text className="text-base">{policy.title}</Text>
                 </Pressable>
               ))}
             </View>
@@ -87,14 +87,16 @@ export default function PlaceCancellationSlide({
         </Pressable>
 
         {/* Policy Details Card */}
-        <View className="mt-6 p-4 bg-gray-100 rounded-xl">
-          <Text className="text-base font-semibold mb-2">
-            {selectedPolicy.name}
-          </Text>
-          <Text className="text-description text-sm">
-            {selectedPolicy.description}
-          </Text>
-        </View>
+        {selectedCancellationPolicy && (
+          <View className="mt-6 p-4 bg-gray-100 rounded-xl">
+            <Text className="text-base font-semibold mb-2">
+              {selectedCancellationPolicy.title}
+            </Text>
+            <Text className="text-description text-sm">
+              {selectedCancellationPolicy.description}
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );

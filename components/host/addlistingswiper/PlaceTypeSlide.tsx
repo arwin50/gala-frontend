@@ -1,24 +1,35 @@
-import { PlaceTypeSlideProps, PropertyType } from "@/interfaces";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { axiosPublic } from "@/lib/axios/public";
+import { useQuery } from "@tanstack/react-query";
 
-const propertyTypes: PropertyType[] = [
-  { name: "Hotel", icon: "bed" },
-  { name: "Homestay", icon: "home" },
-  { name: "Event Place", icon: "party-popper" },
-  { name: "Resort", icon: "umbrella-beach" },
-  { name: "Villa", icon: "home-group" },
-  { name: "Condo", icon: "office-building-cog" },
-];
+interface Category {
+  id: number;
+  name: string;
+  icon?: string;
+}
+
+interface PlaceTypeSlideProps {
+  setSelectedType: (type: Category | null) => void;
+  initialType?: string | null;
+}
 
 export default function PlaceTypeSlide({
   setSelectedType,
   initialType = null,
 }: PlaceTypeSlideProps) {
-  const [selected, setSelected] = useState<string | null>(initialType);
+  const [selected, setSelected] = useState<Category | null>(null);
 
-  const handleSelectType = (type: string) => {
+  const { data: category } = useQuery({
+    queryKey: ["propertyCategories"],
+    queryFn: async () => {
+      const response = await axiosPublic.get("/accomodation/category");
+      return response.data.objects;
+    },
+  });
+
+  const handleSelectType = (type: Category) => {
+    console.log(type);
     setSelected(type);
     setSelectedType(type);
   };
@@ -33,25 +44,25 @@ export default function PlaceTypeSlide({
         showsVerticalScrollIndicator={false}
       >
         <View className="flex-row flex-wrap justify-between relative">
-          {propertyTypes.map((type, i) => (
+          {category?.map((type: Category, i: number) => (
             <Pressable
               key={i}
-              onPress={() => handleSelectType(type.name)}
+              onPress={() => handleSelectType(type)}
               className={`w-[48%] h-[140px] mb-8 shadow rounded-lg p-4 ${
-                selected === type.name
+                selected?.id === type.id
                   ? "bg-blue-50 border-2 border-blue-500"
                   : "bg-white"
               }`}
             >
               <View className="items-center justify-center h-full">
-                <MaterialCommunityIcons
+                {/* <MaterialCommunityIcons
                   name={type.icon}
                   size={32}
                   color={selected === type.name ? "#0066CC" : "#666666"}
-                />
+                /> */}
                 <Text
                   className={`mt-2 text-center font-medium ${
-                    selected === type.name ? "text-blue-600" : "text-gray-700"
+                    selected?.id === type.id ? "text-blue-600" : "text-gray-700"
                   }`}
                 >
                   {type.name}

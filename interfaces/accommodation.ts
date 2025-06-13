@@ -24,15 +24,15 @@ export interface Accommodation {
     label: string;
   }[];
   nearbyLandmarks: Landmark[];
-  reviews: {
+  reviews?: {
     user: {
       name: string;
       avatar: any;
     };
-    rating: number;
+    rating: number; 
     text: string;
     timeAgo: string;
   }[];
-  cancellationPolicy: string;
+  cancellationPolicy: string; 
   houseRules: string;
 }
