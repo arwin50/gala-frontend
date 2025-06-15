@@ -3,7 +3,7 @@ import { Landmark } from "@/interfaces/landmark";
 
 export const sampleLandmarks: Landmark[] = [
   {
-    id: "landmark-001",
+    id: 1,
     name: "Gynkui Killa Dormitory",
     location: "Alaminos, Pangasinan",
     description: "A peaceful dorm with a golden view of rice terraces.",
@@ -16,7 +16,7 @@ export const sampleLandmarks: Landmark[] = [
     otherNearbyLandmarks: [],
   },
   {
-    id: "landmark-002",
+    id: 2,
     name: "Kamuning Hideout",
     location: "Quezon City, Metro Manila",
     description: "A cozy escape in the heart of the city.",
@@ -29,7 +29,7 @@ export const sampleLandmarks: Landmark[] = [
     otherNearbyLandmarks: [],
   },
   {
-    id: "landmark-003",
+    id: 3,
     name: "Cebu Hilltop Studio",
     location: "Busay, Cebu City",
     description:
@@ -43,7 +43,7 @@ export const sampleLandmarks: Landmark[] = [
     otherNearbyLandmarks: [],
   },
   {
-    id: "landmark-004",
+    id: 4,
     name: "Siargao Surf Shack",
     location: "General Luna, Siargao",
     description:
@@ -57,7 +57,7 @@ export const sampleLandmarks: Landmark[] = [
     otherNearbyLandmarks: [],
   },
   {
-    id: "landmark-005",
+    id: 5,
     name: "Baguio Alpine Nest",
     location: "Baguio City",
     description:
@@ -71,7 +71,7 @@ export const sampleLandmarks: Landmark[] = [
     otherNearbyLandmarks: [],
   },
   {
-    id: "landmark-006",
+    id: 6,
     name: "Palawan Hidden Bay Villa",
     location: "El Nido, Palawan",
     description:

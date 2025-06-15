@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 interface AccommodationViewDisplayTextProps {
   sectionTitle: string;
-  sectionContent: string;
+  sectionContent: string | null;
 }
 
 const ViewDisplayText: React.FC<AccommodationViewDisplayTextProps> = ({

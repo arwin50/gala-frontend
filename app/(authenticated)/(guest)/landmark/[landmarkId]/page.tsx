@@ -1,18 +1,33 @@
 import LocationMap from "@/components/common/LocationMap";
 import ViewMainDetails from "@/components/locations/ViewMainDetails";
 import ViewNearbyLocations from "@/components/locations/ViewNearbyLocations";
+import { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
-import { sampleLandmarks } from "@/constants/landmark";
 import { Landmark } from "@/interfaces/landmark";
+import { axiosPublic } from "@/lib/axios/public";
 import { useLocalSearchParams } from "expo-router";
 
 export default function LandmarkView() {
   const { landmarkId } = useLocalSearchParams();
-  const landmark: Landmark | undefined = sampleLandmarks.find(
-    (landmark) => landmark.id === landmarkId
-  );
+  const [landmark, setLandmark] = useState<Landmark>();
+
+  useEffect(() => {
+    const fetchLandmark = async () => {
+      try {
+        const response = await axiosPublic.get(
+          `/api/accommodation/landmark/${landmarkId}/`
+        );
+        console.log(response);
+        setLandmark(response.data.objects);
+      } catch (error) {
+        console.error("Error fetching landmark:", error);
+      }
+    };
+
+    fetchLandmark();
+  }, [landmarkId]);
 
   if (!landmark) {
     return <Text>{landmarkId} not found</Text>; // Handle the case when the landmark is not found

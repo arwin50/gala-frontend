@@ -1,3 +1,4 @@
+import { Amenity } from "@/interfaces";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -10,11 +11,6 @@ const colors = [
   "bg-purple-100",
   "bg-orange-100",
 ];
-
-type Amenity = {
-  icon: string; // FontAwesome5 icon name
-  label: string;
-};
 
 type ViewAmenitiesProps = {
   amenities: Amenity[];
@@ -45,13 +41,16 @@ const ViewAmenities = ({ amenities, onShowAllPress }: ViewAmenitiesProps) => {
               colors[index % colors.length]
             }`}
           >
-            <FontAwesome5 name={item.icon} size={16} />
+            <FontAwesome5
+              name={FontAwesome5.glyphMap[item.icon] ? item.icon : "question"} // fallback
+              size={16}
+            />
             <Text
               className="text-xs mt-1 text-center"
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {item.label}
+              {item.name}
             </Text>
           </View>
         ))}

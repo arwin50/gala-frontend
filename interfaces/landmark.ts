@@ -1,7 +1,7 @@
 import { Accommodation } from "@/interfaces/accommodation";
 
 export interface Landmark {
-  id: string;
+  id: number;
   name: string;
   location: string;
   description: string;

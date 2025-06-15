@@ -1,240 +1,103 @@
-import bgMetroManila from "@/assets/images/places_pic/places_metroManila.jpg";
-import { sampleLandmarks } from "@/constants/landmark";
 import { Accommodation } from "@/interfaces/accommodation";
 
 const sampleAccommodations: Accommodation[] = [
   {
-    id: "prop-001",
-    title: "Harolds Evotel",
-    location: "Las Piñas, Metro Manila",
+    id: 1,
+    name: "Mt. Kanlaon",
     description:
-      "Charming hotel in Las Piñas with cozy rooms and easy access to the city’s best malls and restaurants.",
-    category_id: "hotels",
-    price_per_night: 2500,
-    max_guests: 3,
-    created_at: "2024-09-18T08:45:00Z",
-    updated_at: "2025-05-20T11:12:00Z",
-    latitude: 14.45,
-    longitude: 120.9817,
-    images: Array(6).fill(bgMetroManila),
-    host: {
-      name: "BINI Sheena",
-      image: bgMetroManila,
+      "A tranquil riverside cabin perfect for a weekend escape. Surrounded by nature, yet close to the town center.",
+    location: "Blue Ridge, Georgia, USA",
+    latitude: 34.8632,
+    longitude: -84.3247,
+    category: {
+      id: 2,
+      name: "Nature Stay",
+      description:
+        "Lodgings immersed in nature like cabins, yurts, or eco-retreats.",
     },
-    rating: 4.5,
-    totalReviews: 120,
-    amenities: [
-      { icon: "wifi", label: "Internet" },
-      { icon: "tv", label: "Cable TV" },
-      { icon: "snowflake", label: "Air Conditioning" },
-    ],
-    nearbyLandmarks: [sampleLandmarks[0]],
-    reviews: [
-      {
-        user: { name: "BINI Colet", avatar: bgMetroManila },
-        rating: 5,
-        text: "Super comfy beds and the free breakfast was yum!",
-        timeAgo: "2 months ago",
-      },
-    ],
-    cancellationPolicy:
-      "Free cancellation within 24 hours. Partial refund up to 3 days before check-in.",
-    houseRules:
-      "No smoking. Quiet hours after 10 PM. Respect neighbors and common areas.",
-  },
-  {
-    id: "prop-002",
-    title: "Midas Hotel and Casino",
-    location: "Pasay, Metro Manila",
-    description:
-      "Luxury stay in the heart of Pasay, featuring a casino and rooftop dining.",
-    category_id: "resorts",
-    price_per_night: 3000,
-    max_guests: 2,
-    created_at: "2024-10-01T14:20:00Z",
-    updated_at: "2025-05-18T18:10:00Z",
-    latitude: 14.5469,
-    longitude: 120.9942,
-    images: Array(6).fill(bgMetroManila),
-    host: {
-      name: "BINI Stacey",
-      image: bgMetroManila,
+    type: {
+      id: 1,
+      name: "Cabin",
+      description: "Rustic wooden house in the forest or countryside.",
     },
-    rating: 5.0,
-    totalReviews: 240,
-    amenities: [
-      { icon: "wifi", label: "Internet" },
-      { icon: "cocktail", label: "Mini Bar" },
-      { icon: "car", label: "Free Parking" },
-    ],
-    nearbyLandmarks: [],
-    reviews: [
-      {
-        user: { name: "BINI Maloi", avatar: bgMetroManila },
-        rating: 5,
-        text: "This place made me feel like a queen 😌✨",
-        timeAgo: "3 weeks ago",
-      },
-    ],
-    cancellationPolicy:
-      "Cancel up to 7 days before check-in for a full refund. No refund after.",
-    houseRules:
-      "No pets. No parties. ID required upon check-in. Casino access for 21+ only.",
-  },
-  {
-    id: "prop-003",
-    title: "Park Hotels Group",
-    location: "Pasay, Metro Manila",
-    description:
-      "Elegant rooms with fast WiFi and a peaceful ambiance perfect for business travelers.",
-    category_id: "resorts",
-    price_per_night: 1000000,
+    host: {
+      id: 101,
+      name: "Emily Dawson",
+      image: "https://example.com/images/hosts/emily.jpg",
+    },
     max_guests: 4,
-    created_at: "2024-12-05T12:30:00Z",
-    updated_at: "2025-05-19T09:42:00Z",
-    latitude: 14.5339,
-    longitude: 121.0004,
-    images: Array(6).fill(bgMetroManila),
-    host: {
-      name: "BINI Jhoanna",
-      image: bgMetroManila,
-    },
-    rating: 4.5,
-    totalReviews: 150,
-    amenities: [
-      { icon: "wifi", label: "Internet" },
-      { icon: "coffee", label: "Café" },
-      { icon: "briefcase", label: "Workspace" },
-    ],
-    nearbyLandmarks: [],
-    reviews: [
+    created_at: "2024-12-10T15:30:00Z",
+    updated_at: "2025-05-20T12:45:00Z",
+    media: [
       {
-        user: { name: "BINI Aiah", avatar: bgMetroManila },
-        rating: 4,
-        text: "Business trip made easy. Fast WiFi and peaceful vibes.",
-        timeAgo: "6 months ago",
+        url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        type: "video",
+        caption: "Exterior view of the riverside cabin",
+      },
+      {
+        url: "https://fastly.picsum.photos/id/28/4928/3264.jpg?hmac=GnYF-RnBUg44PFfU5pcw_Qs0ReOyStdnZ8MtQWJqTfA",
+        type: "image",
+        caption: "Exterior view of the riverside cabin",
+      },
+      {
+        url: "https://example.com/videos/cabin-tour.mp4",
+        type: "video",
+        caption: "Full video tour of the cabin",
       },
     ],
-    cancellationPolicy:
-      "Full refund for cancellations made 48 hours in advance.",
-    houseRules:
-      "No loud music. Pets allowed upon request. Maintain cleanliness.",
-  },
-  {
-    id: "prop-004",
-    title: "Dumaguete Hotel and Suite",
-    location: "Dumaguete, Negros Oriental",
-    description:
-      "Nestled by the sea, this relaxing hotel provides sunset views and a calm environment for digital nomads.",
-    category_id: "hotels",
-    price_per_night: 1000000,
-    max_guests: 5,
-    created_at: "2025-01-10T11:15:00Z",
-    updated_at: "2025-05-21T08:01:00Z",
-    latitude: 9.3078,
-    longitude: 123.3054,
-    images: Array(6).fill(bgMetroManila),
-    host: {
-      name: "BINI Gwen",
-      image: bgMetroManila,
-    },
-    rating: 5.0,
-    totalReviews: 90,
+    overall_rating: 4.8,
+    total_review_count: 67,
     amenities: [
-      { icon: "wifi", label: "Internet" },
-      { icon: "swimmer", label: "Pool" },
-      { icon: "concierge-bell", label: "Room Service" },
+      {
+        icon: "wifi",
+        name: "Free Wi-Fi",
+        description: "Unlimited high-speed internet access",
+      },
+      {
+        icon: "fire",
+        name: "Fireplace",
+        description: "Indoor fireplace for cozy evenings",
+      },
+      {
+        icon: "hot-tub",
+        name: "Hot Tub",
+        description: "Outdoor hot tub overlooking the river",
+      },
     ],
-    nearbyLandmarks: [],
+    nearby_landmarks: [],
     reviews: [
       {
-        user: { name: "BINI Mikha", avatar: bgMetroManila },
+        user: {
+          name: "Sarah M.",
+          avatar: "https://example.com/images/users/sarah.jpg",
+        },
         rating: 5,
-        text: "Sunsets were unreal. I meditated every morning 💆‍♀️",
+        text: "Absolutely magical! The hot tub and view were unbeatable.",
         timeAgo: "2 weeks ago",
       },
-    ],
-    cancellationPolicy:
-      "Cancel up to 3 days before check-in for full refund. 50% refund after.",
-    houseRules:
-      "Be mindful of other guests. No parties. Smoking allowed in designated areas.",
-  },
-  {
-    id: "prop-005",
-    title: "The Manila Hotel",
-    location: "Ermita, Manila",
-    description:
-      "An iconic heritage hotel in Manila offering royal treatment and a deep dive into Filipino history.",
-    category_id: "transients",
-    price_per_night: 1000000,
-    max_guests: 3,
-    created_at: "2024-07-23T09:05:00Z",
-    updated_at: "2025-05-19T17:30:00Z",
-    latitude: 14.5825,
-    longitude: 120.973,
-    images: Array(6).fill(bgMetroManila),
-    host: {
-      name: "BINI Aya",
-      image: bgMetroManila,
-    },
-    rating: 5.0,
-    totalReviews: 480,
-    amenities: [
-      { icon: "wifi", label: "Internet" },
-      { icon: "spa", label: "Spa" },
-      { icon: "utensils", label: "Fine Dining" },
-    ],
-    nearbyLandmarks: [],
-    reviews: [
       {
-        user: { name: "BINI Gwen-dolyn", avatar: bgMetroManila },
-        rating: 5,
-        text: "I felt like a queen from a telenovela. Historic and fancy!",
-        timeAgo: "4 months ago",
+        user: {
+          name: "Jake L.",
+          avatar: "https://example.com/images/users/jake.jpg",
+        },
+        rating: 4.5,
+        text: "Peaceful getaway with thoughtful amenities. Would return!",
+        timeAgo: "1 month ago",
       },
     ],
-    cancellationPolicy:
-      "Full refund 5 days before check-in. 50% refund thereafter.",
-    houseRules:
-      "Respect heritage pieces. No rowdy behavior. Dress appropriately in formal areas.",
-  },
-  {
-    id: "prop-006",
-    title: "The Cebu Hotel",
-    location: "Cebu City, Cebu",
-    description:
-      "Modern hotel with panoramic views of the Cebu skyline. Great for vacation and remote work.",
-    category_id: "hotels",
-    price_per_night: 1000000,
-    max_guests: 4,
-    created_at: "2024-11-02T13:50:00Z",
-    updated_at: "2025-05-22T06:00:00Z",
-    latitude: 10.3157,
-    longitude: 123.8854,
-    images: Array(6).fill(bgMetroManila),
-    host: {
-      name: "BINI Jhoanna",
-      image: bgMetroManila,
-    },
-    rating: 5.0,
-    totalReviews: 310,
-    amenities: [
-      { icon: "wifi", label: "Internet" },
-      { icon: "dumbbell", label: "Gym" },
-      { icon: "coffee", label: "Breakfast Included" },
-    ],
-    nearbyLandmarks: [],
-    reviews: [
+    cancellation_policy: [
       {
-        user: { name: "BINI Maloi", avatar: bgMetroManila },
-        rating: 5,
-        text: "Remote work has never been this comfy. A++ service!",
-        timeAgo: "5 days ago",
+        title: "Flexible",
+        description: "Full refund if canceled 3 days before check-in.",
+        refund_rules:
+          "Cancel within 3 days of check-in for full refund, after that 50% refund.",
       },
     ],
-    cancellationPolicy: "Cancel anytime before check-in for a full refund.",
-    houseRules:
-      "Keep noise to a minimum. ID check at reception. No smoking inside rooms.",
+    house_rules:
+      "No smoking. No loud music after 10 PM. Pets allowed with prior notice.",
+    total_price: 420,
+    is_favorite: true,
+    favorite_count: 128,
   },
 ];
 
