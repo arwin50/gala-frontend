@@ -1,6 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { router } from "expo-router";
-import React, { useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   SafeAreaView,
   ScrollView,
@@ -21,17 +22,43 @@ import PlaceNameSlide from "../../../../components/host/addlistingswiper/PlaceNa
 import PlacePriceSlide from "../../../../components/host/addlistingswiper/PlacePriceSlide";
 import PlaceRulesSlide from "../../../../components/host/addlistingswiper/PlaceRulesSlide";
 import PlaceTypeSlide from "../../../../components/host/addlistingswiper/PlaceTypeSlide";
-import PlaceVerificationSlide from "../../../../components/host/addlistingswiper/PlaceVerificationSlide";
-import {
-  CancellationPolicy,
-  MediaItem,
-  PlaceProperty,
-  SetRulesState,
-  ToggleRulesState,
-} from "../../../../interfaces";
+import { MediaItem } from "../../../../interfaces";
+import { axiosPrivate } from "@/lib/axios/private";
+
+type Category = {
+  id: number;
+  name: string;
+  icon?: string;
+};
+
+type CRUDListing = {
+  id: string;
+  name: string;
+  category: number;
+  location: string;
+  media: {
+    url: string;
+    type: string;
+  }[];
+  price: {
+    name: string;
+    price: string;
+  }[];
+  cancellation_policy: {
+    id: number;
+  };
+  policy: {
+    id: number;
+  };
+};
+
+type User = {
+  email: string;
+};
 
 export default function HostMenuPage() {
-  // Modal visibility states
+  const { id } = useLocalSearchParams();
+  const queryClient = useQueryClient();
   const [isPropertyTypeModalVisible, setIsPropertyTypeModalVisible] =
     useState(false);
   const [isLocationModalVisible, setIsLocationModalVisible] = useState(false);
@@ -45,96 +72,171 @@ export default function HostMenuPage() {
   const [isRulesModalVisible, setIsRulesModalVisible] = useState(false);
   const [isNameModalVisible, setIsNameModalVisible] = useState(false);
   const [isBasicInfoModalVisible, setIsBasicInfoModalVisible] = useState(false);
-  const [isVerificationModalVisible, setIsVerificationModalVisible] =
-    useState(false);
   const [isDiscountsModalVisible, setIsDiscountsModalVisible] = useState(false);
 
   // Property state
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<Category | null>(null);
   const [markerCoords, setMarkerCoords] = useState<LatLng | null>(null);
   const [locationName, setLocationName] = useState<string>("");
   const [guests, setGuests] = useState<number>(0);
   const [bedrooms, setBedrooms] = useState<number>(0);
   const [bathrooms, setBathrooms] = useState<number>(0);
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [selectedAmenities, setSelectedAmenities] = useState<{ id: number }[]>(
+    []
+  );
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [coverPhotoId, setCoverPhotoId] = useState<string | null>(null);
   const [placeName, setPlaceName] = useState<string>("");
   const [placeDescription, setPlaceDescription] = useState<string>("");
   const [basePrice, setBasePrice] = useState<number>(0);
-  const [selectedPolicy, setSelectedPolicy] = useState<CancellationPolicy>({
-    name: "Flexible",
-    description:
-      "Full refund for cancellations made up to 24 hours before check-in. Cancellations made less than 24 hours in advance: no refund for the first night or first service, remainder refunded.",
-  });
-
-  // Rules state
-  const [toggleRules, setToggleRules] = useState<ToggleRulesState>({
-    "Pets allowed": false,
-    "Events allowed": false,
-    "Smoking allowed": false,
-  });
-  const [setRuleValues, setSetRuleValues] = useState<SetRulesState>({});
-  const [additionalRules, setAdditionalRules] = useState<string[]>([]);
-
-  // Contact state
-  const [contactNumber, setContactNumber] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
-  const [verificationImage, setVerificationImage] = useState<string | null>(
-    null
-  );
-
-  // Discount state
+  const [cleaningFee, setCleaningFee] = useState<number>(0);
+  const [serviceFee, setServiceFee] = useState<number>(0);
+  const [taxes, setTaxes] = useState<number>(0);
+  const [selectedCancellationPolicy, setSelectedCancellationPolicy] =
+    useState<any>(null);
+  const [selectedPolicy, setSelectedPolicy] = useState<any>(null);
   const [selectedDiscounts, setSelectedDiscounts] = useState<
     { type: string; percentage: number }[]
   >([]);
 
-  const handleSave = () => {
-    const property: PlaceProperty = {
-      placeName,
-      type: selectedType,
-      location: {
-        name: locationName,
-        coordinates: markerCoords,
-      },
-      capacity: {
-        guests,
-        bedrooms,
-        bathrooms,
-      },
-      amenities: selectedAmenities,
-      media: {
-        items: media,
-        coverPhotoId,
-      },
-      description: {
-        name: placeName,
-        text: placeDescription,
-      },
-      pricing: {
-        basePrice,
-      },
-      policies: {
-        cancellation: selectedPolicy,
-      },
-      rules: {
-        toggle: toggleRules,
-        set: setRuleValues,
-        additional: additionalRules,
-      },
-      contact: {
-        phone: contactNumber,
-        email: emailAddress,
-      },
-      verification: {
-        image: verificationImage,
-      },
-      discounts: selectedDiscounts,
+  // Fetch user data using React Query
+  const { data: user } = useQuery<User>({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("/user/user");
+      return response.data;
+    },
+  });
+
+  useEffect(() => {
+    const fetchAccommodation = async () => {
+      try {
+        if (!id) {
+          console.error("No ID provided");
+          return;
+        }
+
+        const response = await axiosPrivate.get(`/accomodation/${id}/`);
+        const data = response.data;
+        console.log(data.category);
+
+        // Set all the state values from the response
+        setPlaceName(data.name);
+        setSelectedType(data.category);
+        setLocationName(data.location);
+        setMarkerCoords({
+          latitude: parseFloat(data.latitude),
+          longitude: parseFloat(data.longitude),
+        });
+        setGuests(data.max_guests);
+        setSelectedAmenities(data.amenity);
+        setMedia(
+          data.media.map((item: any) => ({
+            id: item.id,
+            uri: item.url,
+            type: item.type,
+          }))
+        );
+        setCoverPhotoId(data.media[0]?.url || null);
+        setPlaceDescription(data.description);
+
+        // Set prices
+        const prices = data.price;
+        setBasePrice(
+          parseFloat(
+            prices.find((p: any) => p.name === "Base Rate")?.price || "0"
+          )
+        );
+        setCleaningFee(
+          parseFloat(
+            prices.find((p: any) => p.name === "Cleaning Fee")?.price || "0"
+          )
+        );
+        setServiceFee(
+          parseFloat(
+            prices.find((p: any) => p.name === "Service Fee")?.price || "0"
+          )
+        );
+        setTaxes(
+          parseFloat(prices.find((p: any) => p.name === "Taxes")?.price || "0")
+        );
+
+        // Set policies
+        setSelectedCancellationPolicy(
+          data.cancellation_policy.cancellation_policy
+        );
+
+        setSelectedPolicy(data.policy.policy);
+      } catch (err) {
+        console.error("Failed to fetch accommodation:", err);
+      }
     };
 
-    console.log("=== UPDATED PROPERTY DETAILS ===");
-    console.log(JSON.stringify(property, null, 2));
-    // TODO: Add API call to update property
+    if (id) {
+      fetchAccommodation();
+    }
+  }, [id]);
+
+  const handleSave = async () => {
+    if (!user?.email) {
+      console.error("User email not available");
+      return;
+    }
+
+    const submissionData = {
+      host: user.email,
+      category_id: selectedType?.id,
+      name: placeName,
+      description: placeDescription,
+      location: locationName,
+      latitude: markerCoords?.latitude.toFixed(6),
+      longitude: markerCoords?.longitude.toFixed(6),
+      max_guests: guests,
+      media: media
+        .sort((a, b) => {
+          // Put cover photo first
+          if (a.uri === coverPhotoId) return -1;
+          if (b.uri === coverPhotoId) return 1;
+          return 0;
+        })
+        .map((item: MediaItem) => ({
+          url: item.uri,
+          type: item.type,
+        })),
+      amenity: selectedAmenities.map((amenity) => ({ id: amenity.id })),
+      price: [
+        {
+          name: "Base Rate",
+          price: basePrice.toFixed(2),
+        },
+        {
+          name: "Cleaning Fee",
+          price: cleaningFee.toFixed(2),
+        },
+        {
+          name: "Service Fee",
+          price: serviceFee.toFixed(2),
+        },
+        {
+          name: "Taxes",
+          price: taxes.toFixed(2),
+        },
+      ],
+      cancellation_policy: selectedCancellationPolicy.id,
+      policy: selectedPolicy.id,
+    };
+    console.log(selectedType?.id);
+    console.log("Submission Data:", JSON.stringify(submissionData, null, 2));
+
+    try {
+      await axiosPrivate.put(`/accomodation/${id}/`, submissionData);
+      // Invalidate the listings cache to trigger a refetch
+      queryClient.invalidateQueries({ queryKey: ["hostListings"] });
+
+      router.replace("/(authenticated)/(host)");
+    } catch (err) {
+      console.error("Failed to update accommodation:", err);
+    }
   };
 
   return (
@@ -158,7 +260,7 @@ export default function HostMenuPage() {
           <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
             <Text className="text-lg font-semibold mb-2">Property Type</Text>
             <Text className="p-2">
-              {selectedType || "Select property type"}
+              {selectedType?.name || "Select property type"}
             </Text>
           </View>
         </TouchableOpacity>
@@ -219,29 +321,13 @@ export default function HostMenuPage() {
             <Text className="text-lg font-semibold mb-2">
               Cancellation Policy
             </Text>
-            <Text className="p-2">{selectedPolicy.name}</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setIsRulesModalVisible(true)}>
-          <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
-            <Text className="text-lg font-semibold mb-2">Rules</Text>
             <Text className="p-2">
-              {Object.keys(toggleRules).length ? "Rules set" : "Set rules"}
+              {selectedCancellationPolicy?.title ||
+                "Select a cancellation policy"}
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setIsVerificationModalVisible(true)}>
-          <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
-            <Text className="text-lg font-semibold mb-2">
-              Verification & Contact
-            </Text>
-            <Text className="p-2">
-              {verificationImage
-                ? "ID verified"
-                : "Verify ID and contact details"}
-            </Text>
-          </View>
-        </TouchableOpacity>
+
         <TouchableOpacity onPress={() => setIsDiscountsModalVisible(true)}>
           <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
             <Text className="text-lg font-semibold mb-2">Discounts</Text>
@@ -251,6 +337,15 @@ export default function HostMenuPage() {
                     selectedDiscounts.length > 1 ? "s" : ""
                   } set`
                 : "Set discounts"}
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => setIsRulesModalVisible(true)}>
+          <View className="bg-white rounded-lg p-4 shadow mb-4 w-full">
+            <Text className="text-lg font-semibold mb-2">House Rules</Text>
+            <Text className="p-2">
+              {selectedPolicy?.title || "Select a policy"}
             </Text>
           </View>
         </TouchableOpacity>
@@ -278,7 +373,7 @@ export default function HostMenuPage() {
       >
         <PlaceTypeSlide
           setSelectedType={setSelectedType}
-          initialType={selectedType}
+          initialType={selectedType?.name || null}
         />
       </GenericModal>
 
@@ -310,7 +405,16 @@ export default function HostMenuPage() {
         isVisible={isPriceModalVisible}
         onClose={() => setIsPriceModalVisible(false)}
       >
-        <PlacePriceSlide basePrice={basePrice} setBasePrice={setBasePrice} />
+        <PlacePriceSlide
+          basePrice={basePrice}
+          setBasePrice={setBasePrice}
+          cleaningFee={cleaningFee}
+          setCleaningFee={setCleaningFee}
+          serviceFee={serviceFee}
+          setServiceFee={setServiceFee}
+          taxes={taxes}
+          setTaxes={setTaxes}
+        />
       </GenericModal>
 
       <GenericModal
@@ -338,8 +442,8 @@ export default function HostMenuPage() {
         onClose={() => setIsCancellationModalVisible(false)}
       >
         <PlaceCancellationSlide
-          selectedPolicy={selectedPolicy}
-          setSelectedPolicy={setSelectedPolicy}
+          selectedCancellationPolicy={selectedCancellationPolicy}
+          setSelectedCancellationPolicy={setSelectedCancellationPolicy}
         />
       </GenericModal>
 
@@ -348,12 +452,8 @@ export default function HostMenuPage() {
         onClose={() => setIsRulesModalVisible(false)}
       >
         <PlaceRulesSlide
-          toggleRules={toggleRules}
-          setToggleRules={setToggleRules}
-          setRuleValues={setRuleValues}
-          setSetRuleValues={setSetRuleValues}
-          additionalRules={additionalRules}
-          setAdditionalRules={setAdditionalRules}
+          selectedPolicy={selectedPolicy}
+          setSelectedPolicy={setSelectedPolicy}
         />
       </GenericModal>
 
@@ -378,19 +478,6 @@ export default function HostMenuPage() {
         <PlaceDiscountsSlide
           selectedDiscounts={selectedDiscounts}
           setSelectedDiscounts={setSelectedDiscounts}
-        />
-      </GenericModal>
-      <GenericModal
-        isVisible={isVerificationModalVisible}
-        onClose={() => setIsVerificationModalVisible(false)}
-      >
-        <PlaceVerificationSlide
-          contactNumber={contactNumber}
-          setContactNumber={setContactNumber}
-          emailAddress={emailAddress}
-          setEmailAddress={setEmailAddress}
-          verificationImage={verificationImage}
-          setVerificationImage={setVerificationImage}
         />
       </GenericModal>
     </SafeAreaView>

@@ -28,19 +28,99 @@ export default function PlacePriceSlide({
   // Price calculations
   const totalPrice = basePrice + cleaningFee + serviceFee + taxes;
 
-  // Function to handle edit price
-  const handleEditPrice = () => {
+  // Function to handle edit all prices
+  const handleEditPrices = () => {
     Alert.prompt(
       "Edit Base Rate",
       "Enter the new base rate:",
       [
         { text: "Cancel", style: "cancel" },
         {
-          text: "OK",
+          text: "Next",
           onPress: (price) => {
-            const newPrice = parseInt(price || "0", 10);
-            if (!isNaN(newPrice) && newPrice >= 0) {
-              setBasePrice(newPrice);
+            const newBasePrice = parseInt(price || "0", 10);
+            if (!isNaN(newBasePrice) && newBasePrice >= 0) {
+              setBasePrice(newBasePrice);
+              // After setting base price, prompt for cleaning fee
+              Alert.prompt(
+                "Edit Cleaning Fee",
+                "Enter the new cleaning fee:",
+                [
+                  { text: "Cancel", style: "cancel" },
+                  {
+                    text: "Next",
+                    onPress: (fee) => {
+                      const newCleaningFee = parseFloat(fee || "0");
+                      if (!isNaN(newCleaningFee) && newCleaningFee >= 0) {
+                        setCleaningFee(newCleaningFee);
+                        // After setting cleaning fee, prompt for service fee
+                        Alert.prompt(
+                          "Edit Service Fee",
+                          "Enter the new service fee:",
+                          [
+                            { text: "Cancel", style: "cancel" },
+                            {
+                              text: "Next",
+                              onPress: (fee) => {
+                                const newServiceFee = parseFloat(fee || "0");
+                                if (
+                                  !isNaN(newServiceFee) &&
+                                  newServiceFee >= 0
+                                ) {
+                                  setServiceFee(newServiceFee);
+                                  // Finally, prompt for taxes
+                                  Alert.prompt(
+                                    "Edit Taxes",
+                                    "Enter the new tax amount:",
+                                    [
+                                      { text: "Cancel", style: "cancel" },
+                                      {
+                                        text: "Done",
+                                        onPress: (tax) => {
+                                          const newTaxes = parseFloat(
+                                            tax || "0"
+                                          );
+                                          if (
+                                            !isNaN(newTaxes) &&
+                                            newTaxes >= 0
+                                          ) {
+                                            setTaxes(newTaxes);
+                                          } else {
+                                            Alert.alert(
+                                              "Invalid Input",
+                                              "Please enter a valid number for the taxes."
+                                            );
+                                          }
+                                        },
+                                      },
+                                    ],
+                                    "plain-text",
+                                    taxes.toString()
+                                  );
+                                } else {
+                                  Alert.alert(
+                                    "Invalid Input",
+                                    "Please enter a valid number for the service fee."
+                                  );
+                                }
+                              },
+                            },
+                          ],
+                          "plain-text",
+                          serviceFee.toString()
+                        );
+                      } else {
+                        Alert.alert(
+                          "Invalid Input",
+                          "Please enter a valid number for the cleaning fee."
+                        );
+                      }
+                    },
+                  },
+                ],
+                "plain-text",
+                cleaningFee.toString()
+              );
             } else {
               Alert.alert(
                 "Invalid Input",
@@ -52,84 +132,6 @@ export default function PlacePriceSlide({
       ],
       "plain-text",
       basePrice.toString()
-    );
-  };
-
-  const handleEditCleaningFee = () => {
-    Alert.prompt(
-      "Edit Cleaning Fee",
-      "Enter the new cleaning fee:",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "OK",
-          onPress: (price) => {
-            const newPrice = parseFloat(price || "0");
-            if (!isNaN(newPrice) && newPrice >= 0) {
-              setCleaningFee(newPrice);
-            } else {
-              Alert.alert(
-                "Invalid Input",
-                "Please enter a valid number for the cleaning fee."
-              );
-            }
-          },
-        },
-      ],
-      "plain-text",
-      cleaningFee.toString()
-    );
-  };
-
-  const handleEditServiceFee = () => {
-    Alert.prompt(
-      "Edit Service Fee",
-      "Enter the new service fee:",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "OK",
-          onPress: (price) => {
-            const newPrice = parseFloat(price || "0");
-            if (!isNaN(newPrice) && newPrice >= 0) {
-              setServiceFee(newPrice);
-            } else {
-              Alert.alert(
-                "Invalid Input",
-                "Please enter a valid number for the service fee."
-              );
-            }
-          },
-        },
-      ],
-      "plain-text",
-      serviceFee.toString()
-    );
-  };
-
-  const handleEditTaxes = () => {
-    Alert.prompt(
-      "Edit Taxes",
-      "Enter the new tax amount:",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "OK",
-          onPress: (price) => {
-            const newPrice = parseFloat(price || "0");
-            if (!isNaN(newPrice) && newPrice >= 0) {
-              setTaxes(newPrice);
-            } else {
-              Alert.alert(
-                "Invalid Input",
-                "Please enter a valid number for the taxes."
-              );
-            }
-          },
-        },
-      ],
-      "plain-text",
-      taxes.toString()
     );
   };
 
@@ -148,7 +150,7 @@ export default function PlacePriceSlide({
         <View className="flex-row items-center self-center">
           <Text className="text-5xl font-extrabold">₱ {basePrice}</Text>
           <Pressable
-            onPress={handleEditPrice}
+            onPress={handleEditPrices}
             className="ml-2 p-1 border border-gray-300 rounded-full"
           >
             <MaterialCommunityIcons
@@ -158,74 +160,26 @@ export default function PlacePriceSlide({
             />
           </Pressable>
         </View>
-        <Text className="text-center text-description">Base Rate</Text>
+        <Text className="text-center text-description">Price per night</Text>
 
         {/* Price Breakdown Card */}
         {showDetails && (
           <View className="mt-8 p-6 bg-gray-100 rounded-xl w-full">
             <View className="flex-row justify-between mb-2">
               <Text className="text-base">Base Rate</Text>
-              <View className="flex-row items-center">
-                <Text className="text-base">₱ {basePrice.toFixed(2)}</Text>
-                <Pressable
-                  onPress={handleEditPrice}
-                  className="ml-2 p-1 border border-gray-300 rounded-full"
-                >
-                  <MaterialCommunityIcons
-                    name="pencil-outline"
-                    size={16}
-                    color="black"
-                  />
-                </Pressable>
-              </View>
+              <Text className="text-base">₱ {basePrice.toFixed(2)}</Text>
             </View>
             <View className="flex-row justify-between mb-2">
               <Text className="text-base">Cleaning Fee</Text>
-              <View className="flex-row items-center">
-                <Text className="text-base">₱ {cleaningFee.toFixed(2)}</Text>
-                <Pressable
-                  onPress={handleEditCleaningFee}
-                  className="ml-2 p-1 border border-gray-300 rounded-full"
-                >
-                  <MaterialCommunityIcons
-                    name="pencil-outline"
-                    size={16}
-                    color="black"
-                  />
-                </Pressable>
-              </View>
+              <Text className="text-base">₱ {cleaningFee.toFixed(2)}</Text>
             </View>
             <View className="flex-row justify-between mb-2">
               <Text className="text-base">Service Fee</Text>
-              <View className="flex-row items-center">
-                <Text className="text-base">₱ {serviceFee.toFixed(2)}</Text>
-                <Pressable
-                  onPress={handleEditServiceFee}
-                  className="ml-2 p-1 border border-gray-300 rounded-full"
-                >
-                  <MaterialCommunityIcons
-                    name="pencil-outline"
-                    size={16}
-                    color="black"
-                  />
-                </Pressable>
-              </View>
+              <Text className="text-base">₱ {serviceFee.toFixed(2)}</Text>
             </View>
             <View className="flex-row justify-between mb-4">
               <Text className="text-base">Taxes</Text>
-              <View className="flex-row items-center">
-                <Text className="text-base">₱ {taxes.toFixed(2)}</Text>
-                <Pressable
-                  onPress={handleEditTaxes}
-                  className="ml-2 p-1 border border-gray-300 rounded-full"
-                >
-                  <MaterialCommunityIcons
-                    name="pencil-outline"
-                    size={16}
-                    color="black"
-                  />
-                </Pressable>
-              </View>
+              <Text className="text-base">₱ {taxes.toFixed(2)}</Text>
             </View>
             <View className="border-b border-gray-300 mb-4"></View>
             <View className="flex-row justify-between">

@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View, ActivityIndicator } from "react-native";
 
 type ListingCardProps = {
   imageUri: string;
@@ -10,6 +10,7 @@ type ListingCardProps = {
   onEdit?: () => void;
   onDelete?: () => void;
   onShowBookings?: () => void;
+  isDeleting?: boolean;
 };
 
 export default function ListingCard({
@@ -21,6 +22,7 @@ export default function ListingCard({
   onEdit,
   onDelete,
   onShowBookings,
+  isDeleting = false,
 }: ListingCardProps) {
   return (
     <View className="flex-row bg-white rounded-xl shadow-lg  overflow-hidden  h-[120px] mb-4">
@@ -58,8 +60,16 @@ export default function ListingCard({
             <Pressable onPress={onEdit} className="p-1 ml-2">
               <Ionicons name="create-outline" size={20} color="green" />
             </Pressable>
-            <Pressable onPress={onDelete} className="p-1 ml-2">
-              <Ionicons name="trash-outline" size={20} color="red" />
+            <Pressable
+              onPress={onDelete}
+              className="p-1 ml-2"
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <ActivityIndicator size="small" color="red" />
+              ) : (
+                <Ionicons name="trash-outline" size={20} color="red" />
+              )}
             </Pressable>
           </View>
         </View>

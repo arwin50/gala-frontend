@@ -8,11 +8,12 @@ import React, { useEffect, useState } from "react";
 import {
   Keyboard,
   SafeAreaView,
-  ScrollView,
+  FlatList,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 type HostListing = {
   id: string;
@@ -28,34 +29,52 @@ type HostListing = {
 export default function HostHomePage() {
   const [isVisible, setIsVisible] = useState(false);
   const [query, setQuery] = useState("");
-  const [listings, setListings] = useState<HostListing[]>([]);
+  const queryClient = useQueryClient();
 
-  const fetchListings = async () => {
-    try {
+  // Fetch listings with React Query
+  const { data: listings = [], refetch: refetchListings } = useQuery<any>({
+    queryKey: ["hostListings"],
+    queryFn: async () => {
       const response = await axiosPrivate.get("/accomodation/host/");
-      setListings(response.data.objects);
-    } catch (err) {
-      console.error("Failed to fetch listings", err);
-    }
-  };
+      return response.data.objects;
+    },
+    refetchOnWindowFocus: true, // Refetch when window regains focus
+  });
 
-  useEffect(() => {
-    fetchListings();
-  }, []);
+  // Delete listing mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await axiosPrivate.delete(`/accomodation/${id}/`);
+    },
+    onSuccess: () => {
+      // Invalidate and refetch listings after successful deletion
+      queryClient.invalidateQueries({ queryKey: ["hostListings"] });
+    },
+    onError: (error) => {
+      console.error("Failed to delete listing:", error);
+    },
+  });
 
   const handleCloseModal = () => {
     setIsVisible(false);
   };
 
-  const deleteListing = async (id: string) => {
-    try {
-      await axiosPrivate.delete(`/accomodation/${id}/`);
-      // Refresh listings after successful deletion
-      await fetchListings();
-    } catch (err) {
-      console.error("Failed to delete listing", err);
-    }
-  };
+  const renderItem = ({ item }: { item: HostListing }) => (
+    <ListingCard
+      key={item.id}
+      imageUri={item.media[0].url}
+      title={item.name}
+      location={item.location}
+      category={item.category.name}
+      bookings={83}
+      onEdit={() => router.replace(`/(authenticated)/(host)/edit/${item.id}`)}
+      onDelete={() => deleteMutation.mutate(item.id)}
+      onShowBookings={() => console.log("Show Bookings", item.id)}
+      isDeleting={deleteMutation.isPending}
+    />
+  );
+
+  const keyExtractor = (item: HostListing) => item.id;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -66,21 +85,13 @@ export default function HostHomePage() {
           setQuery={setQuery}
           placeholder="Search listings..."
         />
-        <ScrollView className="flex-1 ">
-          {listings?.map((listing) => (
-            <ListingCard
-              key={listing.id}
-              imageUri={listing.media[0].url}
-              title={listing.name}
-              location={listing.location}
-              category={listing.category.name}
-              bookings={83}
-              onEdit={() => router.replace("/(authenticated)/(host)/edit/[id]")}
-              onDelete={() => deleteListing(listing.id)}
-              onShowBookings={() => console.log("Show Bookings", listing.id)}
-            />
-          ))}
-        </ScrollView>
+        <FlatList
+          data={listings}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 80 }}
+        />
 
         <TouchableOpacity
           onPress={() => setIsVisible(true)}
@@ -95,7 +106,7 @@ export default function HostHomePage() {
         <AddListingSwiper
           isVisible={isVisible}
           onClose={handleCloseModal}
-          onSuccess={fetchListings}
+          onSuccess={refetchListings}
         />
       </SafeAreaView>
     </TouchableWithoutFeedback>

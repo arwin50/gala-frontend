@@ -193,7 +193,7 @@ export default function AddListingSwiper({
   const createAccomodation = async (mediaWithS3Urls: MediaItem[]) => {
     const submissionData = {
       host: user.email,
-      category: selectedType?.id,
+      category_id: selectedType?.id,
       name: placeName,
       description: placeDescription,
       location: locationName,
